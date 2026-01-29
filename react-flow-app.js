@@ -11,12 +11,12 @@
         { id: 'tablet-studio', label: 'Record Your Dance', subtitle: 'iPad Booth', color: '#00D4AA', type: 'main', x: 180, y: 160 },
         { id: 'view-dance', label: 'View on Mobile', subtitle: 'Watch & share your dance', color: '#FF6B35', type: 'main', x: 180, y: 320 },
         { id: 'big-stage', label: 'See It Big', subtitle: 'Cast to the large screen', color: '#F59E0B', type: 'optional', x: 340, y: 320 },
-        { id: 'ar-extensions', label: 'AR Effects', subtitle: 'Choose your AR experience', color: '#7B68EE', type: 'branch', x: 660, y: 160 },
+        { id: 'ar-extensions', label: 'AR Effects', subtitle: 'Choose your AR experience', color: '#7B68EE', type: 'branch', x: 730, y: 160 },
         // AR sub-nodes
-        { id: 'ar-filters', label: 'Face Filters', subtitle: 'Fun Snoo face effects', color: '#9B7BEE', type: 'sub', x: 520, y: 320 },
-        { id: 'ar-placement', label: '3D Placement', subtitle: 'Place Snoo in real space', color: '#9B7BEE', type: 'sub', x: 660, y: 320 },
-        { id: 'ar-tryon', label: 'AR Try-On', subtitle: 'Virtual merch preview', color: '#9B7BEE', type: 'sub', x: 800, y: 320 },
-        { id: 'ar-merch', label: 'AR Merch', subtitle: 'Customizable branded items', color: '#9B7BEE', type: 'sub', x: 940, y: 320 },
+        { id: 'ar-filters', label: 'Face Filters', subtitle: 'Fun Snoo face effects', color: '#E879F9', type: 'sub', x: 520, y: 340 },
+        { id: 'ar-placement', label: '3D Placement', subtitle: 'Place Snoo in real space', color: '#818CF8', type: 'sub', x: 700, y: 340 },
+        { id: 'ar-tryon', label: 'AR Try-On', subtitle: 'Virtual merch preview', color: '#38BDF8', type: 'sub', x: 880, y: 340 },
+        { id: 'ar-merch', label: 'AR Merch', subtitle: 'Customizable branded items', color: '#34D399', type: 'sub', x: 1060, y: 340 },
         // Venue nodes
         { id: 'connected-venue', label: 'Explore & Unlock', subtitle: 'Discover rewards across the venue', color: '#3B82F6', type: 'branch', x: 420, y: 500 },
         { id: 'passive-connect', label: 'Scan & Discover', subtitle: 'QR codes • Virtual rewards', color: '#60A5FA', type: 'sub', x: 240, y: 660 },
