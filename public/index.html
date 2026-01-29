@@ -2029,20 +2029,21 @@ ac				padding: 0; /* Removed padding to allow image to reach bottom edge */
 						const index = parseInt(this.value) - 1;
 						updateTexture(index);
 					});
-					if (!urlHasHoodieParam()) {
-						updateTexture(0);
-					}
+					// Don't auto-apply texture on load - keep white hoodie as default
+					// if (!urlHasHoodieParam()) {
+					// 	updateTexture(0);
+					// }
 				}
 				
 				// Update material reference when VRM is loaded
 				document.addEventListener('vrm-loaded', function(e) {
 					if (e.detail && e.detail.vrm) {
 						currentHoodieMaterial = findHoodieMaterial();
-						// Apply current texture selection ONLY if no hoodie param in URL
-						const sliderValue = slider ? parseInt(slider.value) - 1 : 0;
-						if (!urlHasHoodieParam()) {
-							updateTexture(sliderValue);
-						}
+						// Don't auto-apply texture - keep white hoodie as default
+						// const sliderValue = slider ? parseInt(slider.value) - 1 : 0;
+						// if (!urlHasHoodieParam()) {
+						// 	updateTexture(sliderValue);
+						// }
 					}
 				});
 				
