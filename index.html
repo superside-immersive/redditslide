@@ -567,6 +567,43 @@ ul li::before {
     object-fit: cover;
 }
 
+/* Scan slideshow */
+.scan-slideshow {
+    position: relative;
+    width: 100%;
+    max-height: 440px;
+    aspect-ratio: 4 / 3;
+    margin-top: 18px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--color-bg);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    border: 1px solid rgba(216, 255, 133, 0.15);
+}
+
+.scan-slideshow img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    animation: scanFade 8s infinite;
+}
+
+.scan-slideshow img:nth-child(2) {
+    animation-delay: 4s;
+}
+
+@keyframes scanFade {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    45% { opacity: 1; }
+    55% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
 /* Bleed Image Layout */
 .slide-container.bleed-image-layout {
     display: grid;
@@ -908,8 +945,8 @@ ul li::before {
                 </ul>
                 <p style="margin-top: 20px; font-style: italic; color: #6a7a72;">Each AR feature is independent—activate one, two, or all based on budget and campaign needs.</p>
             </div>
-            <div class="image-wrapper">
-                <img src="https://placehold.co/600x400/1c1c1c/FFFFFF?text=AR+Effects%0A%0A📸+Face+Filters%0A📍+3D+Placement%0A👕+Try-On" alt="AR Effects options">
+            <div class="image-wrapper" style="aspect-ratio: 4 / 3; max-height: 420px;">
+                <img src="public/assets/AR.png" alt="AR Effects options" style="object-fit: contain;">
             </div>
         </div>
     </div>
@@ -958,7 +995,7 @@ ul li::before {
         <div class="tiled-content">
             <div class="tile">
                 <div class="icon"><i class="fa-solid fa-qrcode"></i></div>
-                <h3>QR Codes Everywhere</h3>
+                <h3>QR Codes Nearby</h3>
                 <p>Placed naturally on bars, tables, walls—users discover them while exploring the space.</p>
             </div>
             <div class="tile">
@@ -971,6 +1008,10 @@ ul li::before {
                 <h3>Physical Rewards Too</h3>
                 <p>Can also unlock real perks—free drinks, merch, or priority access. Mix virtual and physical rewards.</p>
             </div>
+        </div>
+        <div class="scan-slideshow" aria-label="Scan and discover examples">
+            <img src="public/assets/scan1.png" alt="Scan and discover example 1">
+            <img src="public/assets/scan2.png" alt="Scan and discover example 2">
         </div>
     </div>
 </div>
@@ -1018,8 +1059,8 @@ ul li::before {
                 <p>Top players unlock exclusive Snoo accessories, virtual badges, or real-world perks at the event.</p>
             </div>
         </div>
-        <div class="image-wrapper" style="margin-top: 25px; max-height: 200px; background: linear-gradient(145deg, #2563EB22, #7B68EE22);">
-            <img src="https://placehold.co/800x200/1a1a2e/ffffff?text=Group+of+Players+%7C+Phones+as+Controllers+%7C+Big+Screen+Game%0A%0A🎮+👥+🏆" alt="Group playing mini-games together" style="object-fit: contain;">
+        <div class="image-wrapper" style="margin-top: 20px; max-height: 340px; aspect-ratio: 4 / 3; max-width: 720px; margin-left: auto; margin-right: auto; background: transparent; box-shadow: none; border: 1px solid rgba(0,0,0,0.08);">
+            <img src="public/assets/game.png" alt="Group playing mini-games together" style="object-fit: contain;">
         </div>
     </div>
 </div>
@@ -1040,7 +1081,7 @@ ul li::before {
         </div>
     </div>
     <div class="image-container">
-        <img class="bleed-image-side" src="https://placehold.co/640x720/0f1f1a/d8ff85?text=Customize+on+Phone%0ACast+to+Big+Screen%0A%0A📱+➡️+🖥️" alt="Mobile customization casting to big screen">
+        <img class="bleed-image-side" src="public/assets/screen.png" alt="Mobile customization casting to big screen" style="object-position: left center;">
     </div>
 </div>
 
