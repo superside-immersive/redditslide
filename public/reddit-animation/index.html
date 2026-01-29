@@ -186,6 +186,7 @@
             <label>Animación:</label>
             <select id="anim-select">
                 <option value="dance">💃 Dance</option>
+                <option value="samba">🕺 Samba</option>
                 <option value="pointing">👉 Pointing</option>
                 <option value="typing">⌨️ Typing</option>
                 <option value="walking">🚶 Walking</option>
@@ -231,9 +232,10 @@
     <script type="module">
         import { RedditAnimation } from './src/RedditAnimation.js';
         
-        // Rutas a las animaciones disponibles
+        // Rutas a las animaciones disponibles (desde carpeta animations/)
         const ANIMATIONS = {
             dance: './animations/dance.fbx',
+            samba: './animations/Samba Dancing (1).fbx',
             pointing: './animations/snooPointing.fbx',
             typing: './animations/Typing.fbx',
             walking: './animations/Walking.fbx',
