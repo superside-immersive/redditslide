@@ -13,10 +13,9 @@
         { id: 'big-stage', label: 'See It Big', subtitle: 'Cast to the large screen', color: '#F59E0B', type: 'optional', x: 340, y: 320 },
         { id: 'ar-extensions', label: 'AR Effects', subtitle: 'Choose your AR experience', color: '#7B68EE', type: 'branch', x: 730, y: 160 },
         // AR sub-nodes
-        { id: 'ar-filters', label: 'Face Filters', subtitle: 'Fun Snoo face effects', color: '#E879F9', type: 'sub', x: 520, y: 340 },
-        { id: 'ar-placement', label: '3D Placement', subtitle: 'Place Snoo in real space', color: '#818CF8', type: 'sub', x: 700, y: 340 },
-        { id: 'ar-tryon', label: 'AR Try-On', subtitle: 'Virtual merch preview', color: '#38BDF8', type: 'sub', x: 880, y: 340 },
-        { id: 'ar-merch', label: 'AR Merch', subtitle: 'Customizable branded items', color: '#34D399', type: 'sub', x: 1060, y: 340 },
+        { id: 'ar-filters', label: 'Face Filters', subtitle: 'Fun Snoo face effects', color: '#E879F9', type: 'sub', x: 550, y: 340 },
+        { id: 'ar-placement', label: '3D Placement', subtitle: 'Place Snoo in real space', color: '#818CF8', type: 'sub', x: 730, y: 340 },
+        { id: 'ar-merch', label: 'AR Merch', subtitle: 'Customizable branded items', color: '#34D399', type: 'sub', x: 910, y: 340 },
         // Venue nodes
         { id: 'connected-venue', label: 'Explore & Unlock', subtitle: 'Discover rewards across the venue', color: '#3B82F6', type: 'branch', x: 420, y: 500 },
         { id: 'passive-connect', label: 'Scan & Discover', subtitle: 'QR codes • Virtual rewards', color: '#60A5FA', type: 'sub', x: 240, y: 660 },
@@ -32,7 +31,6 @@
         // AR sub-connections
         { source: 'ar-extensions', target: 'ar-filters', label: '' },
         { source: 'ar-extensions', target: 'ar-placement', label: '' },
-        { source: 'ar-extensions', target: 'ar-tryon', label: '' },
         { source: 'ar-extensions', target: 'ar-merch', label: '' },
         // Venue connections
         { source: 'core-app', target: 'connected-venue', label: 'or explore' },
@@ -42,7 +40,7 @@
 
     // Filter categories (elegant pills, no emojis)
     const FILTERS = [
-        { id: 'ar-features', label: 'AR Effects', nodes: ['ar-extensions', 'ar-filters', 'ar-placement', 'ar-tryon', 'ar-merch'], color: '#7B68EE' },
+        { id: 'ar-features', label: 'AR Effects', nodes: ['ar-extensions', 'ar-filters', 'ar-placement', 'ar-merch'], color: '#7B68EE' },
         { id: 'venue-connect', label: 'Explore & Unlock', nodes: ['connected-venue', 'passive-connect', 'pro-sync'], color: '#3B82F6' },
         { id: 'tablet-studio', label: 'Record Your Dance', nodes: ['tablet-studio', 'view-dance'], color: '#00D4AA' },
         { id: 'big-screen', label: 'See It Big', nodes: ['big-stage'], color: '#F59E0B' }
