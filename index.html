@@ -575,6 +575,10 @@ ul li::before {
     align-items: start;
 }
 
+#slide8.bleed-image-layout {
+    grid-template-columns: 1.2fr 0.8fr;
+}
+
 .slide-container.bleed-image-layout > .content-container {
     padding: 60px 50px 80px 60px; /* Adjusted padding */
     display: flex;
@@ -593,6 +597,11 @@ ul li::before {
     max-height: 720px;
     width: 100%;
     object-fit: cover;
+}
+
+#slide8 .bleed-image-side {
+    object-fit: contain;
+    background: #0f1f1a;
 }
 
 /* Tiled Layouts */
