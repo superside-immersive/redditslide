@@ -1,0 +1,2071 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>My Reddit Snoo Avatar</title>
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+			/>
+		
+		<!-- Meta tags para redes sociales y WhatsApp -->
+<meta property="fb:app_id" content="123456789" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Reddit Snoo Viewer" />
+<meta property="og:title" content="My Reddit Snoo Avatar" />
+<meta property="og:description" content="Check out my customized Reddit Snoo and my interests!" />
+<meta property="og:image" content="https://mpalenque.github.io/snoo/preview.jpg" />
+<meta property="og:image:secure_url" content="https://mpalenque.github.io/snoo/preview.jpg" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://mpalenque.github.io/snoo/" />
+<meta property="og:logo" content="https://mpalenque.github.io/snoo/welcome.png" />
+
+<!-- WhatsApp y Facebook específicos -->
+<meta property="og:image:alt" content="Reddit Snoo Avatar Preview" />
+<meta property="og:locale" content="en_US" />
+<meta property="article:author" content="Reddit Snoo Creator" />
+<meta property="article:published_time" content="2024-01-17" />
+<meta property="og:updated_time" content="2024-01-17" />
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:image" content="https://mpalenque.github.io/snoo/preview.jpg" />
+		<meta name="description" content="Interactive 3D Reddit Snoo Avatar Viewer" />
+		<style>
+			body {
+				margin: 0;
+				padding: 0;
+				display: flex;
+				flex-direction: column;
+				min-height: 100vh; /* Full viewport height */
+				position: relative;
+				background-color: #EDEFF1; /* Added background color */
+			}
+			canvas {
+				display: block;
+			}
+			.header {
+				width: 100%;
+				text-align: center;
+				padding: 10px 0;
+				z-index: 100;
+				margin-bottom: 40px; /* Add space after header */
+			}
+			.header img {
+				max-width: 24.75%; /* Increased by 10% from 22.5% */
+				height: auto;
+				opacity: 0;
+				animation: slideInFromTop 1s ease-out forwards, bounceHeader 0.5s ease-out 1s forwards;
+				transform: translateY(-100%);
+				margin-top: 30px; /* Increased from 20px to 30px */
+				margin-left: auto; /* Center horizontally */
+				margin-right: auto; /* Center horizontally */
+			}
+			
+			#welcome-img {
+				display: block;
+			}
+			
+			#meet-img {
+				display: none;
+				opacity: 0;
+				transform: translateY(-20px);
+			}
+			
+			/* New styles for subreddit grid */
+			.subreddit-grid {
+				width: 100%;
+				text-align: center;
+				padding: 20px 0;
+				z-index: 100;
+				display: flex;
+				flex-direction: column;
+				gap: 20px;
+			}
+			.subreddit-row {
+				display: flex;
+				justify-content: center;
+				gap: 20px;
+				flex-wrap: wrap;
+				padding: 0 5%;
+				align-items: center; /* Align items vertically */
+			}
+			
+			/* Style for the link container */
+			.subreddit-row a {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				height: 60px; /* Reduced fixed height for all containers */
+				position: relative;
+				text-align: center;
+				margin-bottom: 15px; /* Add space between rows when wrapped */
+			}
+			
+			.subreddit-item {
+				max-width: 500px; /* Maximum width */
+				height: 60px; /* Fixed exact height - no max-height */
+				width: auto; /* Let width adjust based on aspect ratio */
+				object-fit: scale-down; /* Scale down to fit container without distortion */
+				opacity: 0; /* Start invisible */
+				transform: translateX(-100px);
+			}
+			
+			/* Add a new class for controlled animations */
+			.animate-subreddit {
+				animation: slideInAndBounce 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+			}
+			
+			 /* Responsive adjustments */
+			@media screen and (max-width: 768px) {
+				.header img, .footer img {
+					max-width: 80%; /* Wider on mobile */
+				}
+				
+				.header {
+					margin-bottom: 20px; /* Less margin on mobile */
+				}
+				
+				.subreddit-row {
+					gap: 10px; /* Less space between items on mobile */
+				}
+				
+				.subreddit-row a {
+					height: 50px; /* Smaller height on mobile */
+					margin-bottom: 10px; /* Less bottom margin on mobile */
+				}
+				
+				.subreddit-item {
+					height: 30px; /* Reduced to half size from 60px */
+					width: auto; /* Maintain aspect ratio */
+					max-width: none; /* Remove max-width constraint */
+				}
+			}
+			
+			/* iPhone specific adjustments */
+			@media screen and (max-width: 480px) {
+				.header img, .footer img {
+					max-width: 90%; /* Even wider on small mobile devices */
+				}
+				
+				.subreddit-row {
+					flex-direction: row; /* Allow horizontal layout */
+					flex-wrap: wrap;
+					justify-content: center;
+					align-items: center;
+					gap: 10px;
+				}
+				
+				.subreddit-row a {
+					width: auto; /* Auto width based on content */
+					height: 30px; /* Reduced to half size from 60px */
+					margin-bottom: 10px;
+				}
+				
+				.subreddit-item {
+					height: 30px; /* Reduced to half size from 60px */
+					width: auto; /* Maintain aspect ratio */
+					max-width: none; /* Remove max-width constraint */
+				}
+				
+				/* Reduce bobbing animation on mobile for better performance */
+				@keyframes bobAnimation {
+					0% { transform: translateY(0) translateX(0); }
+					50% { transform: translateY(-2px) translateX(0); } /* Even smaller movement */
+					100% { transform: translateY(0) translateX(0); }
+				}
+			}
+			
+			/* Separate bobbing animation that doesn't affect perceived height */
+			@keyframes bobAnimation {
+				0% { transform: translateY(0) translateX(0); }
+				50% { transform: translateY(-5px) translateX(0); }
+				100% { transform: translateY(0) translateX(0); }
+			}
+			
+			/* Animation for sliding in from left */
+			@keyframes slideIn {
+				to {
+					opacity: 1;
+					transform: translateX(0);
+				}
+			}
+			
+			/* Add delay for each subreddit item */
+			.subreddit-row a:nth-child(1) img { animation-delay: 0.2s; }
+			.subreddit-row a:nth-child(2) img { animation-delay: 0.3s; }
+			.subreddit-row a:nth-child(3) img { animation-delay: 0.4s; }
+			.subreddit-row a:nth-child(4) img { animation-delay: 0.5s; }
+			.subreddit-row a:nth-child(5) img { animation-delay: 0.6s; }
+			
+			.footer {
+				width: 100%;
+				text-align: center;
+ac				padding: 0; /* Removed padding to allow image to reach bottom edge */
+				position: fixed; /* Fixed to viewport */
+				bottom: 0; /* Always at bottom */
+				left: 0;
+				z-index: 100;
+				opacity: 0;
+				transform: translateY(100%);
+				animation: slideInFromBottom 0.6s ease-out 0.3s forwards;
+				background-color: transparent; /* Changed from white to transparent */
+				line-height: 0; /* Remove any line-height spacing */
+			}
+			.footer img {
+				max-width: 45%; /* Reduced from 90% to 45% */
+				height: auto;
+				display: block; /* Changed to block to remove inline spacing */
+				margin: 0 auto; /* Center horizontally */
+				vertical-align: bottom; /* Ensure image aligns at bottom */
+			}
+			#canvas-container {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				z-index: 1;
+			}
+
+			@keyframes slideUpVRM {
+				from {
+					transform: translateY(100vh);
+				}
+				to {
+					transform: translateY(0);
+				}
+			}
+
+			.vrm-slide-up {
+				animation: slideUpVRM 1.5s ease-out forwards;
+			}
+			
+			.vrm-hidden {
+				opacity: 0;
+				transform: translateY(100vh);
+			}
+
+			/* Debug panel styles */
+			#debug-panel {
+				position: fixed;
+				top: 10px;
+				right: 10px;
+				background-color: rgba(0, 0, 0, 0.7);
+				color: white;
+				padding: 10px;
+				border-radius: 5px;
+				font-family: monospace;
+				font-size: 12px;
+				max-width: 300px;
+				max-height: 80vh;
+				overflow-y: auto;
+				z-index: 1000;
+				display: none; /* Changed from block to none to hide debug panel */
+				border: 1px solid #444;
+			}
+
+			#debug-panel h3 {
+				margin-top: 0;
+				margin-bottom: 10px;
+				font-size: 14px;
+				border-bottom: 1px solid #ccc;
+				padding-bottom: 5px;
+				text-align: center;
+			}
+
+			#debug-panel .debug-button {
+				background-color: #555;
+				color: white;
+				border: none;
+				padding: 5px 8px;
+				margin: 5px;
+				border-radius: 3px;
+				cursor: pointer;
+			}
+
+			#debug-panel .debug-button:hover {
+				background-color: #777;
+			}
+
+			#material-list {
+				margin-bottom: 15px;
+			}
+
+			.material-info {
+				margin-bottom: 10px;
+				border-bottom: 1px dotted #666;
+				padding-bottom: 5px;
+			}
+
+			.texture-info {
+				margin-left: 10px;
+				color: #aaa;
+			}
+
+			.material-name {
+				font-weight: bold;
+				color: #ffcc00;
+			}
+
+			.texture-name {
+				color: #88ccff;
+			}
+
+			.toggle-container {
+				display: flex;
+				justify-content: space-between;
+				margin-bottom: 10px;
+			}
+
+			#toggle-debug {
+				position: fixed;
+				top: 10px;
+				right: 10px;
+				z-index: 1001;
+				background-color: rgba(0, 0, 0, 0.5);
+				color: white;
+				border: none;
+				padding: 5px 10px;
+				border-radius: 3px;
+				cursor: pointer;
+				display: block;
+			}
+
+			/* Share button styles */
+			.share-container {
+				position: fixed;
+				bottom: 70px;
+				width: 100%;
+				display: flex; /* Changed from none to flex to show the button */
+				flex-direction: column;
+				align-items: center;
+				z-index: 101;
+				opacity: 0;
+				transform: translateY(50px);
+				animation: slideInFromBottomWithBounce 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards;
+			}
+			
+			#share-button {
+				background-color: #FF4500; /* Reddit orange */
+				color: white;
+				border: none;
+				border-radius: 25px;
+				padding: 10px 20px;
+				font-size: 16px;
+				font-family: Arial, sans-serif;
+				cursor: pointer;
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+				transition: all 0.3s ease;
+			}
+			
+			#share-button:hover {
+				background-color: #FF6A33;
+				transform: translateY(-2px);
+				box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+			}
+			
+			#share-button:active {
+				transform: translateY(0);
+				box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+			}
+			
+			#share-message {
+				font-family: Arial, sans-serif;
+				font-size: 14px;
+				margin-top: 8px;
+				padding: 8px 15px; /* Increased padding to be more consistent with button */
+				border-radius: 25px; /* Increased from 4px to 25px to match the share button */
+				opacity: 0;
+				transition: opacity 0.5s ease;
+			}
+			
+			.success-message {
+				background-color: #FFBF0B !important; /* Reddit yellow with !important */
+				color: white !important; /* Changed to white to match the share button */
+				opacity: 1 !important;
+				box-shadow: 0 2px 8px rgba(0,0,0,0.15); /* Added subtle shadow to match button style */
+				border-radius: 25px !important; /* Ensuring rounded corners with !important */
+				font-size: 16px !important; /* Increased to match the share button */
+				font-weight: normal !important; /* Ensuring consistent font weight */
+			}
+
+			.error-message {
+				background-color: #E53935;
+				color: white;
+				opacity: 1 !important;
+			}
+
+			.info-message {
+				background-color: #2196F3; /* Blue color for info messages */
+				color: white;
+				opacity: 1 !important;
+				box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+				border-radius: 25px !important;
+				font-size: 16px !important;
+				font-weight: normal !important;
+			}
+
+			/* Media query for smaller screens */
+			@media screen and (max-width: 768px) {
+				.share-container {
+					bottom: 60px;
+				}
+				
+				#share-button {
+					font-size: 14px;
+					padding: 8px 16px;
+				}
+			}
+
+			/* Loading overlay styles */
+			#loading-overlay {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-color: transparent;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				z-index: 1000;
+				transition: opacity 0.5s ease-out;
+			}
+			
+			#reddit-loading-image {
+				width: auto;
+				height: 120px; /* Tamaño fijo para la imagen */
+				opacity: 0.4; /* Comienza con 60% de transparencia */
+				transition: opacity 0.3s ease-in-out;
+				margin-bottom: 20px;
+			}
+			
+			#loading-text {
+				font-family: Verdana, Arial, sans-serif; /* Font oficial de Reddit */
+				font-size: 18px;
+				color: #FF4500; /* Color naranja de Reddit */
+				font-weight: 600; /* Semi-bold */
+				margin-top: 10px;
+			}
+			
+			@keyframes pulse {
+				0% { transform: scale(1); }
+				50% { transform: scale(1.05); }
+				100% { transform: scale(1); }
+			}
+
+			#loading-progress {
+				width: 250px;
+				height: 10px;
+				background-color: #f3f3f3;
+				border-radius: 5px;
+				margin-top: 10px;
+				overflow: hidden;
+			}
+			
+			#progress-bar {
+				width: 0%;
+				height: 100%;
+				background-color: #FF4500; /* Reddit orange */
+				transition: width 0.3s ease;
+			}
+
+			/* Nuevas animaciones */
+			@keyframes slideInFromTop {
+				to {
+					transform: translateY(0);
+					opacity: 1;
+				}
+			}
+
+			@keyframes bounceHeader {
+				0%, 100% { transform: translateY(0); }
+				50% { transform: translateY(-10px); }
+			}
+
+			@keyframes slideInAndBounce {
+				0% {
+					transform: translateX(-50px);
+					opacity: 0;
+				}
+				70% {
+					transform: translateX(5px);
+					opacity: 1;
+				}
+				100% {
+					transform: translateX(0);
+					opacity: 1;
+				}
+			}
+
+			@keyframes slideInFromBottom {
+				to {
+					transform: translateY(0);
+					opacity: 1;
+				}
+			}
+
+			@keyframes slideInFromBottomWithBounce {
+				0% {
+					transform: translateY(50px);
+					opacity: 0;
+				}
+				70% {
+					transform: translateY(-10px);
+					opacity: 1;
+				}
+				100% {
+					transform: translateY(0);
+					opacity: 1;
+				}
+				}
+			@media screen and (max-width: 768px) {
+				.header img {
+					max-width: 49.5%; /* Doubled from 24.75% */
+				}
+				.footer img {
+					max-width: 90%; /* Doubled from 45% */
+				}
+				.subreddit-item {
+					height: 30px; /* Reduced to half size from 60px */
+					width: auto; /* Maintain aspect ratio */
+					max-width: none; /* Remove max-width constraint */
+				}
+			}
+
+			/* Texture selector styles */
+			#texture-selector {
+				position: fixed;
+				left: 20px;
+				top: 50%;
+				transform: translateY(-50%);
+				z-index: 1002; /* Higher than other elements */
+				display: none; /* Hide the texture selector */
+				flex-direction: column;
+				align-items: center;
+				background-color: rgba(255, 255, 255, 0.9);
+				padding: 15px;
+				border-radius: 10px;
+				box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+				width: 150px;
+				border: 2px solid #FF4500; /* Reddit orange border */
+			 }
+		</style>
+	</head>
+
+	<body>
+		<!-- Add loading overlay at the beginning of the body -->
+		<div id="loading-overlay">
+			<img id="reddit-loading-image" src="./reddit.png" alt="Reddit Loading">
+			<div id="loading-text">Loading Snoo model...</div>
+		</div>
+
+		<!-- Header with welcome and meet images -->
+		<div class="header">
+			<img src="./welcome.png" alt="Welcome" id="welcome-img">
+			<img src="./meet.png" alt="Meet" id="meet-img">
+		</div>
+		
+		 <!-- Subreddit grid with corrected paths in lowercase -->
+		<div class="subreddit-grid">
+			<div class="subreddit-row">
+				<a href="https://www.reddit.com/r/3Dprinting" target="_blank">
+					<img alt="3D Printing" class="subreddit-item" data-src="print.png">
+				</a>
+				<a href="https://www.reddit.com/r/AskHistorians" target="_blank">
+					<img alt="Ask Historians" class="subreddit-item" data-src="askhistorians.png">
+				</a>
+				<a href="https://www.reddit.com/r/DesignMyRoom" target="_blank">
+					<img alt="Design My Room" class="subreddit-item" data-src="myroom.png">
+				</a>
+				<a href="https://www.reddit.com/r/Showerthoughts" target="_blank">
+					<img alt="Shower Thoughts" class="subreddit-item" data-src="shower.png">
+				</a>
+				<a href="https://www.reddit.com/r/todayilearned" target="_blank">
+					<img alt="Today I Learned" class="subreddit-item" data-src="todayilearned.png">
+				</a>
+			</div>
+		</div>
+		
+		<!-- Canvas container for 3D rendering -->
+		<div id="canvas-container"></div>
+		
+		<!-- Texture selector panel -->
+		<div id="texture-selector">
+			<h3>Hoodie Textures</h3>
+			<div id="texture-preview-container">
+				<div id="texture-preview"></div>
+				<div id="texture-name">Hoodie 01</div>
+			</div>
+			<div id="slider-container">
+				<input type="range" id="texture-slider" min="1" max="40" value="1">
+			</div>
+		</div>
+		
+		 <!-- Debug panel -->
+		<div id="debug-panel">
+			<h3>VRM Materials</h3>
+			<div id="material-list"></div>
+		</div>
+		
+		 <!-- Share button - positioned above footer -->
+		<div class="share-container">
+			<button id="share-button" title="Share this Snoo">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+					<path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
+				</svg>
+				Share
+			</button>
+			<span id="share-message"></span>
+		</div>
+		
+		<!-- Footer with footer image - positioned at bottom -->
+		<div class="footer">
+			<img src="./footerreddit.png" alt="Footer" id="footer-img">
+		</div>
+
+		<!-- html2canvas para screenshots -->
+		<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "https://cdn.jsdelivr.net/npm/three@0.150.0/build/three.module.js",
+					"three/addons/": "https://cdn.jsdelivr.net/npm/three@0.150.0/examples/jsm/",
+					"@pixiv/three-vrm": "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@1.0.9/lib/three-vrm.module.js",
+					"fflate": "https://cdn.jsdelivr.net/npm/fflate@0.7.4/esm/browser.js"
+				}
+			}
+		</script>
+
+		<script type="module">
+			import * as THREE from 'three';
+			import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+			import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+			import { VRMLoaderPlugin, VRMUtils } from '@pixiv/three-vrm';
+
+			// Modified getBasePath function
+			function getBasePath() {
+				const hostname = window.location.hostname;
+				const path = window.location.pathname;
+				
+				// Check if we're on GitHub Pages
+				if (hostname.includes('github.io')) {
+					const pathParts = path.split('/');
+					let repoName = '';
+					
+					for (let i = 1; i < pathParts.length; i++) {
+						if (pathParts[i] && pathParts[i].length > 0) {
+							repoName = pathParts[i];
+							break;
+						}
+					}
+					
+					if (repoName) {
+						console.log(`Using GitHub Pages path: /${repoName}/`);
+						return `/${repoName}/`;
+					}
+				}
+				
+				console.log('Using local development path');
+				return './';
+			}
+
+			// Improved image loading function with case variations
+			function loadImage(img, basePath, filename) {
+				return new Promise((resolve) => {
+					// Special handling for the myroom/designmyroom case
+					if (filename === 'myroom.png' || filename === 'designmyroom.png') {
+						const variations = [
+							'myroom.png',
+							'designmyroom.png',
+							'deisgnmyroom.png', // Common typo
+							 'myroom.png', // En lugar de MYROOM.PNG
+							 'myroom.png'  // En lugar de MyRoom.png
+						];
+						let currentIndex = 0;
+						
+						const tryNextVariation = () => {
+							if (currentIndex >= variations.length) {
+								console.error(`Failed to load image after trying all variations: ${filename}`);
+								resolve(false);
+								return;
+							}
+
+							const currentVariation = variations[currentIndex];
+							const fullPath = `${basePath}${currentVariation}`;
+							
+							console.log(`Trying variation ${currentIndex + 1}/${variations.length}: ${fullPath}`);
+							
+							img.onload = () => {
+								console.log(`Successfully loaded image from: ${fullPath}`);
+								resolve(true);
+							};
+							
+							img.onerror = () => {
+								console.warn(`Failed to load variation: ${fullPath}`);
+								currentIndex++;
+								tryNextVariation();
+							};
+							
+							img.src = fullPath;
+						};
+
+						tryNextVariation();
+					} else {
+						// Normal image loading for other files
+						const path = `${basePath}${filename}`;
+						console.log(`Loading image from: ${path}`);
+						img.onload = () => resolve(true);
+						img.onerror = () => resolve(false);
+						img.src = path;
+					}
+				});
+			}
+
+			// Update image sources with better error handling
+			const BASE_PATH = getBasePath();
+			console.log("Base path:", BASE_PATH);
+
+			// Load subreddit images
+			document.querySelectorAll('.subreddit-item').forEach(async (img) => {
+				const filename = img.getAttribute('data-src');
+				if (!filename) return;
+				
+				// Remove src attribute initially to prevent double loading
+				img.removeAttribute('src');
+				
+				const loaded = await loadImage(img, BASE_PATH, filename);
+				if (!loaded) {
+					console.warn(`Failed to load image: ${filename}`);
+				}
+			});
+
+			// Function to test if a file exists
+			function fileExists(url) {
+				// Asegurarse de que la URL está en minúsculas
+				url = url.toLowerCase();
+				
+				return new Promise((resolve, reject) => {
+					const xhr = new XMLHttpRequest();
+					xhr.open('HEAD', url, true);
+					xhr.onreadystatechange = function() {
+						if (xhr.readyState === 4) {
+							if (xhr.status === 200) {
+								resolve(true);
+							} else {
+								resolve(false);
+							}
+						}
+					};
+					xhr.onerror = function() {
+						resolve(false);
+					};
+					xhr.send();
+				});
+			}
+
+			// Function to get correct asset path with base path and fallbacks
+			async function getAssetPath(relativePath) {
+				 // Forzar minúsculas en el path
+				relativePath = relativePath.toLowerCase();
+				
+				// Remove any leading './' from the relativePath if present
+				if (relativePath.startsWith('./')) {
+					relativePath = relativePath.substring(2);
+				}
+				
+				// Try both with and without "models/" prefix for VRM files
+				if (relativePath.endsWith('.vrm') && !relativePath.includes('/')) {
+					// Check if file exists in root
+					const rootPath = (BASE_PATH + relativePath).toLowerCase();
+					const modelsDirPath = (BASE_PATH + 'models/' + relativePath).toLowerCase();
+					
+					console.log(`Checking if VRM exists at: ${rootPath}`);
+					const rootExists = await fileExists(rootPath);
+					
+					if (rootExists) {
+						console.log(`VRM found at: ${rootPath}`);
+						return rootPath;
+					}
+					
+					console.log(`Checking if VRM exists at: ${modelsDirPath}`);
+					const modelsDirExists = await fileExists(modelsDirPath);
+					
+					if (modelsDirExists) {
+						console.log(`VRM found at: ${modelsDirPath}`);
+						return modelsDirPath;
+					}
+					
+					// If neither exists, try lowercase version
+					const lowerRootPath = rootPath.toLowerCase();
+					const lowerModelsDirPath = modelsDirPath.toLowerCase();
+					
+					console.log(`Checking lowercase: ${lowerRootPath}`);
+					const lowerRootExists = await fileExists(lowerRootPath);
+					
+					if (lowerRootExists) {
+						console.log(`VRM found at lowercase path: ${lowerRootPath}`);
+						return lowerRootPath;
+					}
+					
+					console.log(`Checking lowercase: ${lowerModelsDirPath}`);
+					const lowerModelsDirExists = await fileExists(lowerModelsDirPath);
+					
+					if (lowerModelsDirExists) {
+						console.log(`VRM found at lowercase path: ${lowerModelsDirPath}`);
+						return lowerModelsDirPath;
+					}
+					
+					// If still not found, return the original path with BASE_PATH
+					console.warn(`VRM not found at any path, defaulting to: ${BASE_PATH + relativePath}`);
+					return BASE_PATH + relativePath;
+				}
+				
+				 // Para archivos no-VRM, también usar minúsculas
+				return (BASE_PATH + relativePath).toLowerCase();
+			}
+
+			 // Updated URL parameter parsing function
+			function getURLParameter(name) {
+				// Check if the parameter exists in the URL (either as ?param or &param)
+				const url = window.location.href;
+				const urlParams = new URLSearchParams(window.location.search);
+				
+				// Debug output
+				console.log(`Checking for parameter: ${name} in URL: ${url}`);
+				
+				// First try exact match with URLSearchParams
+				if (urlParams.has(name)) {
+					console.log(`Found parameter ${name} using URLSearchParams`);
+					return true;
+				}
+				
+				// Then check if it's in the URL as a substring
+				if (url.includes(`?${name}`) || url.includes(`&${name}`)) {
+					console.log(`Found parameter ${name} as substring in URL`);
+					return true;
+				}
+				
+				return false;
+			}
+
+			// Helper functions for texture handling - updated to check more paths
+			function checkAndHandleHoodieTexture(vrm, hoodieMaterial) {
+				const hoodieNumbers = [];
+				for (let i = 1; i <= 40; i++) {
+					hoodieNumbers.push(i < 10 ? `0${i}` : `${i}`);
+				}
+
+				for (const hoodieNum of hoodieNumbers) {
+					const paramName = `hoodie-${hoodieNum}`;
+					if (getURLParameter(paramName)) {
+						console.log(`🔄 Applying hoodie_${hoodieNum} texture specifically...`);
+						const textureNames = [
+							`./textures/hoodie/hoodie_${hoodieNum}.png`.toLowerCase(),
+							`./textures/Hoodie/Hoodie_${hoodieNum}.png`,
+							`./textures/hoodie/Hoodie_${hoodieNum}.png`,
+							`./hoodie/hoodie_${hoodieNum}.png`.toLowerCase()
+						 ];
+						if (hoodieMaterial) {
+							console.log(`Found hoodie material, applying hoodie_${hoodieNum} texture...`);
+							loadAndApplyTexture(textureNames[0], hoodieMaterial);
+							return true;
+						} else {
+							console.warn("⚠️ No hoodie material found, looking for alternatives...");
+							let found = false;
+							vrm.scene.traverse((node) => {
+								if (!found && node.material && node.material.name) {
+									const matName = node.material.name.toLowerCase();
+									if (matName.includes('hoodie') || matName === 'test' || matName === 'outfit') {
+										console.log(`Found alternative hoodie material: ${node.material.name}, applying hoodie_${hoodieNum}`);
+										loadAndApplyTexture(textureNames[0], node.material);
+										found = true;
+									}
+								}
+							});
+							return found;
+						}
+					}
+				}
+				return false;
+			}
+
+			function checkAndHandleSkinTexture(vrm, skinMaterial) {
+				const skinNumbers = ['01', '02', '03', '04', '05', '06'];
+				for (const skinNum of skinNumbers) {
+					const paramNameWithHyphen = `skin-${skinNum}`;
+					const paramNameWithoutHyphen = `skin${skinNum}`;
+					if (getURLParameter(paramNameWithHyphen) || getURLParameter(paramNameWithoutHyphen)) {
+						console.log(`🔄 Applying skin_${skinNum} texture specifically...`);
+						const textureNames = [
+							`./textures/skin/skin_${skinNum}.png`.toLowerCase(),
+							`./textures/Skin/Skin_${skinNum}.png`,
+							`./skin/skin_${skinNum}.png`.toLowerCase(),
+							`./textures/skin_${skinNum}.png`.toLowerCase()
+						];
+						if (skinMaterial) {
+							console.log(`Found skin material, applying skin_${skinNum} texture...`);
+							if (skinMaterial.roughness !== undefined) {
+								skinMaterial.roughness = 1.0;
+							}
+							loadAndApplyTexture(textureNames[0], skinMaterial);
+							return true;
+						} else {
+							console.warn("⚠️ No skin material found, looking for alternatives...");
+							let found = false;
+							vrm.scene.traverse((node) => {
+								if (!found && node.material && node.material.name) {
+									const matName = node.material.name.toLowerCase();
+									if (matName.includes('skin')) {
+										console.log(`Found alternative skin material: ${node.material.name}, applying skin_${skinNum}`);
+										if (node.material.roughness !== undefined) {
+											node.material.roughness = 1.0;
+										}
+										loadAndApplyTexture(textureNames[0], node.material);
+										found = true;
+									}
+								}
+							});
+							return found;
+						}
+					}
+				}
+				return false;
+			}
+
+			function checkAndHandleEyesTexture(vrm, leftEyeMaterial, rightEyeMaterial) {
+				for (let i = 1; i <= 10; i++) {
+					const eyesNum = i < 10 ? `0${i}` : `${i}`;
+					const paramName = `eyes-${eyesNum}`;
+					
+					if (getURLParameter(paramName)) {
+						console.log(`🔄 Applying ${paramName} texture...`);
+						
+						// Try multiple variations of the path
+						const texturePath = `./textures/eyes/eyes_${eyesNum}.png`.toLowerCase();
+						const textureNames = [
+							texturePath,
+							`./textures/Eyes/Eyes_${eyesNum}.png`,
+							`./eyes/eyes_${eyesNum}.png`.toLowerCase(),
+							`./textures/eyes_${eyesNum}.png`.toLowerCase()
+						];
+						
+						let applied = false;
+						
+						if (leftEyeMaterial) {
+							loadAndApplyTexture(textureNames[0], leftEyeMaterial, false);
+							applied = true;
+						}
+						
+						if (rightEyeMaterial) {
+							// Apply with flipped transform (-1) for the right eye
+							loadAndApplyTexture(textureNames[0], rightEyeMaterial, true);
+							applied = true;
+						}
+						
+						return applied;
+					}
+				}
+				return false;
+			}
+
+			// Function to load and apply a texture to a material
+			function loadAndApplyTexture(texturePath, material, flipHorizontal = false) {
+				// Normalizar la ruta a minúsculas
+				texturePath = texturePath.toLowerCase();
+				
+				if (!material) {
+					console.warn(`Material not found for texture: ${texturePath}`);
+					return;
+				}
+				
+				console.log(`Attempting to load texture from: ${texturePath}`);
+				
+				// Crear variaciones de rutas para intentar
+				const baseTexturePath = texturePath.replace('./textures/', '');
+				const textureFilename = baseTexturePath.split('/').pop();
+				const textureType = baseTexturePath.split('/')[0]; // 'hoodie', 'skin', 'eyes', etc.
+				
+				// Array de posibles rutas para intentar
+				const pathsToTry = [
+					texturePath,                                  // ./textures/hoodie/hoodie_23.png
+					`./${textureType}/${textureFilename}`,        // ./hoodie/hoodie_23.png
+					`./textures/${textureFilename}`,              // ./textures/hoodie_23.png
+					`./${textureFilename}`,                       // ./hoodie_23.png
+					`/textures/${textureType}/${textureFilename}` // /textures/hoodie/hoodie_23.png
+				];
+				
+				console.log(`Will try these paths in order:`, pathsToTry);
+				
+				// Función para intentar cargar desde múltiples rutas
+				function tryLoadingFromPaths(paths, index = 0) {
+					if (index >= paths.length) {
+						console.error(`Failed to load texture after trying all paths for: ${textureFilename}`);
+						return;
+					}
+					
+					const currentPath = paths[index];
+					console.log(`Trying path ${index + 1}/${paths.length}: ${currentPath}`);
+					
+					const textureLoader = new THREE.TextureLoader();
+					textureLoader.load(
+						currentPath,
+						(texture) => {
+							console.log(`✅ Successfully loaded texture from ${currentPath}`);
+							
+							// Basic texture settings
+							texture.flipY = false;
+							
+							// Apply horizontal flip if requested (for eye texture)
+							if (flipHorizontal) {
+								texture.repeat.set(-1, 1);
+								texture.offset.x = 1; // Needed when flipping with repeat
+								console.log("Applied horizontal flip transform (-1) to texture");
+							}
+							
+							// Assign texture map
+							material.map = texture;
+							
+							// Set roughness to 1 for skin materials
+							if (material.name && material.name.toLowerCase().includes('skin')) {
+								material.roughness = 1.0;
+								console.log("Set roughness to 1.0 for skin material");
+							}
+							
+							// Make sure material uses the texture
+							material.needsUpdate = true;
+							
+							console.log(`Applied texture to material: ${material.name || 'unnamed'}`);
+						},
+						undefined,
+						(error) => {
+							console.warn(`Failed to load from ${currentPath}, trying next path...`);
+							// Try next path
+							tryLoadingFromPaths(paths, index + 1);
+						}
+					);
+				}
+				
+				// Comenzar a intentar cargar desde las rutas
+				tryLoadingFromPaths(pathsToTry);
+			}
+
+			// gltf and vrm
+			let currentVrm = undefined;
+			let currentMixer = undefined;
+			const loader = new GLTFLoader();
+			loader.crossOrigin = 'anonymous';
+
+			loader.register( ( parser ) => {
+				return new VRMLoaderPlugin( parser );
+			} );
+
+			 // Add the missing updateDebugPanel function before loadVRMModel
+			function updateDebugPanel(vrm) {
+				// If debug panel is hidden, skip the update
+				if (!vrm || document.getElementById('debug-panel').style.display === 'none') return;
+				
+				const materialList = document.getElementById('material-list');
+				materialList.innerHTML = '';
+				const uniqueMaterials = new Map();
+				
+				vrm.scene.traverse((node) => {
+					if (node.material && !uniqueMaterials.has(node.material.uuid)) {
+						uniqueMaterials.set(node.material.uuid, node.material);
+					}
+				});
+				
+				uniqueMaterials.forEach((material) => {
+					const materialInfo = document.createElement('div');
+					materialInfo.className = 'material-info';
+					materialInfo.innerHTML = `
+						<p><strong>Name:</strong> ${material.name || 'unnamed'}</p>
+						<p><strong>Type:</strong> ${material.type}</p>
+						<p><strong>Color:</strong> ${material.color ? '#' + material.color.getHexString() : 'N/A'}</p>
+						<p><strong>Has Texture:</strong> ${material.map ? 'Yes' : 'No'}</p>
+					`;
+					materialList.appendChild(materialInfo);
+				});
+			}
+
+			// Add this function at the beginning of the script to update the loading progress
+			function updateLoadingProgress(percent) {
+				const loadingImage = document.getElementById('reddit-loading-image');
+				const loadingText = document.getElementById('loading-text');
+				
+				if (loadingImage) {
+					// Calcular la opacidad basada en el porcentaje (de 0.4 a 1)
+					const opacity = 0.4 + (percent * 0.6 / 100);
+					loadingImage.style.opacity = opacity;
+					
+					// Añadir animación de pulso durante la carga
+					loadingImage.style.animation = 'pulse 1.5s infinite ease-in-out';
+				}
+				
+				if (loadingText) {
+					if (percent < 100) {
+						loadingText.textContent = `Loading Snoo model... ${Math.round(percent)}%`;
+					}
+				}
+			}
+			
+			function hideLoadingOverlay() {
+				const overlay = document.getElementById('loading-overlay');
+				
+				if (overlay) {
+					overlay.style.opacity = '0';
+					setTimeout(() => {
+						overlay.style.display = 'none';
+						
+						// Don't change the welcome image to meet image here
+						// This will now happen after the VRM model is fully loaded and visible
+						
+					}, 500);
+				}
+			}
+
+			// Function to handle the loaded VRM model - fixing issue with missing VRM display
+			function handleLoadedVRM(vrm) {
+				// Debug: Log all material names in the VRM model
+				console.log("Materials in VRM model:");
+				vrm.scene.traverse((node) => {
+					if (node.material) {
+						console.log(`Material Name: ${node.material.name || 'Unnamed'}`);
+					}
+				});
+
+				// Debug - Print all materials in the model with more detail
+				console.log("=========== DEBUG: ALL MATERIALS ===========");
+				const allMaterials = [];
+				vrm.scene.traverse((node) => {
+					if (node.material && !allMaterials.includes(node.material)) {
+						allMaterials.push(node.material);
+						console.log(`Material: "${node.material.name}"`);
+						console.log(`  - Type: ${node.material.type}`);
+						console.log(`  - Color: ${node.material.color ? '#' + node.material.color.getHexString() : 'N/A'}`);
+						console.log(`  - Transparent: ${node.material.transparent}`);
+						console.log(`  - Opacity: ${node.material.opacity}`);
+						console.log(`  - Side: ${node.material.side}`);
+						
+						// For PBR materials
+						if (node.material.metalness !== undefined) {
+							console.log(`  - Metalness: ${node.material.metalness}`);
+							console.log(`  - Roughness: ${node.material.roughness}`);
+						}
+					}
+				});
+				console.log("Total unique materials:", allMaterials.length);
+				console.log("===========================================");
+
+				// Find materials to customize
+				let skinMaterial = null;
+				let leftEyeMaterial = null;
+				let rightEyeMaterial = null;
+				let hoodieMaterial = null;
+				
+				vrm.scene.traverse((node) => {
+					if (node.material) {
+						const matName = node.material.name ? node.material.name.toLowerCase() : '';
+						
+						// Debug
+						console.log(`Checking material: ${node.material.name} (${matName})`);
+						
+						// Find skin material
+						if (matName === "skin" || matName.includes('skin')) {
+							skinMaterial = node.material;
+							console.log("✅ Found SKIN material:", node.material.name);
+						}
+						
+						// Find eye materials
+						if ((matName.includes('eye') && matName.includes('l')) || 
+							matName === "fake eye.l.001") {
+							leftEyeMaterial = node.material;
+							console.log("✅ Found LEFT EYE material:", node.material.name);
+						}
+						
+						if ((matName.includes('eye') && matName.includes('r')) || 
+							matName === "fake eye.r.001") {
+							rightEyeMaterial = node.material;
+							console.log("✅ Found RIGHT EYE material:", node.material.name);
+						}
+						
+						// Find hoodie material - Updated to include the correct material name
+						if (node.material.name === "Test" || 
+							matName === "test" || 
+							node.material.name === "09-Golden Yellow #FFBF0B GFAR.001" || 
+							matName.includes("golden yellow")) {
+							hoodieMaterial = node.material;
+							console.log("✅ Found HOODIE material:", node.material.name);
+							
+							// Make hoodie material pure white
+							hoodieMaterial.color.setHex(0xffffff);
+							hoodieMaterial.emissive.setHex(0x000000);
+							hoodieMaterial.metalness = 0.0;
+							hoodieMaterial.roughness = 1.0;
+							console.log("✅ Set hoodie material to pure white");
+						}
+					}
+				});
+
+				// Adjust initial VRM position - raised by 20px (0.2 units)
+				vrm.scene.position.y = 0.7; // Increased from 0.5 to raise the model by 20px
+
+				// Disable frustum culling
+				vrm.scene.traverse((obj) => {
+					obj.frustumCulled = false;
+					if (obj.isMesh) {
+						obj.castShadow = true;
+						obj.receiveShadow = true;
+					}
+				});
+				
+				// Initially hide the VRM
+				vrm.scene.visible = false;
+				
+				scene.add(vrm.scene);
+				currentVrm = vrm;
+				
+				// Update loading progress to 100% when model is ready
+				updateLoadingProgress(100);
+				
+				// Primero ocultar el loading overlay y luego mostrar el VRM con un retraso
+				setTimeout(() => {
+					// Ocultar completamente el overlay de carga
+					hideLoadingOverlay();
+					
+					// Esperar a que el overlay desaparezca antes de mostrar el VRM
+					setTimeout(() => {
+						vrm.scene.visible = true;
+						vrm.scene.position.y = -4.8; // Adjusted from -5 to raise by 20px
+						
+						const duration = 1.5;
+						const startTime = Date.now();
+						
+						function animatePosition() {
+							const now = Date.now();
+							const elapsed = (now - startTime) / 1000;
+							
+							if (elapsed < duration) {
+								const progress = elapsed / duration;
+								const easeOut = 1 - Math.pow(1 - progress, 3);
+								vrm.scene.position.y = -4.8 + (5 * easeOut); // Adjusted from -5 to raise by 20px
+								requestAnimationFrame(animatePosition);
+							} else {
+								vrm.scene.position.y = 0.2; // Adjusted from 0 to raise by 20px
+								
+								// NOW switch the welcome image to meet image AFTER the VRM is in place
+								const welcomeImg = document.getElementById('welcome-img');
+								const meetImg = document.getElementById('meet-img');
+								
+								welcomeImg.style.display = 'none';
+								meetImg.style.display = 'block';
+								
+								// Animate the meet image
+								setTimeout(() => {
+									meetImg.style.transition = 'opacity 0.5s, transform 0.8s';
+									meetImg.style.opacity = '1';
+									meetImg.style.transform = 'translateY(0)';
+									
+									// Wait for meet.png animation to complete before animating subreddits
+									setTimeout(() => {
+										// Get all subreddit items and animate them with staggered delays
+										const subredditItems = document.querySelectorAll('.subreddit-item');
+										subredditItems.forEach((item, index) => {
+											setTimeout(() => {
+												item.classList.add('animate-subreddit');
+											}, 100 * index); // Stagger by 100ms per item
+										});
+									}, 600); // Wait 600ms after meet.png starts animating
+								}, 100);
+							}
+						}
+						
+						animatePosition();
+					}, 600); // Esperar 600ms para que el overlay desaparezca completamente
+				}, 1500); // Mostrar "Preparing Snoo" durante 1.5 segundos
+				
+				// Update debug panel with material information
+				updateDebugPanel(vrm);
+				
+				// Check for textures - IMPORTANT: process each texture type INDEPENDENTLY
+				console.log("Checking for texture parameters in URL...");
+				
+				// Check for each texture type separately to avoid interference
+				// Process skin textures
+				const skinTextureApplied = checkAndHandleSkinTexture(vrm, skinMaterial);
+				console.log("Skin texture applied:", skinTextureApplied);
+				
+				// Process eyes textures - completely independent from skin
+				const eyesTextureApplied = checkAndHandleEyesTexture(vrm, leftEyeMaterial, rightEyeMaterial);
+				console.log("Eyes texture applied:", eyesTextureApplied);
+				
+				// Process hoodie textures - completely independent from skin and eyes
+				const hoodieTextureApplied = checkAndHandleHoodieTexture(vrm, hoodieMaterial);
+				console.log("Hoodie texture applied:", hoodieTextureApplied);
+				
+				// Process interest textures - also independent
+				if (getURLParameter('interest-02')) {
+					console.log("🔄 Looking for interest-02 texture...");
+					vrm.scene.traverse((node) => {
+						if (node.material && node.material.name && 
+							(node.material.name.toLowerCase().includes('interest') || 
+							 node.material.name.toLowerCase().includes('badge'))) {
+							console.log("✅ Found interest material:", node.material.name);
+							loadAndApplyTexture('./textures/interest/interest_02.png'.toLowerCase(), node.material);
+						}
+					});
+				}
+
+				// Set expression
+				if (vrm.expressionManager) {
+					vrm.expressionManager.setValue('joy', 1.0);
+				}
+
+				// Load animation
+				loadSwingDancingAnimation(vrm);
+
+				// Dispatch VRM loaded event
+				if (window._dispatchVRMLoaded) {
+					window._dispatchVRMLoaded(vrm);
+				}
+			}
+
+			// Fix loadVRMModel function to ensure proper model loading and display
+			async function loadVRMModel() {
+				// Update to show initial loading state
+				updateLoadingProgress(0);
+				
+				// List of possible paths to try for the VRM model
+				const pathsToTry = [
+					'models/finalsnoo.vrm', // Updated to finalsnoo.vrm
+					'finalsnoo.vrm'        // Updated to finalsnoo.vrm
+				];
+				
+				let loaded = false;
+				
+				for (const path of pathsToTry) {
+					const fullPath = await getAssetPath(path);
+					console.log(`Attempting to load VRM from: ${fullPath}`);
+					
+					try {
+						await new Promise((resolve, reject) => {
+							loader.load(
+								fullPath,
+								(gltf) => {
+									const vrm = gltf.userData.vrm;
+									console.log(`Successfully loaded VRM from: ${fullPath}`);
+									if (vrm) {
+										handleLoadedVRM(vrm);
+										loaded = true;
+										resolve();
+									} else {
+										console.error("VRM data missing from loaded model");
+										reject(new Error("VRM data missing"));
+									}
+								},
+								(progress) => {
+									// Enhanced progress tracking
+									const percent = 100.0 * (progress.loaded / progress.total) || 0;
+									console.log('Loading model...', percent, '%');
+									updateLoadingProgress(percent);
+								},
+								(error) => {
+									console.warn(`Error loading VRM from ${fullPath}:`, error);
+									reject(error);
+								}
+							);
+						});
+						
+						if (loaded) break; // Exit the loop if loading succeeded
+					} catch (error) {
+						console.warn(`Couldn't load from ${fullPath}, trying next path...`);
+					}
+				}
+				
+				// Hide loading overlay after a delay to ensure model is visible
+				if (loaded) {
+					// Removemos este código porque ahora el hideLoadingOverlay se maneja
+					// directamente en la función handleLoadedVRM
+					// setTimeout(() => {
+					//    hideLoadingOverlay();
+					// }, 3500);
+				} else {
+					// Show error and still hide the loading overlay
+					console.error('Failed to load VRM model from any of the paths');
+					hideLoadingOverlay();
+					
+					// Show error message to user
+					const errorDiv = document.createElement('div');
+					errorDiv.style.position = 'fixed';
+					errorDiv.style.top = '50%';
+					errorDiv.style.left = '50%';
+					errorDiv.style.transform = 'translate(-50%, -50%)';
+					errorDiv.style.background = 'rgba(255,0,0,0.8)';
+					errorDiv.style.color = 'white';
+					errorDiv.style.padding = '20px';
+					errorDiv.style.borderRadius = '10px';
+					errorDiv.style.zIndex = '1000';
+					errorDiv.innerHTML = '<h2>Error Loading 3D Model</h2><p>Could not load the VRM model. Please check the console for details.</p>';
+					document.body.appendChild(errorDiv);
+				}
+			}
+
+			// Try multiple paths for the VRM model
+			loadVRMModel();
+
+			// Define Mixamo to VRM bone mapping with complete bone list
+			const mixamoVRMRigMap = {
+				mixamorigHips: 'hips',
+				mixamorigSpine: 'spine',
+				mixamorigSpine1: 'chest',
+				mixamorigSpine2: 'upperChest',
+				mixamorigNeck: 'neck',
+				mixamorigHead: 'head',
+				mixamorigLeftShoulder: 'leftShoulder',
+				mixamorigLeftArm: 'leftUpperArm',
+				mixamorigLeftForeArm: 'leftLowerArm',
+				mixamorigLeftHand: 'leftHand',
+				mixamorigLeftHandThumb1: 'leftThumbMetacarpal',
+				mixamorigLeftHandThumb2: 'leftThumbProximal',
+				mixamorigLeftHandThumb3: 'leftThumbDistal',
+				mixamorigLeftHandIndex1: 'leftIndexProximal',
+				mixamorigLeftHandIndex2: 'leftIndexIntermediate',
+				mixamorigLeftHandIndex3: 'leftIndexDistal',
+				mixamorigLeftHandMiddle1: 'leftMiddleProximal',
+				mixamorigLeftHandMiddle2: 'leftMiddleIntermediate',
+				mixamorigLeftHandMiddle3: 'leftMiddleDistal',
+				mixamorigLeftHandRing1: 'leftRingProximal',
+				mixamorigLeftHandRing2: 'leftRingIntermediate',
+				mixamorigLeftHandRing3: 'leftRingDistal',
+				mixamorigLeftHandPinky1: 'leftLittleProximal',
+				mixamorigLeftHandPinky2: 'leftLittleIntermediate',
+				mixamorigLeftHandPinky3: 'leftLittleDistal',
+				mixamorigRightShoulder: 'rightShoulder',
+				mixamorigRightArm: 'rightUpperArm',
+				mixamorigRightForeArm: 'rightLowerArm',
+				mixamorigRightHand: 'rightHand',
+				mixamorigRightHandPinky1: 'rightLittleProximal',
+				mixamorigRightHandPinky2: 'rightLittleIntermediate',
+				mixamorigRightHandPinky3: 'rightLittleDistal',
+				mixamorigRightHandRing1: 'rightRingProximal',
+				mixamorigRightHandRing2: 'rightRingIntermediate',
+				mixamorigRightHandRing3: 'rightRingDistal',
+				mixamorigRightHandMiddle1: 'rightMiddleProximal',
+				mixamorigRightHandMiddle2: 'rightMiddleIntermediate',
+				mixamorigRightHandMiddle3: 'rightMiddleDistal',
+				mixamorigRightHandIndex1: 'rightIndexProximal',
+				mixamorigRightHandIndex2: 'rightIndexIntermediate',
+				mixamorigRightHandIndex3: 'rightIndexDistal',
+				mixamorigRightHandThumb1: 'rightThumbMetacarpal',
+				mixamorigRightHandThumb2: 'rightThumbProximal',
+				mixamorigRightHandThumb3: 'rightThumbDistal',
+				mixamorigLeftUpLeg: 'leftUpperLeg',
+				mixamorigLeftLeg: 'leftLowerLeg',
+				mixamorigLeftFoot: 'leftFoot',
+				mixamorigLeftToeBase: 'leftToes',
+				mixamorigRightUpLeg: 'rightUpperLeg',
+				mixamorigRightLeg: 'rightLowerLeg',
+				mixamorigRightFoot: 'rightFoot',
+				mixamorigRightToeBase: 'rightToes'
+			};
+
+			// Replace existing loadMixamoAnimation with this version
+			function loadMixamoAnimation(url, vrm) {
+				const loader = new FBXLoader(); // A loader which loads FBX
+				return loader.loadAsync(url).then((asset) => {
+					const clip = THREE.AnimationClip.findByName(asset.animations, 'mixamo.com');
+					if (!clip) {
+						throw new Error('No mixamo.com animation found in asset');
+					}
+
+					const tracks = [];
+					const restRotationInverse = new THREE.Quaternion();
+					const parentRestWorldRotation = new THREE.Quaternion();
+					const _quatA = new THREE.Quaternion();
+					const _vec3 = new THREE.Vector3();
+
+					// Adjust with reference to hips height
+					const motionHipsHeight = asset.getObjectByName('mixamorigHips').position.y;
+					const vrmHipsY = vrm.humanoid?.getNormalizedBoneNode('hips').getWorldPosition(_vec3).y;
+					const vrmRootY = vrm.scene.getWorldPosition(_vec3).y;
+					const vrmHipsHeight = Math.abs(vrmHipsY - vrmRootY);
+					const hipsPositionScale = vrmHipsHeight / motionHipsHeight;
+
+					clip.tracks.forEach((track) => {
+						const trackSplitted = track.name.split('.');
+						const mixamoRigName = trackSplitted[0];
+						const vrmBoneName = mixamoVRMRigMap[mixamoRigName];
+						const vrmNodeName = vrm.humanoid?.getNormalizedBoneNode(vrmBoneName)?.name;
+						const mixamoRigNode = asset.getObjectByName(mixamoRigName);
+
+						if (vrmNodeName != null) {
+							const propertyName = trackSplitted[1];
+							mixamoRigNode.getWorldQuaternion(restRotationInverse).invert();
+							mixamoRigNode.parent.getWorldQuaternion(parentRestWorldRotation);
+
+							if (track instanceof THREE.QuaternionKeyframeTrack) {
+								for (let i = 0; i < track.values.length; i += 4) {
+									const flatQuaternion = track.values.slice(i, i + 4);
+									_quatA.fromArray(flatQuaternion);
+									_quatA.premultiply(parentRestWorldRotation).multiply(restRotationInverse);
+									_quatA.toArray(flatQuaternion);
+									flatQuaternion.forEach((v, index) => {
+										track.values[index + i] = v;
+									});
+								}
+								tracks.push(
+									new THREE.QuaternionKeyframeTrack(
+										`${vrmNodeName}.${propertyName}`,
+										track.times,
+										track.values.map((v, i) => (vrm.meta?.metaVersion === '0' && i % 2 === 0 ? -v : v))
+									)
+								);
+							} else if (track instanceof THREE.VectorKeyframeTrack) {
+								const value = track.values.map((v, i) => 
+									(vrm.meta?.metaVersion === '0' && i % 3 !== 1 ? -v : v) * hipsPositionScale
+								);
+								tracks.push(new THREE.VectorKeyframeTrack(`${vrmNodeName}.${propertyName}`, track.times, value));
+							}
+						}
+					});
+
+					return new THREE.AnimationClip('vrmAnimation', clip.duration, tracks);
+				});
+			}
+
+			// Replace existing loadSwingDancingAnimation with this version
+			function loadSwingDancingAnimation(vrm) {
+				// Reset pose before applying animation
+				vrm.humanoid.resetNormalizedPose();
+				
+				// Create AnimationMixer for VRM
+				currentMixer = new THREE.AnimationMixer(vrm.scene);
+				
+				console.log('Trying direct animation loading approach...');
+				loadMixamoAnimation('./dance.fbx'.toLowerCase(), vrm)
+					.then((clip) => {
+						const action = currentMixer.clipAction(clip);
+						action.timeScale = 0.8;
+						action.play();
+						console.log('Animation loaded successfully using direct approach');
+					})
+					.catch((directError) => {
+						console.warn('Direct animation loading failed:', directError);
+						console.log('Trying alternative paths:', pathsToTry);
+
+						// Function to try loading from each path
+						function tryLoadingFromPaths(paths) {
+							if (paths.length === 0) {
+								console.error('All paths failed to load animation');
+								return Promise.reject('No more paths to try');
+							}
+
+							const currentPath = paths[0];
+							console.log('Attempting to load animation from:', currentPath);
+
+							return loadMixamoAnimation(currentPath, vrm)
+								.then((clip) => {
+									console.log('Successfully loaded animation from:', currentPath);
+									return clip;
+								})
+								.catch((error) => {
+									console.warn(`Failed to load from ${currentPath}:`, error);
+									return tryLoadingFromPaths(paths.slice(1));
+								});
+						}
+
+						// Start trying paths
+						tryLoadingFromPaths(paths)
+							.then((clip) => {
+								const action = currentMixer.clipAction(clip);
+								action.timeScale = 0.7;
+								action.play();
+								console.log('Animation playing successfully');
+							})
+							.catch((error) => {
+								console.error('All animation loading attempts failed:', error);
+								
+								// Set a default pose instead of animation
+								try {
+									const leftArm = vrm.humanoid?.getNormalizedBoneNode('leftUpperArm');
+									const rightArm = vrm.humanoid?.getNormalizedBoneNode('rightUpperArm');
+									
+									if (leftArm) leftArm.rotation.z = 0.3;
+									if (rightArm) rightArm.rotation.z = -0.3;
+									
+									console.log('Applied static pose as animation fallback');
+								} catch (e) {
+									console.warn('Could not apply fallback pose:', e);
+								}
+							});
+					});
+			}
+
+			// renderer - update to use canvas container
+			window.renderer = new THREE.WebGLRenderer({
+				antialias: true, // Enable antialiasing for smoother edges
+				preserveDrawingBuffer: true, // CRUCIAL: Required for screenshots
+				alpha: true // Enable transparency for better compositing
+			});
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			renderer.setPixelRatio(window.devicePixelRatio);
+			// Enable physically correct lighting for PBR materials
+			renderer.physicallyCorrectLights = true;
+			// Enable tone mapping for better dynamic range
+			renderer.toneMapping = THREE.ACESFilmicToneMapping;
+			renderer.toneMappingExposure = 1.2; // Slightly increased exposure
+			
+			// Enhanced shadow mapping settings - keep these for soft shadows
+			renderer.shadowMap.enabled = true;
+			renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+			renderer.shadowMap.autoUpdate = true;
+			document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+			// camera
+			window.camera = new THREE.PerspectiveCamera( 30.0, window.innerWidth / window.innerHeight, 0.1, 20.0 );
+			// Position camera lower but looking up at the model
+			camera.position.set( .0, 0.5, -5.0 ); // Moved camera down
+
+			// camera controls
+			const controls = new OrbitControls( camera, renderer.domElement );
+			controls.screenSpacePanning = true;
+			controls.target.set( 0.0, 1.0, 0.0 ); // Target stays higher to look up at model
+			controls.update();
+
+			// scene
+			window.scene = new THREE.Scene();
+			// Set background to match page color
+			scene.background = new THREE.Color('#EDEFF1');
+
+			// PBR realistic lighting setup
+			// Main directional light (sun) - Position changed to overhead (zenith)
+			const light = new THREE.DirectionalLight(0xffffff, 2.5); // Slightly increased intensity
+			light.position.set(0.0, 5.0, -5.0); // Directly overhead position
+			light.castShadow = true;
+			
+			// Improved shadow quality settings - keep these for soft shadows
+			light.shadow.mapSize.width = 2048;
+			light.shadow.mapSize.height = 2048;
+			light.shadow.camera.near = 0.1;
+			light.shadow.camera.far = 10;
+			// Adjusted shadow camera bounds for overhead perspective
+			light.shadow.camera.left = -4;
+			light.shadow.camera.right = 4;
+			light.shadow.camera.top = 4;
+			light.shadow.camera.bottom = -4;
+			light.shadow.bias = -0.0005;
+			light.shadow.normalBias = 0.02;
+			light.shadow.radius = 4; // Softer shadow edges
+			scene.add(light);
+
+			// Secondary fill light from side - slight adjustment for better balance
+			const fillLight = new THREE.DirectionalLight(0xffffff, 0.8);
+			fillLight.position.set(-1.0, 1.0, -1.0);
+			scene.add(fillLight);
+
+			// Backlight for rim lighting effect - keep slight warmth for dimension
+			const backLight = new THREE.DirectionalLight(0xfffaf0, 0.8);
+			backLight.position.set(0.0, 1.0, -2.0);
+			scene.add(backLight);
+
+			// NEW: Add a bottom light for illumination from below
+			const bottomLight = new THREE.DirectionalLight(0xffffff, 1.0);
+			bottomLight.position.set(0.0, -1.0, 0.0); // Position below the model pointing upward
+			scene.add(bottomLight);
+
+			 // NEW: Add a front fill light for better facial illumination
+			const frontFillLight = new THREE.DirectionalLight(0xffffff, 0.9);
+			frontFillLight.position.set(0.0, 0.5, 2.0); // Position in front of model
+			scene.add(frontFillLight);
+
+			// Hemisphere light - increased intensity for better ambient light
+			const hemisphereLight = new THREE.HemisphereLight(
+				0xffffff, // sky color - pure white
+				0xffffff, // ground color - pure white
+				0.8 // intensity - increased for better ambient illumination
+			);
+			scene.add(hemisphereLight);
+
+			// NEW: Add ambient light to ensure minimum illumination everywhere
+			const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+			scene.add(ambientLight);
+
+			// animate
+			const clock = new THREE.Clock();
+
+			// Share button functionality with screenshot and Web Share API
+			document.addEventListener('DOMContentLoaded', function() {
+				const shareButton = document.getElementById('share-button');
+				const shareMessage = document.getElementById('share-message');
+				
+				/**
+				 * Toma un screenshot de la página completa incluyendo el canvas WebGL de Three.js
+				 * @returns {Promise<Blob>} Una promesa que se resuelve con el Blob de la imagen
+				 */
+				async function takeScreenshot() {
+					try {
+						// Crear un canvas temporal para el resultado final
+						const finalCanvas = document.createElement('canvas');
+						finalCanvas.width = window.innerWidth;
+						finalCanvas.height = window.innerHeight;
+						const finalCtx = finalCanvas.getContext('2d');
+						
+						// 1. Capturar el fondo y todos los elementos HTML (excepto el canvas WebGL)
+						const htmlCanvas = await html2canvas(document.body, {
+							allowTaint: true,
+							useCORS: true,
+							height: window.innerHeight,
+							width: window.innerWidth,
+							scrollX: 0,
+							scrollY: 0,
+							scale: 1,
+							backgroundColor: '#EDEFF1',
+							ignoreElements: function(element) {
+								// Ignorar todos los canvas para evitar interferencias
+								return element.tagName === 'CANVAS';
+							}
+						});
+						
+						// Dibujar el fondo HTML en el canvas final
+						finalCtx.drawImage(htmlCanvas, 0, 0);
+						
+						// 2. Capturar específicamente el canvas de Three.js
+						const canvasContainer = document.getElementById('canvas-container');
+						const webglCanvas = canvasContainer ? canvasContainer.querySelector('canvas') : null;
+						
+						if (webglCanvas && window.renderer) {
+							try {
+								// Forzar un render antes de capturar
+								window.renderer.render(window.scene, window.camera);
+								
+								// Obtener la posición del canvas container
+								const containerRect = canvasContainer.getBoundingClientRect();
+								
+								// Crear una imagen temporal del canvas WebGL
+								const webglImageData = webglCanvas.toDataURL('image/png', 1.0);
+								const webglImg = new Image();
+								
+								return new Promise((resolve) => {
+									webglImg.onload = function() {
+										// Dibujar el contenido WebGL sobre el fondo HTML
+										finalCtx.drawImage(
+											webglImg,
+											containerRect.left + window.scrollX,
+											containerRect.top + window.scrollY,
+											containerRect.width,
+											containerRect.height
+										);
+										
+										// Convertir a blob
+										finalCanvas.toBlob((blob) => {
+											resolve(blob);
+										}, 'image/png', 0.95);
+									};
+									
+									webglImg.onerror = function() {
+										console.warn('Error loading WebGL image, using HTML-only screenshot');
+										finalCanvas.toBlob((blob) => {
+											resolve(blob);
+										}, 'image/png', 0.95);
+									};
+									
+									webglImg.src = webglImageData;
+								});
+								
+							} catch (webglError) {
+								console.warn('Error capturing WebGL canvas:', webglError);
+								// Fallback: solo el HTML
+								return new Promise((resolve) => {
+									finalCanvas.toBlob((blob) => {
+										resolve(blob);
+									}, 'image/png', 0.95);
+								});
+							}
+						} else {
+							// No hay canvas WebGL, retornar solo el HTML
+							return new Promise((resolve) => {
+								finalCanvas.toBlob((blob) => {
+									resolve(blob);
+								}, 'image/png', 0.95);
+							});
+						}
+						
+					} catch (error) {
+						console.error('Error taking screenshot:', error);
+						throw error;
+					}
+				}
+
+				/**
+				 * Fallback: copia texto al portapapeles usando el método original
+				 * @param {string} shareText - El texto a copiar
+				 */
+				function fallbackCopyToClipboard(shareText) {
+					navigator.clipboard.writeText(shareText).then(function() {
+						// Success
+						shareMessage.textContent = 'Copied!';
+						shareMessage.className = 'success-message';
+						
+						// Hide the message after 3 seconds
+						setTimeout(function() {
+							shareMessage.style.opacity = '0';
+						}, 3000);
+					}, function(err) {
+						// Error - fallback method
+						console.error('Could not copy text: ', err);
+						
+						// Create a temporary input element
+						const tempInput = document.createElement('input');
+						tempInput.value = shareText;
+						document.body.appendChild(tempInput);
+						
+						// Select and copy
+						tempInput.select();
+						
+						try {
+							const success = document.execCommand('copy');
+							if (success) {
+								shareMessage.textContent = 'Copied!';
+								shareMessage.className = 'success-message';
+							} else {
+								shareMessage.textContent = shareText;
+								shareMessage.className = 'error-message';
+							}
+						} catch (e) {
+							shareMessage.textContent = 'Could not copy message';
+							shareMessage.className = 'error-message';
+						}
+						
+						// Remove the temporary element
+						document.body.removeChild(tempInput);
+						
+						// Hide the message after 3 seconds
+						setTimeout(function() {
+							shareMessage.style.opacity = '0';
+						}, 3000);
+					});
+				}
+				
+				if (shareButton) {
+					shareButton.addEventListener('click', async function() {
+						// Get the current URL with all parameters
+						const currentUrl = window.location.href;
+						const shareText = `Hey! Watch my Snoo and my interests!\n${currentUrl}`;
+						
+						// Check if Web Share API is available and supports files
+						if (navigator.share && navigator.canShare) {
+							try {
+								// Take screenshot
+								shareMessage.textContent = 'Taking screenshot...';
+								shareMessage.className = 'info-message';
+								shareMessage.style.opacity = '1';
+								
+								const screenshotBlob = await takeScreenshot();
+								const file = new File([screenshotBlob], 'my-snoo-avatar.png', { type: 'image/png' });
+								
+								// Check if we can share files
+								if (navigator.canShare({ files: [file] })) {
+									shareMessage.textContent = 'Opening share...';
+									
+									await navigator.share({
+										files: [file],
+										title: 'My Reddit Snoo Avatar',
+										text: shareText
+									});
+									
+									// Hide message after successful share
+									setTimeout(function() {
+										shareMessage.style.opacity = '0';
+									}, 1000);
+									
+									return; // Exit early if Web Share worked
+								}
+							} catch (error) {
+								if (error.name !== 'AbortError') { // User didn't cancel
+									console.error('Error with Web Share:', error);
+									shareMessage.textContent = 'Share failed, copying link...';
+									shareMessage.className = 'info-message';
+								} else {
+									// User cancelled, hide message
+									setTimeout(function() {
+										shareMessage.style.opacity = '0';
+									}, 1000);
+									return;
+								}
+							}
+						}
+						
+						// Fallback: copy to clipboard (original functionality)
+						fallbackCopyToClipboard(shareText);
+					});
+				}
+			});
+
+			function animate() {
+				requestAnimationFrame(animate);
+
+				const deltaTime = clock.getDelta();
+
+				if (currentVrm) {
+					// Keep trying to set JOY expression each frame with error handling
+					try {
+						if (currentVrm.expressionManager) {
+							// Try to set joy expression (or alternatives) every frame
+							try { currentVrm.expressionManager.setValue('joy', 1.0); } catch(e) {}
+							// Fallbacks in case 'joy' isn't available
+							try { currentVrm.expressionManager.setValue('happy', 1.0); } catch(e) {}
+							try { currentVrm.expressionManager.setValue('smile', 1.0); } catch(e) {}
+						}
+					} catch (error) {
+						// Only log this once to avoid spamming the console
+						if (!window._expressionErrorLogged) {
+							console.error('Error maintaining expression in animation loop:', error);
+							window._expressionErrorLogged = true;
+						}
+					}
+					
+					// Update VRM - this must still run for animation
+					currentVrm.update(deltaTime);
+				}
+
+				if (currentMixer) {
+					currentMixer.update(deltaTime);
+				}
+
+				// Use standard renderer only (no composer)
+				renderer.render(scene, camera);
+			}
+
+			animate();
+			
+			// Hoodie texture selector functionality
+			(function initTextureSelector() {
+				// Array of hoodie textures
+				const hoodieTextures = [];
+				let currentHoodieMaterial = null;
+
+				// Helper: check if any hoodie-XX param is present
+				function urlHasHoodieParam() {
+					for (let i = 1; i <= 40; i++) {
+						const num = i < 10 ? `0${i}` : `${i}`;
+						if (getURLParameter(`hoodie-${num}`)) return true;
+					}
+					return false;
+				}
+				
+				// Initialize texture data
+				for (let i = 1; i <= 40; i++) {
+					const num = i < 10 ? `0${i}` : `${i}`;
+					hoodieTextures.push({
+						path: `${BASE_PATH}textures/hoodie/hoodie_${num}.png`.toLowerCase(),
+						name: `Hoodie ${num}`,
+						number: num
+					});
+				}
+				
+				// Find hoodie material in VRM when model is loaded
+				function findHoodieMaterial() {
+					if (!currentVrm) return null;
+					
+					let hoodieMaterial = null;
+					currentVrm.scene.traverse((node) => {
+						if (node.material) {
+							const matName = node.material.name ? node.material.name.toLowerCase() : '';
+							if (node.material.name === "Test" || 
+								matName === "test" || 
+								node.material.name === "09-Golden Yellow #FFBF0B GFAR.001" || 
+								matName.includes("golden yellow")) {
+								hoodieMaterial = node.material;
+							}
+						}
+					});
+					
+					return hoodieMaterial;
+				}
+				
+				// Update the texture preview and apply to model
+				function updateTexture(index) {
+					if (index < 0 || index >= hoodieTextures.length) return;
+					
+					const texture = hoodieTextures[index];
+					const previewElement = document.getElementById('texture-preview');
+					const nameElement = document.getElementById('texture-name');
+					
+					// Update the preview display
+					if (previewElement) {
+						previewElement.style.backgroundImage = `url(${texture.path})`;
+					}
+					
+					if (nameElement) {
+						nameElement.textContent = texture.name;
+					}
+					
+					// Find hoodie material if not already found
+					if (!currentHoodieMaterial && currentVrm) {
+						currentHoodieMaterial = findHoodieMaterial();
+					}
+					
+					// Only apply selector texture if NO hoodie param in URL
+					if (currentHoodieMaterial && !urlHasHoodieParam()) {
+						loadAndApplyTexture(texture.path, currentHoodieMaterial);
+					}
+				}
+				
+				// Set up event listener for slider
+				const slider = document.getElementById('texture-slider');
+				if (slider) {
+					slider.addEventListener('input', function() {
+						const index = parseInt(this.value) - 1;
+						updateTexture(index);
+					});
+					if (!urlHasHoodieParam()) {
+						updateTexture(0);
+					}
+				}
+				
+				// Update material reference when VRM is loaded
+				document.addEventListener('vrm-loaded', function(e) {
+					if (e.detail && e.detail.vrm) {
+						currentHoodieMaterial = findHoodieMaterial();
+						// Apply current texture selection ONLY if no hoodie param in URL
+						const sliderValue = slider ? parseInt(slider.value) - 1 : 0;
+						if (!urlHasHoodieParam()) {
+							updateTexture(sliderValue);
+						}
+					}
+				});
+				
+				// Create a custom event for when the VRM is loaded
+				// We'll dispatch this in handleLoadedVRM function
+				window._dispatchVRMLoaded = function(vrm) {
+					document.dispatchEvent(new CustomEvent('vrm-loaded', { detail: { vrm: vrm } }));
+				};
+			})();
+		</script>
+		
+		<script type="module">
+			// Add the event dispatch to the handleLoadedVRM function
+			if (typeof handleLoadedVRM === 'function') {
+				const originalHandleLoadedVRM = handleLoadedVRM;
+				handleLoadedVRM = function(vrm) {
+					originalHandleLoadedVRM(vrm);
+					if (window._dispatchVRMLoaded) {
+						window._dispatchVRMLoaded(vrm);
+					}
+				};
+			}
+		</script>
+
+		<script src="floating-interests.js"></script>
+	</body>
+</html>
+``` 

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reddit Animation - VRM Character Module</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Container del personaje 3D */
+        #app {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        /* UI de controles */
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 90%;
+        }
+        
+        .control-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .control-btn.active {
+            background: #ff4500;
+            color: white;
+        }
+        
+        .control-group {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 15px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .control-group label {
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        /* Loading overlay */
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            color: white;
+            font-size: 18px;
+        }
+        
+        #loading.hidden {
+            display: none;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #ff4500;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Info panel */
+        .info-panel {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
+            max-width: 300px;
+        }
+        
+        .info-panel h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .info-panel p {
+            font-size: 14px;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+    </style>
+    
+    <!-- Import Map para módulos ES desde CDN -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.150.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.150.0/examples/jsm/",
+            "@pixiv/three-vrm": "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@1.0.9/lib/three-vrm.module.js"
+        }
+    }
+    </script>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loading">
+        <div class="spinner"></div>
+        <span id="loading-text">Cargando modelo...</span>
+    </div>
+    
+    <!-- Info Panel -->
+    <div class="info-panel">
+        <h1>🤖 Reddit Animation</h1>
+        <p>Módulo portable para animar personajes VRM con Three.js. Fondo transparente para integración fácil.</p>
+    </div>
+    
+    <!-- 3D Container -->
+    <div id="app"></div>
+    
+    <!-- Controls -->
+    <div class="controls">
+        <!-- Animaciones -->
+        <div class="control-group">
+            <label>Animación:</label>
+            <select id="anim-select">
+                <option value="dance">💃 Dance</option>
+                <option value="pointing">👉 Pointing</option>
+                <option value="typing">⌨️ Typing</option>
+                <option value="walking">🚶 Walking</option>
+                <option value="texting">📱 Texting</option>
+            </select>
+        </div>
+        
+        <!-- Texturas -->
+        <div class="control-group">
+            <label>Skin:</label>
+            <select id="skin-select">
+                <option value="">Default</option>
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Eyes:</label>
+            <select id="eyes-select">
+                <option value="">Default</option>
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Hoodie:</label>
+            <select id="hoodie-select">
+                <option value="">Default</option>
+                <!-- Generadas dinámicamente -->
+            </select>
+        </div>
+    </div>
+    
+    <script type="module">
+        import { RedditAnimation } from './src/RedditAnimation.js';
+        
+        // Rutas a las animaciones disponibles
+        const ANIMATIONS = {
+            dance: './animations/dance.fbx',
+            pointing: './animations/snooPointing.fbx',
+            typing: './animations/Typing.fbx',
+            walking: './animations/Walking.fbx',
+            texting: './animations/Walking While Texting.fbx'
+        };
+        
+        // Instancia global
+        let snoo;
+        
+        async function init() {
+            const loadingText = document.getElementById('loading-text');
+            const loading = document.getElementById('loading');
+            
+            try {
+                // 1. Crear instancia con configuración
+                //    El fondo es transparente por defecto
+                snoo = new RedditAnimation({
+                    container: '#app',
+                    config: {
+                        // Descomentar para fondo sólido:
+                        // background: '#EDEFF1',
+                        
+                        // Ajustar velocidad de animación:
+                        animation: {
+                            defaultSpeed: 0.8
+                        }
+                    }
+                });
+                
+                // 2. Inicializar escena Three.js
+                loadingText.textContent = 'Inicializando escena...';
+                await snoo.init();
+                
+                // 3. Cargar modelo VRM
+                loadingText.textContent = 'Cargando modelo VRM...';
+                await snoo.loadVRM('./models/finalsnoo.vrm', (progress) => {
+                    loadingText.textContent = `Cargando modelo... ${Math.round(progress)}%`;
+                });
+                
+                // 4. Reproducir animación inicial (loop infinito)
+                loadingText.textContent = 'Cargando animación...';
+                await snoo.playAnimation(ANIMATIONS.dance);
+                
+                // 5. Ocultar loading
+                loading.classList.add('hidden');
+                
+                // 6. Setup UI
+                setupControls();
+                
+                console.log('✅ Reddit Animation inicializado correctamente');
+                console.log('📦 API disponible en window.snoo');
+                
+                // Exponer globalmente para debug
+                window.snoo = snoo;
+                
+            } catch (error) {
+                console.error('Error inicializando:', error);
+                loadingText.textContent = `Error: ${error.message}`;
+            }
+        }
+        
+        function setupControls() {
+            // Selector de animación
+            const animSelect = document.getElementById('anim-select');
+            animSelect.addEventListener('change', async () => {
+                const animKey = animSelect.value;
+                if (ANIMATIONS[animKey]) {
+                    await snoo.playAnimation(ANIMATIONS[animKey]);
+                }
+            });
+            
+            // Selectores de texturas
+            const skinSelect = document.getElementById('skin-select');
+            const eyesSelect = document.getElementById('eyes-select');
+            const hoodieSelect = document.getElementById('hoodie-select');
+            
+            // Generar opciones de hoodie (01-40)
+            for (let i = 1; i <= 40; i++) {
+                const opt = document.createElement('option');
+                opt.value = i.toString().padStart(2, '0');
+                opt.textContent = i.toString().padStart(2, '0');
+                hoodieSelect.appendChild(opt);
+            }
+            
+            // Listeners de texturas
+            skinSelect.addEventListener('change', () => {
+                if (skinSelect.value) {
+                    snoo.setTextures({ skin: skinSelect.value });
+                }
+            });
+            
+            eyesSelect.addEventListener('change', () => {
+                if (eyesSelect.value) {
+                    snoo.setTextures({ eyes: eyesSelect.value });
+                }
+            });
+            
+            hoodieSelect.addEventListener('change', () => {
+                if (hoodieSelect.value) {
+                    snoo.setTextures({ hoodie: hoodieSelect.value });
+                }
+            });
+        }
+        
+        // Iniciar
+        init();
+    </script>
+</body>
+</html>

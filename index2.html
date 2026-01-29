@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reddit Events - Modular Architecture</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+/* Variables */
+:root {
+    --slide-width: 1280px;
+    --slide-height: 720px;
+    --color-primary: #FF4500;
+    --color-primary-dark: #e03d00;
+    --color-bg: #1a1a1b;
+    --color-white: #ffffff;
+    --color-text: #1c1c1c;
+    --color-text-muted: #555555;
+}
+
+/* Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Body & Layout */
+body {
+    background-color: var(--color-bg);
+    font-family: 'IBM Plex Sans', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slides-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Slide Container */
+.slide-container {
+    background-color: var(--color-white);
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    height: var(--slide-height);
+    width: var(--slide-width);
+    justify-content: center;
+    overflow: hidden;
+    padding: 40px 50px 80px 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.slide-container.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* Background Decoration */
+.slide-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255,69,0,0.1) 0%, rgba(255,255,255,0) 70%);
+    border-radius: 0 0 0 100%;
+    z-index: 0;
+}
+
+.slide-container > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Grid View */
+body.grid-view {
+    overflow: hidden;
+}
+
+body.grid-view .slides-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    grid-auto-rows: 220px;
+    gap: 12px;
+    padding: 12px;
+    padding-bottom: 70px;
+    width: 100vw;
+    max-height: 100vh;
+    overflow-y: auto;
+}
+
+body.grid-view .slide-container {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, outline 0.2s ease;
+    outline: 2px solid transparent;
+    padding: 15px 20px 30px 20px;
+}
+
+body.grid-view .slide-container:hover {
+    box-shadow: 0 10px 30px rgba(255, 69, 0, 0.5);
+    outline: 2px solid var(--color-primary);
+}
+
+body.grid-view .slide-container::after {
+    content: attr(data-slide-num);
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    background: var(--color-primary);
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 700;
+    z-index: 10;
+}
+
+/* Grid View Scaling */
+body.grid-view .slide-title {
+    font-size: 14px;
+    margin-bottom: 8px;
+    padding-left: 8px;
+    border-left-width: 4px;
+}
+
+body.grid-view p,
+body.grid-view li {
+    font-size: 8px;
+    line-height: 1.3;
+    margin-bottom: 4px;
+}
+
+body.grid-view ul li {
+    padding-left: 12px;
+    margin-bottom: 3px;
+}
+
+body.grid-view ul li::before {
+    font-size: 8px;
+    top: 1px;
+}
+
+body.grid-view h3 {
+    font-size: 10px;
+    margin-bottom: 4px;
+}
+
+body.grid-view .title-layout h1 {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+body.grid-view .title-layout .subtitle {
+    font-size: 10px;
+}
+
+body.grid-view .section-title-layout h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+body.grid-view .two-column {
+    gap: 10px;
+}
+
+/* Print / PDF Export */
+@media print {
+    @page {
+        size: A4 landscape;
+        margin: 10mm;
+    }
+
+    body {
+        background: #ffffff;
+        overflow: visible;
+        height: auto;
+        width: auto;
+        display: block;
+    }
+
+    .controls,
+    .slide-indicator {
+        display: none !important;
+    }
+
+    .slides-wrapper {
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .slide-container {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        width: 100% !important;
+        height: auto !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        page-break-after: always;
+    }
+}
+
+body.grid-view .image-wrapper {
+    border-radius: 6px;
+}
+
+body.grid-view .tile {
+    padding: 8px;
+    border-radius: 6px;
+}
+
+body.grid-view .tile .icon {
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+body.grid-view .tile h3 {
+    font-size: 8px;
+}
+
+body.grid-view .tile p {
+    font-size: 7px;
+}
+
+body.grid-view .tiled-content {
+    gap: 8px;
+    margin-top: 8px;
+}
+
+/* Typography */
+h1, h2, h3, h4 {
+    color: var(--color-text);
+    font-weight: 700;
+}
+
+p, li {
+    color: var(--color-text-muted);
+    font-size: 17px;
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+.slide-title {
+    font-size: 38px;
+    margin-bottom: 25px;
+    color: #000;
+    border-left: 8px solid var(--color-primary);
+    padding-left: 20px;
+}
+
+/* Title Layout */
+.title-layout {
+    text-align: center;
+    background: linear-gradient(135deg, #FF4500 0%, #FF8717 100%);
+    color: white;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title-layout h1 {
+    color: white;
+    font-size: 70px;
+    margin-bottom: 20px;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.title-layout .subtitle {
+    color: #fff;
+    font-size: 28px;
+    font-weight: 300;
+    opacity: 0.9;
+    max-width: 800px;
+}
+
+/* Section Title Layout */
+.section-title-layout {
+    background-color: var(--color-text);
+    color: white;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.section-title-layout h2 {
+    color: #ffffff;
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
+.section-title-layout hr {
+    width: 150px;
+    border: 3px solid var(--color-primary);
+    margin: 20px 0;
+}
+
+/* Two Column Layout */
+.two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.content-area {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
+    flex-grow: 1;
+}
+
+/* Lists */
+ul {
+    list-style: none;
+}
+
+ul li {
+    margin-bottom: 10px;
+    padding-left: 25px;
+    position: relative;
+}
+
+ul li::before {
+    content: '\f138';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: var(--color-primary);
+    position: absolute;
+    left: 0;
+    top: 3px;
+    font-size: 16px;
+}
+
+/* Images */
+.image-wrapper {
+    border-radius: 16px;
+    overflow: hidden;
+    height: 100%;
+    max-height: 450px;
+    width: 100%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Rounded Image Layout */
+.rounded-image-layout .image-wrapper {
+    border-radius: 50%;
+    width: 400px;
+    height: 400px;
+    margin: 0 auto;
+    border: 8px solid #fff;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* Bleed Image Layout */
+.slide-container.bleed-image-layout {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 0;
+    align-items: start;
+}
+
+.slide-container.bleed-image-layout > .content-container {
+    padding: 60px 50px 80px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+.slide-container.bleed-image-layout > .image-container {
+    height: 100%;
+    width: 100%;
+}
+
+.bleed-image-side {
+    height: 100%;
+    max-height: 720px;
+    width: 100%;
+    object-fit: cover;
+}
+
+/* Tiled Content */
+.tiled-content {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    align-items: stretch;
+    margin-top: 15px;
+}
+
+.tile {
+    background-color: #f8f9fa;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    flex: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.tile .icon {
+    font-size: 28px;
+    color: var(--color-primary);
+    margin-bottom: 12px;
+}
+
+.tile h3 {
+    margin-bottom: 8px;
+    font-size: 18px;
+    color: var(--color-text);
+}
+
+.tile p {
+    font-size: 15px;
+    line-height: 1.4;
+    color: var(--color-text-muted);
+}
+
+/* Controls */
+.controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+}
+
+.btn {
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.btn:hover {
+    background: var(--color-primary-dark);
+}
+
+.btn.secondary {
+    background-color: #555;
+}
+
+.btn.secondary:hover {
+    background-color: #444;
+}
+
+.slide-indicator {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.5);
+    font-size: 14px;
+    z-index: 100;
+}
+    </style>
+</head>
+<body>
+
+<div class="slides-wrapper">
+
+    <!-- Slide 1: Title Slide -->
+    <div class="slide-container active" id="slide1" data-slide-num="1">
+        <div class="title-layout">
+            <h1>Reddit Events</h1>
+            <hr style="width: 100px; border: 3px solid #fff; margin: 30px 0;">
+            <p class="subtitle">Immersive Proposal</p>
+        </div>
+    </div>
+
+    <!-- Slide 2: Introduction -->
+    <div class="slide-container" id="slide2" data-slide-num="2">
+        <h2 class="slide-title">A Scalable "Lego" System</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div>
+                    <p style="margin-bottom: 20px;">It works like an open modular ecosystem. Each layer can be snapped on depending on the venue size, the stage of the tour, or when you want to introduce a fresh beat.</p>
+                    <ul>
+                        <li><strong>Scale on Demand:</strong> Unlock only the modules you need—from intimate suites to massive headline spaces.</li>
+                        <li><strong>Multi-Stage Rollout:</strong> Activate layers at different moments (pre-event hype, on-site hero moments, future tour stops).</li>
+                        <li><strong>Budget Smart:</strong> Align each add-on with the available spend without sacrificing impact.</li>
+                        <li><strong>Magic Mirror Legacy:</strong> We reuse code, motion assets, and art direction from the previous Magic Mirror build so nothing starts from zero.</li>
+                    </ul>
+                </div>
+                <div class="image-wrapper">
+                    <img src="https://placehold.co/600x400/FF4500/FFFFFF?text=Modular+Lego+Concept" alt="Modular lego blocks representation">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Module 1 -->
+    <div class="slide-container" id="slide3" data-slide-num="3">
+        <h2 class="slide-title">Customize Your Snoo</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div class="image-wrapper">
+                    <img src="https://placehold.co/400x700/f0f0f0/333333?text=Multiple+Users+%0ACustomizing+Snoos%0A%0A🎨+📱+👥" alt="Multiple users customizing their Snoos on mobile phones" style="object-fit: contain;">
+                </div>
+                <div>
+                    <h3 style="margin-bottom: 15px; font-size: 28px;">Mobile Experience</h3>
+                    <p style="margin-bottom: 15px;">No hardware, no app download—works in any browser.</p>
+                    <ul>
+                        <li><strong>Simple & Web-Based:</strong> Users open a link on their phone and start customizing their Snoo instantly.</li>
+                        <li><strong>Works Everywhere:</strong> Any device, any browser. No installation required.</li>
+                        <li><strong>Before or During:</strong> Customize at home before the event, or on-site in seconds.</li>
+                        <li><strong>Your Digital Badge:</strong> Your Snoo becomes your event identity with built-in functionalities.</li>
+                        <li><strong>Always Connected to Reddit:</strong> Every interaction links back to Reddit communities—personalized by your Snoo's interests.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: AR Effects (Optional) -->
+    <div class="slide-container" id="slide4" data-slide-num="4">
+        <h2 class="slide-title">AR Effects <span style="font-size: 22px; font-weight: 400; color: #888;">(Optional Add-Ons)</span></h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div>
+                    <p style="margin-bottom: 20px;">Choose which AR features to activate—each is a separate option the client can select based on event goals.</p>
+                    <ul>
+                        <li><strong>AR Filters (Face):</strong> Fun face filters featuring your customized Snoo. Perfect for social sharing and selfies.</li>
+                        <li><strong>AR Placement (SLAM):</strong> Place your 3D Snoo in real space—on tables, floors, or anywhere. Take photos with your Snoo in the venue.</li>
+                        <li><strong>AR Merge / Try-On:</strong> Virtual merch try-on overlays. Preview swag in AR before claiming it.</li>
+                    </ul>
+                    <p style="margin-top: 20px; font-style: italic; color: #888;">Each AR feature is independent—activate one, two, or all based on budget and campaign needs.</p>
+                </div>
+                <div class="image-wrapper">
+                    <img src="https://placehold.co/600x400/1c1c1c/FFFFFF?text=AR+Effects%0A%0A📸+Face+Filters%0A📍+3D+Placement%0A👕+Try-On" alt="AR Effects options">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Record Your Dance -->
+    <div class="slide-container" id="slide5" data-slide-num="5">
+        <h2 class="slide-title">Record Your Dance <span style="font-size: 22px; font-weight: 400; color: #888;">(Optional - iPad)</span></h2>
+        <div class="content-area">
+            <div class="two-column rounded-image-layout">
+                <div>
+                    <h3 style="margin-bottom: 15px; font-size: 28px;">iPad Dance Booth</h3>
+                    <p style="margin-bottom: 15px;"><strong style="color: #FF4500;">Optional extension</strong> for on-site content creation with a facilitator.</p>
+                    <ul>
+                        <li><strong>Simple Setup:</strong> Just 1 iPad on a tripod. A facilitator operates it for attendees.</li>
+                        <li><strong>Dance as Your Snoo:</strong> The iPad captures your moves and records them as an animation sequence (FBX).</li>
+                        <li><strong>Not Video—Animation:</strong> More flexible than video. Your dancing Snoo can be viewed in 3D, AR, or as a filter later.</li>
+                        <li><strong>View on Your Phone:</strong> After recording, the dance is uploaded to your profile. Watch and share your dancing Snoo anytime.</li>
+                        <li><strong>Built on Magic Mirror:</strong> Reuses existing Magic Mirror components—faster development, proven tech.</li>
+                    </ul>
+                </div>
+                <div class="image-wrapper">
+                    <img src="https://placehold.co/450x450/333/fff?text=Facilitator+%2B+iPad%0A%0A🎬+Recording+Booth" alt="Facilitator operating iPad dance booth">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: See It Big -->
+    <div class="slide-container bleed-image-layout" id="slide6" data-slide-num="6">
+        <div class="content-container">
+            <h2 class="slide-title">See It Big <span style="font-size: 22px; font-weight: 400; color: #888;">(Optional)</span></h2>
+            <div class="content-area">
+                <h3 style="margin-bottom: 15px;">Cast to the Large Screen</h3>
+                <p style="margin-bottom: 15px;">Optional module to create an impressive visual without complex hardware.</p>
+                <ul>
+                    <li><strong>Simplified Approach:</strong> Customize on your phone, see the result on the big screen.</li>
+                    <li><strong>No Touch Screen Needed:</strong> Any TV, LED wall, or projector works via simple HDMI.</li>
+                    <li><strong>Hidden iPad as Camera:</strong> For dance recording, iPad sits behind the screen capturing movement.</li>
+                    <li><strong>Maximum Impact:</strong> High visual wow factor with minimal technical complexity.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="image-container">
+            <img class="bleed-image-side" src="https://placehold.co/640x720/1c1c1c/FF4500?text=Customize+on+Phone%0ACast+to+Big+Screen%0A%0A📱+➡️+🖥️" alt="Mobile customization casting to big screen">
+        </div>
+    </div>
+
+    <!-- Slide 7: Section Title for Venue Interaction -->
+    <div class="slide-container" id="slide7" data-slide-num="7">
+        <div class="section-title-layout">
+            <hr>
+            <h2>Explore &<br>Unlock Rewards</h2>
+            <p style="color: #ccc; margin-top: 20px; font-size: 24px;">Your Snoo is your key to discovering the venue</p>
+        </div>
+    </div>
+
+    <!-- Slide 8: Scan & Discover -->
+    <div class="slide-container" id="slide8" data-slide-num="8">
+        <h2 class="slide-title">Scan & Discover</h2>
+        <div class="content-area">
+            <p style="margin-bottom: 25px; font-size: 22px;"><strong style="color: #FF4500;">Discovery-focused, not a scavenger hunt.</strong> Users explore naturally and find surprises along the way.</p>
+            <p style="margin-bottom: 18px; font-size: 16px;">QR codes around the venue plus AR triggers on event swag. Simple, low-tech, high engagement.</p>
+            <div class="tiled-content">
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-qrcode"></i></div>
+                    <h3>QR Codes Everywhere</h3>
+                    <p>Placed naturally on bars, tables, walls—users discover them while exploring the space.</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                    <h3>Virtual Rewards</h3>
+                    <p>Unlock new Snoo accessories, exclusive customizations, or special content. Collect items as you explore.</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-champagne-glasses"></i></div>
+                    <h3>Physical Rewards Too</h3>
+                    <p>Can also unlock real perks—free drinks, merch, or priority access. Mix virtual and physical rewards.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Play Together -->
+    <div class="slide-container bleed-image-layout" id="slide9" data-slide-num="9">
+        <div class="image-container">
+            <img class="bleed-image-side" src="https://placehold.co/640x720/FF4500/ffffff?text=Crowd+Playing%0ATogether%0A%0A👥+📱+🖥️" alt="Multiple users playing together on phones connected to big screen">
+        </div>
+        <div class="content-container">
+            <h2 class="slide-title">Play Together</h2>
+            <div class="content-area">
+                <h3 style="margin-bottom: 15px;">Massive Community Feel</h3>
+                <p style="margin-bottom: 15px;">Interactive kiosks and screens around the venue. Phone as controller, screen as shared canvas. All web-based—just needs reliable WiFi.</p>
+                <ul>
+                    <li><strong>Live Infographic:</strong> Send your Snoo to screens at different locations. See "I was here" and how many Snoos visited each spot.</li>
+                    <li><strong>Phone as Controller:</strong> Scan a QR, and your phone becomes the gamepad for the big screen.</li>
+                    <li><strong>See Your Snoo on Screen:</strong> Your customized Snoo appears in infographics, games, and visualizations.</li>
+                    <li><strong>Conversations Starter:</strong> Designed to spark networking among attendees—play together, meet new people.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Mini-Games -->
+    <div class="slide-container" id="slide-minigames" data-slide-num="10">
+        <h2 class="slide-title">Play Mini-Games Together</h2>
+        <div class="content-area">
+            <p style="margin-bottom: 25px; font-size: 22px;"><strong style="color: #FF4500;">Quick, fun, multiplayer.</strong> Think Mario Party or Rayman-style mini-games that groups can play together.</p>
+            <div class="tiled-content">
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-gamepad"></i></div>
+                    <h3>Phone as Controller</h3>
+                    <p>Your mobile becomes the gamepad. Tilt, tap, swipe to control your Snoo in the game on the big screen.</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-users"></i></div>
+                    <h3>Compete & Collaborate</h3>
+                    <p>Quick rounds where strangers become teammates. Race, puzzle, or trivia—games designed to spark conversations.</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-trophy"></i></div>
+                    <h3>Win Rewards</h3>
+                    <p>Top players unlock exclusive Snoo accessories, virtual badges, or real-world perks at the event.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 11: Summary -->
+    <div class="slide-container" id="slide10" data-slide-num="11">
+        <h2 class="slide-title">Advantages for Reddit</h2>
+        <div class="content-area">
+            <div class="tiled-content">
+                <div class="tile" style="border-top: 5px solid #FF4500;">
+                    <div class="icon"><i class="fa-solid fa-mobile-screen"></i></div>
+                    <h3>Mobile-First & Simple</h3>
+                    <p>The core experience works on any phone, any browser. No app downloads, no complex hardware. Just open a link and start customizing.</p>
+                </div>
+                <div class="tile" style="border-top: 5px solid #FF4500;">
+                    <div class="icon"><i class="fa-solid fa-puzzle-piece"></i></div>
+                    <h3>Build What You Need</h3>
+                    <p>Start with just the mobile experience, then add AR effects, dance recording, venue interaction, or big screens—mix and match per event.</p>
+                </div>
+                <div class="tile" style="border-top: 5px solid #FF4500;">
+                    <div class="icon"><i class="fa-solid fa-comments"></i></div>
+                    <h3>Spark Conversations</h3>
+                    <p>Every feature is designed to create networking moments—play games together, discover the venue, and connect back to Reddit communities.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Controls -->
+<div class="slide-indicator" id="slideIndicator">1 / 11</div>
+<div class="controls">
+    <button class="btn" onclick="prevSlide()">❮ Prev</button>
+    <button class="btn" onclick="nextSlide()">Next ❯</button>
+    <button class="btn secondary" onclick="toggleGridView()">
+        <i class="fa-solid fa-grip"></i> Grid
+    </button>
+    <button class="btn secondary" onclick="exportPDF()">
+        <i class="fa-solid fa-file-pdf"></i> Export PDF
+    </button>
+</div>
+
+<script>
+// Slide Navigation
+let currentSlide = 1;
+const totalSlides = 11;
+
+function showSlide(n) {
+    const slides = document.querySelectorAll('.slide-container');
+    
+    if (n > totalSlides) currentSlide = 1;
+    if (n < 1) currentSlide = totalSlides;
+    
+    slides.forEach(slide => slide.classList.remove('active'));
+    
+    const targetSlide = document.getElementById('slide' + currentSlide);
+    if (targetSlide) {
+        targetSlide.classList.add('active');
+    }
+    
+    updateIndicator();
+}
+
+function nextSlide() {
+    if (document.body.classList.contains('grid-view')) {
+        toggleGridView();
+    }
+    currentSlide++;
+    showSlide(currentSlide);
+}
+
+function prevSlide() {
+    if (document.body.classList.contains('grid-view')) {
+        toggleGridView();
+    }
+    currentSlide--;
+    showSlide(currentSlide);
+}
+
+function updateIndicator() {
+    const indicator = document.getElementById('slideIndicator');
+    if (indicator) {
+        indicator.textContent = currentSlide + ' / ' + totalSlides;
+    }
+}
+
+function toggleGridView() {
+    document.body.classList.toggle('grid-view');
+}
+
+function exportPDF() {
+    const wasGrid = document.body.classList.contains('grid-view');
+    if (!wasGrid) {
+        document.body.classList.add('grid-view');
+    }
+    window.print();
+    window.onafterprint = () => {
+        if (!wasGrid) {
+            document.body.classList.remove('grid-view');
+        }
+    };
+}
+
+// Grid View Click Handler
+document.addEventListener('click', function(e) {
+    if (document.body.classList.contains('grid-view')) {
+        const slide = e.target.closest('.slide-container');
+        if (slide) {
+            const slideNum = parseInt(slide.getAttribute('data-slide-num'));
+            currentSlide = slideNum;
+            toggleGridView();
+            showSlide(currentSlide);
+        }
+    }
+});
+
+// Keyboard Navigation
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+        nextSlide();
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+    } else if (e.key === 'g' || e.key === 'G') {
+        toggleGridView();
+    } else if (e.key === 'Home') {
+        currentSlide = 1;
+        showSlide(currentSlide);
+    } else if (e.key === 'End') {
+        currentSlide = totalSlides;
+        showSlide(currentSlide);
+    }
+});
+
+// Initialize
+showSlide(currentSlide);
+</script>
+
+</body>
+</html>

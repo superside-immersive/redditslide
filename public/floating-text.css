@@ -1,0 +1,104 @@
+.subreddit-grid {
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.subreddit-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 0 5%;
+    align-items: center;
+}
+
+.subreddit-row a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 168px;
+    position: relative;
+    text-align: center;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease;
+}
+
+.subreddit-row a:hover {
+    transform: translateY(-5px);
+}
+
+.subreddit-item {
+    height: 168px !important; /* Fuerza altura exacta */
+    width: auto; /* Ancho automático según proporción */
+    object-fit: contain; /* Mantiene proporción de aspecto */
+    max-width: unset; /* Elimina límite de ancho máximo */
+    opacity: 0;
+    transform: translateX(-100px);
+    animation: slideInAndBounce 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes slideInAndBounce {
+    0% {
+        transform: translateX(-100px);
+        opacity: 0;
+    }
+    70% {
+        transform: translateX(10px);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 1200px) {
+    .subreddit-row a {
+        height: 140px;
+    }
+    
+    .subreddit-item {
+        height: 140px !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .subreddit-row {
+        gap: 15px;
+    }
+    
+    .subreddit-row a {
+        height: 120px;
+    }
+    
+    .subreddit-item {
+        height: 120px !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .subreddit-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .subreddit-row a {
+        height: 84px;
+        width: auto;
+        margin-bottom: 10px;
+    }
+    
+    .subreddit-item {
+        height: 84px !important;
+        max-width: unset;
+    }
+}
