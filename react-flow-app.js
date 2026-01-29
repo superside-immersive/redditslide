@@ -10,7 +10,7 @@
         { id: 'core-app', label: 'Customize Your Snoo', subtitle: 'Mobile Web Experience', color: '#FF4500', type: 'start', x: 420, y: 0 },
         { id: 'tablet-studio', label: 'Record Your Dance', subtitle: 'iPad Booth', color: '#00D4AA', type: 'main', x: 180, y: 160 },
         { id: 'view-dance', label: 'View on Mobile', subtitle: 'Watch & share your dance', color: '#FF6B35', type: 'main', x: 180, y: 320 },
-        { id: 'big-stage', label: 'See It Big', subtitle: 'Cast to the large screen', color: '#F59E0B', type: 'optional', x: 340, y: 320 },
+        { id: 'big-stage', label: 'See It Big', subtitle: 'Cast to the large screen', color: '#F59E0B', type: 'optional', x: 420, y: 250 },
         { id: 'ar-extensions', label: 'AR Effects', subtitle: 'Choose your AR experience', color: '#7B68EE', type: 'branch', x: 730, y: 160 },
         // AR sub-nodes
         { id: 'ar-filters', label: 'Face Filters', subtitle: 'Fun Snoo face effects', color: '#E879F9', type: 'sub', x: 550, y: 340 },
