@@ -8,10 +8,16 @@
     // Journey steps - structured as user experience flow
     const JOURNEY_NODES = [
         { id: 'core-app', label: 'Customize Your Snoo', subtitle: 'Mobile Web Experience', color: '#FF4500', type: 'start', x: 420, y: 0 },
-        { id: 'tablet-studio', label: 'Record Your Dance', subtitle: 'iPad Booth', color: '#00D4AA', type: 'main', x: 260, y: 160 },
-        { id: 'view-dance', label: 'View on Mobile', subtitle: 'Watch & share your dance', color: '#FF6B35', type: 'main', x: 260, y: 320 },
-        { id: 'big-stage', label: 'See It Big', subtitle: 'Cast to the large screen', color: '#F59E0B', type: 'optional', x: 420, y: 320 },
-        { id: 'ar-extensions', label: 'AR Effects', subtitle: 'Filters • 3D Placement • Try-on', color: '#7B68EE', type: 'branch', x: 580, y: 160 },
+        { id: 'tablet-studio', label: 'Record Your Dance', subtitle: 'iPad Booth', color: '#00D4AA', type: 'main', x: 180, y: 160 },
+        { id: 'view-dance', label: 'View on Mobile', subtitle: 'Watch & share your dance', color: '#FF6B35', type: 'main', x: 180, y: 320 },
+        { id: 'big-stage', label: 'See It Big', subtitle: 'Cast to the large screen', color: '#F59E0B', type: 'optional', x: 340, y: 320 },
+        { id: 'ar-extensions', label: 'AR Effects', subtitle: 'Choose your AR experience', color: '#7B68EE', type: 'branch', x: 660, y: 160 },
+        // AR sub-nodes
+        { id: 'ar-filters', label: 'Face Filters', subtitle: 'Fun Snoo face effects', color: '#9B7BEE', type: 'sub', x: 520, y: 320 },
+        { id: 'ar-placement', label: '3D Placement', subtitle: 'Place Snoo in real space', color: '#9B7BEE', type: 'sub', x: 660, y: 320 },
+        { id: 'ar-tryon', label: 'AR Try-On', subtitle: 'Virtual merch preview', color: '#9B7BEE', type: 'sub', x: 800, y: 320 },
+        { id: 'ar-merch', label: 'AR Merch', subtitle: 'Customizable branded items', color: '#9B7BEE', type: 'sub', x: 940, y: 320 },
+        // Venue nodes
         { id: 'connected-venue', label: 'Explore & Unlock', subtitle: 'Discover rewards across the venue', color: '#3B82F6', type: 'branch', x: 420, y: 500 },
         { id: 'passive-connect', label: 'Scan & Discover', subtitle: 'QR codes • Virtual rewards', color: '#60A5FA', type: 'sub', x: 240, y: 660 },
         { id: 'pro-sync', label: 'Play Together', subtitle: 'Mini-games • Live infographics', color: '#2563EB', type: 'sub', x: 600, y: 660 }
@@ -23,6 +29,12 @@
         { source: 'tablet-studio', target: 'view-dance', label: '' },
         { source: 'tablet-studio', target: 'big-stage', label: 'optional', dashed: true },
         { source: 'core-app', target: 'ar-extensions', label: 'or try' },
+        // AR sub-connections
+        { source: 'ar-extensions', target: 'ar-filters', label: '' },
+        { source: 'ar-extensions', target: 'ar-placement', label: '' },
+        { source: 'ar-extensions', target: 'ar-tryon', label: '' },
+        { source: 'ar-extensions', target: 'ar-merch', label: '' },
+        // Venue connections
         { source: 'core-app', target: 'connected-venue', label: 'or explore' },
         { source: 'connected-venue', target: 'passive-connect', label: 'simple' },
         { source: 'connected-venue', target: 'pro-sync', label: 'advanced' }
@@ -30,7 +42,7 @@
 
     // Filter categories (elegant pills, no emojis)
     const FILTERS = [
-        { id: 'ar-features', label: 'AR Effects', nodes: ['ar-extensions'], color: '#7B68EE' },
+        { id: 'ar-features', label: 'AR Effects', nodes: ['ar-extensions', 'ar-filters', 'ar-placement', 'ar-tryon', 'ar-merch'], color: '#7B68EE' },
         { id: 'venue-connect', label: 'Explore & Unlock', nodes: ['connected-venue', 'passive-connect', 'pro-sync'], color: '#3B82F6' },
         { id: 'tablet-studio', label: 'Record Your Dance', nodes: ['tablet-studio', 'view-dance'], color: '#00D4AA' },
         { id: 'big-screen', label: 'See It Big', nodes: ['big-stage'], color: '#F59E0B' }
