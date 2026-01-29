@@ -224,8 +224,7 @@
         <div class="control-group">
             <label>Hoodie:</label>
             <select id="hoodie-select">
-                <option value="">Default</option>
-                <!-- Generadas dinámicamente -->
+                <option value="white">White</option>
             </select>
         </div>
     </div>
@@ -281,8 +280,8 @@
                 loadingText.textContent = 'Cargando animación...';
                 await snoo.playAnimation(ANIMATIONS.dance);
                 
-                // 5. Aplicar hoodie blanco por defecto (01)
-                snoo.setTextures({ hoodie: '01' });
+                // 5. Aplicar hoodie blanco sólido por defecto
+                snoo.setHoodieWhite();
                 
                 // 6. Ocultar loading
                 loading.classList.add('hidden');
@@ -317,14 +316,6 @@
             const eyesSelect = document.getElementById('eyes-select');
             const hoodieSelect = document.getElementById('hoodie-select');
             
-            // Generar opciones de hoodie (01-40)
-            for (let i = 1; i <= 40; i++) {
-                const opt = document.createElement('option');
-                opt.value = i.toString().padStart(2, '0');
-                opt.textContent = i.toString().padStart(2, '0');
-                hoodieSelect.appendChild(opt);
-            }
-            
             // Listeners de texturas
             skinSelect.addEventListener('change', () => {
                 if (skinSelect.value) {
@@ -338,10 +329,9 @@
                 }
             });
             
+            // Hoodie remains solid white (no textures)
             hoodieSelect.addEventListener('change', () => {
-                if (hoodieSelect.value) {
-                    snoo.setTextures({ hoodie: hoodieSelect.value });
-                }
+                snoo.setHoodieWhite();
             });
         }
         

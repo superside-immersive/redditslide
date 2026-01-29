@@ -365,14 +365,23 @@ export class RedditAnimation {
                     // Hoodie
                     if (name === 'test' || 
                         name.includes('golden yellow') ||
+                        name.includes('hoodie') ||
+                        name.includes('hood') ||
+                        name.includes('sweater') ||
+                        name.includes('shirt') ||
+                        name.includes('outfit') ||
+                        name.includes('clothes') ||
                         material.name === '09-Golden Yellow #FFBF0B GFAR.001' ||
                         material.name === 'Test') {
                         this.materials.hoodie = material;
-                        
-                        // Configuración base del hoodie
+						
+                        // Forzar hoodie blanco sólido
+                        material.map = null;
+                        material.color.setHex(0xffffff);
                         material.roughness = 0.8;
                         material.metalness = 0.0;
                         material.emissive = new THREE.Color(0x000000);
+                        material.needsUpdate = true;
                     }
                 }
             }
@@ -537,10 +546,20 @@ export class RedditAnimation {
             }
         }
         
-        if (textures.hoodie && this.materials.hoodie) {
-            const path = `${basePath}/hoodie/hoodie_${textures.hoodie}.png`;
-            this._applyTexture(this.materials.hoodie, path);
-        }
+        // Hoodie textures disabled (solid white only)
+    }
+
+    /**
+     * Fuerza el hoodie a blanco sólido (sin textura)
+     */
+    setHoodieWhite() {
+        if (!this.materials.hoodie) return;
+        this.materials.hoodie.map = null;
+        this.materials.hoodie.color.setHex(0xffffff);
+        this.materials.hoodie.roughness = 0.8;
+        this.materials.hoodie.metalness = 0.0;
+        this.materials.hoodie.emissive = new THREE.Color(0x000000);
+        this.materials.hoodie.needsUpdate = true;
     }
     
     /**
