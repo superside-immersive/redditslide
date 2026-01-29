@@ -18,6 +18,15 @@
             min-height: 100vh;
             overflow: hidden;
         }
+
+        body.embed {
+            background: transparent;
+        }
+
+        body.embed .controls,
+        body.embed .info-panel {
+            display: none;
+        }
         
         /* Container del personaje 3D */
         #app {
@@ -250,6 +259,10 @@
         // Instancia global
         let snoo;
         
+        const params = new URLSearchParams(window.location.search);
+        const isEmbed = params.get('embed') === '1';
+        const animParam = params.get('anim');
+
         async function init() {
             const loadingText = document.getElementById('loading-text');
             const loading = document.getElementById('loading');
@@ -282,7 +295,8 @@
                 
                 // 4. Reproducir animación inicial (loop infinito)
                 loadingText.textContent = 'Cargando animación...';
-                await snoo.playAnimation(ANIMATIONS.dance);
+                const defaultAnimKey = (animParam && ANIMATIONS[animParam]) ? animParam : 'dance';
+                await snoo.playAnimation(ANIMATIONS[defaultAnimKey]);
                 
                 // 5. Aplicar hoodie blanco sólido por defecto
                 snoo.setHoodieWhite();
@@ -291,7 +305,11 @@
                 loading.classList.add('hidden');
                 
                 // 7. Setup UI
-                setupControls();
+                if (isEmbed) {
+                    document.body.classList.add('embed');
+                }
+
+                setupControls(defaultAnimKey);
                 
                 console.log('✅ Reddit Animation inicializado correctamente');
                 console.log('📦 API disponible en window.snoo');
@@ -305,9 +323,12 @@
             }
         }
         
-        function setupControls() {
+        function setupControls(defaultAnimKey = 'dance') {
             // Selector de animación
             const animSelect = document.getElementById('anim-select');
+            if (animSelect && defaultAnimKey) {
+                animSelect.value = defaultAnimKey;
+            }
             animSelect.addEventListener('change', async () => {
                 const animKey = animSelect.value;
                 if (ANIMATIONS[animKey]) {
