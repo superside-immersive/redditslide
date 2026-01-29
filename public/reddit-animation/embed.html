@@ -49,6 +49,11 @@
             });
 
             await snoo.init();
+            snoo.setIsometricCamera({
+                size: 2.3,
+                position: { x: 2.6, y: 2.1, z: 2.6 },
+                target: { x: 0, y: 1.1, z: 0 }
+            });
             await snoo.loadVRM('./models/finalsnoo.vrm');
             await snoo.playAnimation(ANIMATIONS.hiphop);
             snoo.setHoodieWhite();

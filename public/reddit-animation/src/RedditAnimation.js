@@ -170,6 +170,42 @@ export class RedditAnimation {
         
         this.camera.position.set(cfg.position.x, cfg.position.y, cfg.position.z);
     }
+
+    /**
+     * Cambia a cámara isométrica (ortográfica)
+     * @param {Object} options
+     * @param {number} options.size - Tamaño del frustum ortográfico
+     * @param {Object} options.position - {x,y,z}
+     * @param {Object} options.target - {x,y,z}
+     */
+    setIsometricCamera(options = {}) {
+        const size = options.size ?? 2.2;
+        const pos = options.position ?? { x: 2.5, y: 2.0, z: 2.5 };
+        const target = options.target ?? { x: 0, y: 1.1, z: 0 };
+        const aspect = this.container.clientWidth / this.container.clientHeight;
+        const halfW = size * aspect;
+        const halfH = size;
+
+        this.camera = new THREE.OrthographicCamera(
+            -halfW,
+            halfW,
+            halfH,
+            -halfH,
+            0.1,
+            100
+        );
+        this.camera.position.set(pos.x, pos.y, pos.z);
+        this.camera.lookAt(new THREE.Vector3(target.x, target.y, target.z));
+        this.camera.updateProjectionMatrix();
+
+        if (this.controls) {
+            this.controls.dispose();
+        }
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+        this.controls.screenSpacePanning = true;
+        this.controls.target.set(target.x, target.y, target.z);
+        this.controls.update();
+    }
     
     /**
      * Configura los controles orbitales
