@@ -102,6 +102,24 @@ function downloadHTML() {
     URL.revokeObjectURL(url);
 }
 
+// Flowchart Sidebar Toggle
+let isSidebarOpen = false;
+
+function toggleFlowchartSidebar() {
+    const sidebar = document.getElementById('flowchartSidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    
+    isSidebarOpen = !isSidebarOpen;
+    
+    if (isSidebarOpen) {
+        sidebar.classList.add('open');
+        overlay.classList.add('open');
+    } else {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('open');
+    }
+}
+
 // Keyboard navigation
 window.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowRight') {
@@ -110,6 +128,10 @@ window.addEventListener('keydown', (event) => {
         prevSlide();
     } else if (event.key === 'g' || event.key === 'G') {
         toggleGridView();
+    } else if (event.key === 'a' || event.key === 'A') {
+        toggleFlowchartSidebar();
+    } else if (event.key === 'Escape' && isSidebarOpen) {
+        toggleFlowchartSidebar();
     }
 });
 
@@ -126,3 +148,4 @@ window.nextSlide = nextSlide;
 window.prevSlide = prevSlide;
 window.downloadHTML = downloadHTML;
 window.toggleGridView = toggleGridView;
+window.toggleFlowchartSidebar = toggleFlowchartSidebar;

@@ -731,6 +731,93 @@ ul li::before {
     border-radius: 20px;
     backdrop-filter: blur(10px);
 }
+
+/* Flowchart Sidebar */
+.flowchart-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 33.33vw;
+    height: 100vh;
+    background: var(--color-bg-dark);
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 4px 0 30px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+}
+
+.flowchart-sidebar.open {
+    transform: translateX(0);
+}
+
+.flowchart-sidebar-header {
+    padding: 20px;
+    background: rgba(0,0,0,0.3);
+    border-bottom: 1px solid rgba(216, 255, 133, 0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flowchart-sidebar-header h3 {
+    color: var(--color-primary);
+    font-family: var(--font-display);
+    font-size: 18px;
+    margin: 0;
+}
+
+.flowchart-sidebar-close {
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: color 0.2s;
+}
+
+.flowchart-sidebar-close:hover {
+    color: var(--color-primary);
+}
+
+.flowchart-sidebar-content {
+    flex: 1;
+    overflow: hidden;
+}
+
+.flowchart-sidebar-toggles {
+    padding: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    background: rgba(0,0,0,0.2);
+    border-bottom: 1px solid rgba(216, 255, 133, 0.1);
+}
+
+.flowchart-sidebar-chart {
+    flex: 1;
+    min-height: 0;
+}
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.sidebar-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
     </style>
 </head>
 <body>
@@ -758,12 +845,12 @@ ul li::before {
                 <p style="margin-bottom: 20px;">It works like an open modular ecosystem. Each layer can be snapped on depending on the venue size, the stage of the tour, or when you want to introduce a fresh beat.</p>
                 <ul>
                     <li><strong>Scale on Demand:</strong> Unlock only the modules you need—from intimate suites to massive headline spaces.</li>
-                    <li><strong>Multi-Stage Rollout:</strong> Activate layers at different moments (pre-event hype, on-site hero moments, future tour stops).</li>
+                    <li><strong>Multi-Stage Rollout:</strong> Design development in phases across different events—start lean, add features as the tour evolves.</li>
                     <li><strong>Budget Smart:</strong> Align each add-on with the available spend without sacrificing impact.</li>
                     <li><strong>Magic Mirror Legacy:</strong> We reuse code, motion assets, and art direction from the previous Magic Mirror build so nothing starts from zero.</li>
                 </ul>
             </div>
-            <div class="image-wrapper" style="aspect-ratio: 16/9; max-height: 400px;">
+            <div class="image-wrapper" style="aspect-ratio: 4/3; max-height: 594px;">
                 <img src="public/assets/snoolego.png" alt="Modular lego blocks representation" style="object-fit: cover;">
             </div>
         </div>
@@ -816,7 +903,8 @@ ul li::before {
                 <ul>
                     <li><strong>AR Filters (Face):</strong> Fun face filters featuring your customized Snoo. Perfect for social sharing and selfies.</li>
                     <li><strong>AR Placement (SLAM):</strong> Place your 3D Snoo in real space—on tables, floors, or anywhere. Take photos with your Snoo in the venue.</li>
-                    <li><strong>AR Merge / Try-On:</strong> Virtual merch try-on overlays. Preview swag in AR before claiming it.</li>
+                    <li><strong>Physical AR Merch:</strong> Preview real swag in AR before claiming it. Try on hats, hoodies, and branded items virtually.</li>
+                    <li><strong>Virtual Merch:</strong> Unlock digital collectibles and exclusive Snoo accessories—items that live in your profile.</li>
                 </ul>
                 <p style="margin-top: 20px; font-style: italic; color: #6a7a72;">Each AR feature is independent—activate one, two, or all based on budget and campaign needs.</p>
             </div>
@@ -837,7 +925,9 @@ ul li::before {
                 <p style="margin-bottom: 15px;"><strong style="color: #00D4AA;">Optional extension</strong> for on-site content creation with a facilitator.</p>
                 <ul>
                     <li><strong>Simple Setup:</strong> Just 1 iPad on a tripod. A facilitator operates it for attendees.</li>
-                    <li><strong>Dance as Your Snoo:</strong> The iPad captures your moves and records them as an animation sequence (FBX).</li>
+                    <li><strong>Scalable to Venue:</strong> Add more iPads for larger events—each booth runs independently, scaling throughput as needed.</li>
+                    <li><strong>Body Tracking Dance:</strong> The iPad uses body tracking to capture your moves and records them as an animation sequence (FBX).</li>
+                    <li><strong>Pre-Customized = Faster Lines:</strong> Since users already customized their Snoo on their phones, the booth is just for recording—minimizing queue times.</li>
                     <li><strong>Not Video—Animation:</strong> More flexible than video. Your dancing Snoo can be viewed in 3D, AR, or as a filter later.</li>
                     <li><strong>View on Your Phone:</strong> After recording, the dance is uploaded to your profile. Watch and share your dancing Snoo anytime.</li>
                     <li><strong>Built on Magic Mirror:</strong> Reuses existing Magic Mirror components—faster development, proven tech.</li>
@@ -854,7 +944,7 @@ ul li::before {
 <div class="slide-container" id="slide6" data-slide-num="7">
     <div class="section-title-layout">
         <hr>
-        <h2>Explore &<br><em>Unlock Rewards</em></h2>
+        <h2>Discover &<br><em>Collect Rewards</em></h2>
         <p style="color: var(--color-text-muted); margin-top: 20px; font-size: 24px; font-family: var(--font-display); font-style: italic;">Your Snoo is your key to discovering the venue</p>
     </div>
 </div>
@@ -863,7 +953,7 @@ ul li::before {
 <div class="slide-container slide--light" id="slide7" data-slide-num="8">
     <h2 class="slide-title">Scan & Discover</h2>
     <div class="content-area">
-        <p style="margin-bottom: 25px; font-size: 22px;"><strong style="color: #3B82F6;">Discovery-focused, not a scavenger hunt.</strong> Users explore naturally and find surprises along the way.</p>
+        <p style="margin-bottom: 25px; font-size: 22px;"><strong style="color: #3B82F6;">Triggers discovery and collectibles instincts.</strong> Users explore naturally and find surprises along the way—not a scavenger hunt.</p>
         <p style="margin-bottom: 18px; font-size: 16px;">QR codes around the venue plus AR triggers on event swag. Simple, low-tech, high engagement.</p>
         <div class="tiled-content">
             <div class="tile">
@@ -874,7 +964,7 @@ ul li::before {
             <div class="tile">
                 <div class="icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
                 <h3>Virtual Rewards</h3>
-                <p>Unlock new Snoo accessories, exclusive customizations, or special content. Collect items as you explore.</p>
+                <p>Unlock exclusive Snoo accessories like Puffy Boys, event-specific items, and special customization features. Collect as you explore.</p>
             </div>
             <div class="tile">
                 <div class="icon"><i class="fa-solid fa-champagne-glasses"></i></div>
@@ -891,7 +981,7 @@ ul li::before {
         <video class="bleed-image-side" src="supersync_1.mp4" autoplay loop muted playsinline></video>
     </div>
     <div class="content-container">
-        <h2 class="slide-title">Play Together</h2>
+        <h2 class="slide-title">Play Together <span style="font-size: 20px; font-weight: 400; color: #8a9a92;">Snoo in the Wild</span></h2>
         <div class="content-area">
             <h3 style="margin-bottom: 15px;">Massive Community Feel</h3>
             <p style="margin-bottom: 15px;">Interactive kiosks and screens around the venue. Phone as controller, screen as shared canvas. All web-based—just needs reliable WiFi.</p>
@@ -986,6 +1076,25 @@ ul li::before {
     <button class="btn" onclick="toggleGridView()" style="background-color: rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
         <i class="fa-solid fa-grip"></i>
     </button>
+</div>
+
+<!-- Flowchart Sidebar -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleFlowchartSidebar()"></div>
+<div class="flowchart-sidebar" id="flowchartSidebar">
+    <div class="flowchart-sidebar-header">
+        <h3>Build Your Experience</h3>
+        <button class="flowchart-sidebar-close" onclick="toggleFlowchartSidebar()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    <div class="flowchart-sidebar-content">
+        <div class="flowchart-sidebar-toggles" id="sidebar-toggles">
+            <!-- Toggles rendered by React -->
+        </div>
+        <div class="flowchart-sidebar-chart" id="sidebar-flowchart-root">
+            <!-- React Flow mounts here -->
+        </div>
+    </div>
 </div>
 
 <script src="animations.js"></script>

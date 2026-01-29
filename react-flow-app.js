@@ -17,9 +17,8 @@
         { id: 'ar-placement', label: '3D Placement', subtitle: 'Place Snoo in real space', color: '#818CF8', type: 'sub', x: 730, y: 340 },
         { id: 'ar-merch', label: 'AR Merch', subtitle: 'Customizable branded items', color: '#34D399', type: 'sub', x: 910, y: 340 },
         // Venue nodes
-        { id: 'connected-venue', label: 'Explore & Unlock', subtitle: 'Discover rewards across the venue', color: '#3B82F6', type: 'branch', x: 420, y: 500 },
-        { id: 'passive-connect', label: 'Scan & Discover', subtitle: 'QR codes • Virtual rewards', color: '#60A5FA', type: 'sub', x: 240, y: 660 },
-        { id: 'pro-sync', label: 'Play Together', subtitle: 'Mini-games • Live infographics', color: '#2563EB', type: 'sub', x: 600, y: 660 }
+        { id: 'passive-connect', label: 'Scan and Discover', subtitle: 'QR codes • Collect surprise rewards', color: '#3B82F6', type: 'branch', x: 260, y: 500 },
+        { id: 'pro-sync', label: 'Play Together', subtitle: 'Mini-games • Live infographics', color: '#2563EB', type: 'branch', x: 580, y: 500 }
     ];
 
     // Edge definitions
@@ -33,15 +32,15 @@
         { source: 'ar-extensions', target: 'ar-placement', label: '' },
         { source: 'ar-extensions', target: 'ar-merch', label: '' },
         // Venue connections
-        { source: 'core-app', target: 'connected-venue', label: 'or explore' },
-        { source: 'connected-venue', target: 'passive-connect', label: 'simple' },
-        { source: 'connected-venue', target: 'pro-sync', label: 'advanced' }
+        { source: 'core-app', target: 'passive-connect', label: 'or scan' },
+        { source: 'core-app', target: 'pro-sync', label: 'or play' }
     ];
 
     // Filter categories (elegant pills, no emojis)
     const FILTERS = [
         { id: 'ar-features', label: 'AR Effects', nodes: ['ar-extensions', 'ar-filters', 'ar-placement', 'ar-merch'], color: '#7B68EE' },
-        { id: 'venue-connect', label: 'Explore & Unlock', nodes: ['connected-venue', 'passive-connect', 'pro-sync'], color: '#3B82F6' },
+        { id: 'scan-discover', label: 'Scan & Discover', nodes: ['passive-connect'], color: '#3B82F6' },
+        { id: 'play-together', label: 'Play Together', nodes: ['pro-sync'], color: '#2563EB' },
         { id: 'tablet-studio', label: 'Record Your Dance', nodes: ['tablet-studio', 'view-dance'], color: '#00D4AA' },
         { id: 'big-screen', label: 'See It Big', nodes: ['big-stage'], color: '#F59E0B' }
     ];
@@ -173,9 +172,8 @@
                     'view-dance': 'tablet-studio',
                     'big-stage': 'tablet-studio',
                     'ar-extensions': 'core-app',
-                    'connected-venue': 'core-app',
-                    'passive-connect': 'connected-venue',
-                    'pro-sync': 'connected-venue'
+                    'passive-connect': 'core-app',
+                    'pro-sync': 'core-app'
                 };
 
                 setActiveFilters(prev => {
@@ -256,6 +254,16 @@
             root.style.minHeight = '480px';
             root.style.background = 'transparent';
             ReactDOM.render(React.createElement(FlowchartApp), root);
+        }
+
+        // Also mount in sidebar if present
+        const sidebarRoot = document.getElementById('sidebar-flowchart-root');
+        if (sidebarRoot) {
+            const sidebarToggles = document.getElementById('sidebar-toggles');
+            if (sidebarToggles) sidebarToggles.style.display = 'none';
+            sidebarRoot.style.height = '100%';
+            sidebarRoot.style.background = 'transparent';
+            ReactDOM.render(React.createElement(FlowchartApp), sidebarRoot);
         }
     });
 })();
