@@ -56,6 +56,24 @@
             window.snoo = snoo;
         }
 
+        // Forward arrow keys to parent so slide navigation keeps working
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                try {
+                    const forwarded = new KeyboardEvent('keydown', {
+                        key: e.key,
+                        code: e.code,
+                        keyCode: e.keyCode,
+                        which: e.which,
+                        bubbles: true
+                    });
+                    window.parent.document.dispatchEvent(forwarded);
+                } catch (err) {
+                    // no-op
+                }
+            }
+        });
+
         init();
     </script>
 </body>
