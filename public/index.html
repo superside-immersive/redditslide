@@ -1206,27 +1206,14 @@ ac				padding: 0; /* Removed padding to allow image to reach bottom edge */
 							hoodieMaterial = node.material;
 							console.log("✅ Found HOODIE material:", node.material.name);
 							
-							// Make hoodie material pure white and apply white hoodie texture (01)
+							// Make hoodie material pure white - remove any texture and set solid white color
+							hoodieMaterial.map = null; // Remove any existing texture
 							hoodieMaterial.color.setHex(0xffffff);
 							hoodieMaterial.emissive.setHex(0x000000);
 							hoodieMaterial.metalness = 0.0;
 							hoodieMaterial.roughness = 1.0;
-							
-							// Force load the white hoodie texture (01) as default
-							const textureLoader = new THREE.TextureLoader();
-							textureLoader.load(
-								'./textures/hoodie/hoodie_01.png',
-								(texture) => {
-									texture.colorSpace = THREE.SRGBColorSpace;
-									texture.flipY = false;
-									hoodieMaterial.map = texture;
-									hoodieMaterial.needsUpdate = true;
-									console.log("✅ Applied white hoodie texture (01) as default");
-								},
-								undefined,
-								(error) => console.warn("Could not load hoodie_01 texture:", error)
-							);
-							console.log("✅ Set hoodie material to pure white");
+							hoodieMaterial.needsUpdate = true;
+							console.log("✅ Set hoodie material to pure white (no texture)");
 						}
 					}
 				});
