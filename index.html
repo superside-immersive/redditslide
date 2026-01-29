@@ -6,7 +6,7 @@
     <title>The Ecosystem: Modular Architecture</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
 /* ===========================================
@@ -32,6 +32,7 @@
     /* Fonts */
     --font-main: 'Inter Tight', sans-serif;
     --font-display: 'Playfair Display', serif;
+    --font-title: 'Instrument Serif', serif;
 }
 
 * {
@@ -435,6 +436,8 @@ strong {
     color: var(--color-white);
     border-left: 8px solid var(--color-primary); 
     padding-left: 20px;
+    font-family: var(--font-title);
+    font-weight: 400;
 }
 
 /* 4. LAYOUTS */
@@ -460,6 +463,8 @@ strong {
     font-size: 70px;
     margin-bottom: 20px;
     text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    font-family: var(--font-title);
+    font-weight: 400;
 }
 
 .title-layout h1 em,
@@ -628,6 +633,8 @@ ul li::before {
     color: var(--color-white);
     font-size: 60px;
     margin-bottom: 20px;
+    font-family: var(--font-title);
+    font-weight: 400;
 }
 
 .section-title-layout h2 em {
