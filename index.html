@@ -458,6 +458,11 @@ strong {
     align-items: center;
 }
 
+.title-layout > * {
+    position: relative;
+    z-index: 2;
+}
+
 .title-layout h1 {
     color: var(--color-white);
     font-size: 70px;
@@ -486,12 +491,11 @@ strong {
 
 .title-snoo-embed {
     position: absolute;
-    right: 6vw;
-    bottom: 6vh;
-    width: 36vw;
-    height: 64vh;
-	pointer-events: auto;
-    z-index: 2;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: auto;
+    z-index: 1;
 }
 
 .title-snoo-embed iframe {
@@ -731,7 +735,7 @@ ul li::before {
         <hr style="width: 100px; border: 3px solid var(--color-primary); margin: 30px 0;">
         <p class="subtitle">Immersive Proposal</p>
         <div class="title-snoo-embed">
-            <iframe title="Snoo" src="public/reddit-animation/embed.html" loading="lazy"></iframe>
+            <iframe title="Snoo" src="public/reddit-animation/embed.html" loading="lazy" tabindex="-1"></iframe>
         </div>
     </div>
 </div>
