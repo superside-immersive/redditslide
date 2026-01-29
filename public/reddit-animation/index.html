@@ -281,10 +281,13 @@
                 loadingText.textContent = 'Cargando animación...';
                 await snoo.playAnimation(ANIMATIONS.dance);
                 
-                // 5. Ocultar loading
+                // 5. Aplicar hoodie blanco por defecto (01)
+                snoo.setTextures({ hoodie: '01' });
+                
+                // 6. Ocultar loading
                 loading.classList.add('hidden');
                 
-                // 6. Setup UI
+                // 7. Setup UI
                 setupControls();
                 
                 console.log('✅ Reddit Animation inicializado correctamente');
