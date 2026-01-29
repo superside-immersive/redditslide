@@ -602,10 +602,10 @@ ac				padding: 0; /* Removed padding to allow image to reach bottom edge */
 			<h3>Hoodie Textures</h3>
 			<div id="texture-preview-container">
 				<div id="texture-preview"></div>
-				<div id="texture-name">Hoodie 01</div>
+				<div id="texture-name">Hoodie White</div>
 			</div>
 			<div id="slider-container">
-				<input type="range" id="texture-slider" min="1" max="40" value="1">
+				<input type="range" id="texture-slider" min="1" max="1" value="1">
 			</div>
 		</div>
 		
@@ -858,44 +858,8 @@ ac				padding: 0; /* Removed padding to allow image to reach bottom edge */
 				return false;
 			}
 
-			// Helper functions for texture handling - updated to check more paths
-			function checkAndHandleHoodieTexture(vrm, hoodieMaterial) {
-				const hoodieNumbers = [];
-				for (let i = 1; i <= 40; i++) {
-					hoodieNumbers.push(i < 10 ? `0${i}` : `${i}`);
-				}
-
-				for (const hoodieNum of hoodieNumbers) {
-					const paramName = `hoodie-${hoodieNum}`;
-					if (getURLParameter(paramName)) {
-						console.log(`🔄 Applying hoodie_${hoodieNum} texture specifically...`);
-						const textureNames = [
-							`./textures/hoodie/hoodie_${hoodieNum}.png`.toLowerCase(),
-							`./textures/Hoodie/Hoodie_${hoodieNum}.png`,
-							`./textures/hoodie/Hoodie_${hoodieNum}.png`,
-							`./hoodie/hoodie_${hoodieNum}.png`.toLowerCase()
-						 ];
-						if (hoodieMaterial) {
-							console.log(`Found hoodie material, applying hoodie_${hoodieNum} texture...`);
-							loadAndApplyTexture(textureNames[0], hoodieMaterial);
-							return true;
-						} else {
-							console.warn("⚠️ No hoodie material found, looking for alternatives...");
-							let found = false;
-							vrm.scene.traverse((node) => {
-								if (!found && node.material && node.material.name) {
-									const matName = node.material.name.toLowerCase();
-									if (matName.includes('hoodie') || matName === 'test' || matName === 'outfit') {
-										console.log(`Found alternative hoodie material: ${node.material.name}, applying hoodie_${hoodieNum}`);
-										loadAndApplyTexture(textureNames[0], node.material);
-										found = true;
-									}
-								}
-							});
-							return found;
-						}
-					}
-				}
+			// Helper functions for texture handling - hoodie textures disabled (solid white only)
+			function checkAndHandleHoodieTexture() {
 				return false;
 			}
 
@@ -1202,7 +1166,13 @@ ac				padding: 0; /* Removed padding to allow image to reach bottom edge */
 						if (node.material.name === "Test" || 
 							matName === "test" || 
 							node.material.name === "09-Golden Yellow #FFBF0B GFAR.001" || 
-							matName.includes("golden yellow")) {
+							matName.includes("golden yellow") ||
+							matName.includes("hoodie") ||
+							matName.includes("hood") ||
+							matName.includes("sweater") ||
+							matName.includes("shirt") ||
+							matName.includes("outfit") ||
+							matName.includes("clothes")) {
 							hoodieMaterial = node.material;
 							console.log("✅ Found HOODIE material:", node.material.name);
 							
@@ -1965,26 +1935,18 @@ ac				padding: 0; /* Removed padding to allow image to reach bottom edge */
 			// Hoodie texture selector functionality
 			(function initTextureSelector() {
 				// Array of hoodie textures
-				const hoodieTextures = [];
+				const hoodieTextures = [
+					{
+						path: null,
+						name: 'Hoodie White',
+						number: '01'
+					}
+				];
 				let currentHoodieMaterial = null;
 
 				// Helper: check if any hoodie-XX param is present
 				function urlHasHoodieParam() {
-					for (let i = 1; i <= 40; i++) {
-						const num = i < 10 ? `0${i}` : `${i}`;
-						if (getURLParameter(`hoodie-${num}`)) return true;
-					}
 					return false;
-				}
-				
-				// Initialize texture data
-				for (let i = 1; i <= 40; i++) {
-					const num = i < 10 ? `0${i}` : `${i}`;
-					hoodieTextures.push({
-						path: `${BASE_PATH}textures/hoodie/hoodie_${num}.png`.toLowerCase(),
-						name: `Hoodie ${num}`,
-						number: num
-					});
 				}
 				
 				// Find hoodie material in VRM when model is loaded
@@ -2015,9 +1977,10 @@ ac				padding: 0; /* Removed padding to allow image to reach bottom edge */
 					const previewElement = document.getElementById('texture-preview');
 					const nameElement = document.getElementById('texture-name');
 					
-					// Update the preview display
+					// Update the preview display (solid white)
 					if (previewElement) {
-						previewElement.style.backgroundImage = `url(${texture.path})`;
+						previewElement.style.backgroundImage = 'none';
+						previewElement.style.backgroundColor = '#ffffff';
 					}
 					
 					if (nameElement) {
@@ -2029,10 +1992,7 @@ ac				padding: 0; /* Removed padding to allow image to reach bottom edge */
 						currentHoodieMaterial = findHoodieMaterial();
 					}
 					
-					// Only apply selector texture if NO hoodie param in URL
-					if (currentHoodieMaterial && !urlHasHoodieParam()) {
-						loadAndApplyTexture(texture.path, currentHoodieMaterial);
-					}
+					// Do not apply any hoodie texture - keep solid white material
 				}
 				
 				// Set up event listener for slider
