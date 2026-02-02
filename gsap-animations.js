@@ -1,15 +1,20 @@
-// GSAP Animations (Phase 1)
-// Goal: elegant, safe crossfades between slides without breaking layout.
-// IMPORTANT: Do not animate `.slide-container` transforms because it uses translate(-50%, -50%) for centering.
+// GSAP Premium Animations - Reddit Slides
+// Elegant directional transitions with SplitText, parallax, and micro-interactions
+// Duration: 0.6s | Parallax: 1.3x on images | Eases: power3.out, back.out(1.2)
 
 (function () {
     'use strict';
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // STATE MANAGEMENT
+    // ═══════════════════════════════════════════════════════════════════════════
 
     const STATE = {
         transitioning: false,
         initialized: false,
         observer: null,
         gridScrollTriggers: [],
+        splitInstances: new Map(), // Track SplitText instances for cleanup
         transitionCycle: 0,
         original: {
             showSlide: null,
@@ -19,12 +24,24 @@
         },
     };
 
+    // ═══════════════════════════════════════════════════════════════════════════
+    // UTILITY FUNCTIONS
+    // ═══════════════════════════════════════════════════════════════════════════
+
     function hasGSAP() {
         return typeof window.gsap !== 'undefined' && window.gsap && typeof window.gsap.timeline === 'function';
     }
 
+    function hasSplitText() {
+        return hasGSAP() && typeof window.SplitText !== 'undefined';
+    }
+
     function hasObserver() {
         return hasGSAP() && window.gsap && window.gsap.plugins && window.gsap.plugins.Observer;
+    }
+
+    function hasScrollTrigger() {
+        return hasGSAP() && typeof window.ScrollTrigger !== 'undefined' && window.ScrollTrigger;
     }
 
     function prefersReducedMotion() {
@@ -37,17 +54,13 @@
 
     function registerPlugins() {
         if (!hasGSAP()) return;
-        // Safe to call even if plugin already registered.
         try {
             if (window.ScrollTrigger) window.gsap.registerPlugin(window.ScrollTrigger);
             if (window.Observer) window.gsap.registerPlugin(window.Observer);
+            if (window.SplitText) window.gsap.registerPlugin(window.SplitText);
         } catch {
             // Ignore
         }
-    }
-
-    function hasScrollTrigger() {
-        return hasGSAP() && typeof window.ScrollTrigger !== 'undefined' && window.ScrollTrigger;
     }
 
     function isGridView() {
@@ -65,230 +78,17 @@
         return n;
     }
 
-    function setTempVisible(el, opacity) {
-        if (!el) return;
-        el.style.visibility = 'visible';
-        el.style.pointerEvents = 'none';
-        el.style.opacity = String(opacity);
+    function currentActiveSlide() {
+        return document.querySelector('.slide-container.active');
     }
 
-    function clearTempStyles(el) {
-        if (!el) return;
-        el.style.visibility = '';
-        el.style.pointerEvents = '';
-        el.style.opacity = '';
-    }
-
-    function createTransitionLayer() {
-        const layer = document.createElement('div');
-        layer.className = 'gsap-transition-layer';
-        layer.style.position = 'fixed';
-        layer.style.inset = '0';
-        layer.style.zIndex = '9999';
-        layer.style.pointerEvents = 'none';
-        layer.style.contain = 'layout paint';
-        layer.style.overflow = 'hidden';
-        document.body.appendChild(layer);
-        return layer;
-    }
-
-    function cloneSlideForLayer(slideEl) {
-        const rect = slideEl.getBoundingClientRect();
-        const clone = slideEl.cloneNode(true);
-
-        // Force visibility regardless of `.active` CSS.
-        clone.classList.add('active');
-        clone.classList.add('gsap-clone');
-        clone.style.position = 'fixed';
-        clone.style.left = `${rect.left}px`;
-        clone.style.top = `${rect.top}px`;
-        clone.style.width = `${rect.width}px`;
-        clone.style.height = `${rect.height}px`;
-        clone.style.margin = '0';
-        clone.style.transform = 'none';
-        clone.style.opacity = '1';
-        clone.style.visibility = 'visible';
-        clone.style.pointerEvents = 'none';
-
-        // Neutralize positioning rules from `.slide-container`.
-        clone.style.right = 'auto';
-        clone.style.bottom = 'auto';
-
-        // Avoid duplicate IDs (e.g., flowchart root) which can break mounting.
-        clone.removeAttribute('id');
-        Array.from(clone.querySelectorAll('[id]')).forEach((el) => el.removeAttribute('id'));
-
-        return { clone, rect };
-    }
-
-    function cleanupTransitionLayer(layer) {
-        if (!layer) return;
-        try {
-            layer.remove();
-        } catch {
-            if (layer.parentNode) layer.parentNode.removeChild(layer);
-        }
-    }
+    // ═══════════════════════════════════════════════════════════════════════════
+    // SLIDE TYPE DETECTION
+    // ═══════════════════════════════════════════════════════════════════════════
 
     function isFlowchartSlide(slideEl) {
         if (!slideEl) return false;
         return !!slideEl.querySelector('#flowchart-root');
-    }
-
-    function getLegoConceptImage(slideEl) {
-        if (!slideEl) return null;
-        return (
-            slideEl.querySelector('img[src*="Modular+Lego+Concept"]') ||
-            slideEl.querySelector('img[alt*="Modular lego"], img[alt*="Modular Lego"], img[alt*="lego blocks"]')
-        );
-    }
-
-    function animateLegoAssemble(imgEl) {
-        if (!hasGSAP() || prefersReducedMotion()) return;
-        if (!imgEl) return;
-
-        // Prevent double-running if user goes back and forth quickly.
-        if (imgEl.getAttribute('data-lego-animated') === '1') return;
-        imgEl.setAttribute('data-lego-animated', '1');
-
-        const wrapper = imgEl.closest('.image-wrapper') || imgEl.parentElement;
-        if (!wrapper) return;
-
-        // Contain everything strictly within image bounds.
-        wrapper.style.position = wrapper.style.position || 'relative';
-        wrapper.style.overflow = 'hidden';
-
-        const rect = wrapper.getBoundingClientRect();
-        const width = Math.max(1, Math.floor(rect.width));
-        const height = Math.max(1, Math.floor(rect.height));
-
-        const cols = width >= 520 ? 10 : 8;
-        const rows = height >= 340 ? 7 : 6;
-        const tileW = width / cols;
-        const tileH = height / rows;
-
-        const layer = document.createElement('div');
-        layer.className = 'lego-build-layer';
-        layer.style.position = 'absolute';
-        layer.style.inset = '0';
-        layer.style.pointerEvents = 'none';
-        layer.style.zIndex = '2';
-        layer.style.perspective = '900px';
-        layer.style.transformStyle = 'preserve-3d';
-        layer.style.overflow = 'hidden';
-
-        // Optional subtle studs pattern behind tiles (already defined in CSS).
-        const studs = document.createElement('div');
-        studs.className = 'lego-studs';
-        studs.style.zIndex = '0';
-        studs.style.inset = '0';
-        layer.appendChild(studs);
-
-        const tiles = [];
-        for (let r = 0; r < rows; r += 1) {
-            for (let c = 0; c < cols; c += 1) {
-                const tile = document.createElement('div');
-                tile.style.position = 'absolute';
-                tile.style.left = `${c * tileW}px`;
-                tile.style.top = `${r * tileH}px`;
-                tile.style.width = `${tileW + 0.5}px`;
-                tile.style.height = `${tileH + 0.5}px`;
-                tile.style.backgroundImage = `url("${imgEl.currentSrc || imgEl.src}")`;
-                tile.style.backgroundSize = `${width}px ${height}px`;
-                tile.style.backgroundPosition = `${-c * tileW}px ${-r * tileH}px`;
-                tile.style.backgroundRepeat = 'no-repeat';
-                tile.style.transformOrigin = 'center center';
-                tile.style.willChange = 'transform,opacity';
-                tile.style.zIndex = '1';
-
-                tiles.push(tile);
-                layer.appendChild(tile);
-            }
-        }
-
-        // Hide the real image while we build it with tiles.
-        const prevOpacity = imgEl.style.opacity;
-        imgEl.style.opacity = '0';
-
-        wrapper.appendChild(layer);
-
-        const rand = (min, max) => min + Math.random() * (max - min);
-        const fromY = rand(26, 44);
-
-        window.gsap.set(studs, { opacity: 0, y: 18, scale: 1.03 });
-        window.gsap.set(tiles, {
-            opacity: 0,
-            x: () => rand(-34, 34),
-            y: () => rand(-fromY, fromY),
-            rotate: () => rand(-4.5, 4.5),
-            rotateX: () => rand(-10, 10),
-            rotateY: () => rand(-12, 12),
-            z: () => rand(40, 90),
-        });
-
-        const tl = window.gsap.timeline({
-            defaults: { ease: 'power3.out' },
-            onComplete: () => {
-                // Reveal the real image and remove the overlay.
-                imgEl.style.opacity = prevOpacity || '1';
-                try {
-                    layer.remove();
-                } catch {
-                    if (layer.parentNode) layer.parentNode.removeChild(layer);
-                }
-                // Allow re-run later if needed (e.g. after refresh).
-                window.setTimeout(() => imgEl.removeAttribute('data-lego-animated'), 400);
-            },
-        });
-
-        tl.to(studs, { opacity: 1, y: 0, duration: 0.5 }, 0);
-
-        // Assemble tiles in a pleasing diagonal wave.
-        tl.to(
-            tiles,
-            {
-                opacity: 1,
-                x: 0,
-                y: 0,
-                z: 0,
-                rotate: 0,
-                rotateX: 0,
-                rotateY: 0,
-                duration: 0.85,
-                stagger: {
-                    each: 0.012,
-                    from: 'start',
-                    grid: [rows, cols],
-                    axis: 'x',
-                },
-            },
-            0.05
-        );
-
-        // Tiny hold, then fade out studs so the final image is clean.
-        tl.to(studs, { opacity: 0, duration: 0.35, ease: 'power2.out' }, 0.8);
-        // Fade overlay slightly so the handoff is imperceptible.
-        tl.to(layer, { opacity: 0, duration: 0.18, ease: 'power2.out' }, 0.98);
-    }
-
-    function resetLegoAnimation(slideEl) {
-        const legoImg = getLegoConceptImage(slideEl);
-        if (!legoImg) return;
-
-        legoImg.removeAttribute('data-lego-animated');
-        legoImg.style.opacity = '';
-
-        const wrapper = legoImg.closest('.image-wrapper') || legoImg.parentElement;
-        if (!wrapper) return;
-
-        const layers = Array.from(wrapper.querySelectorAll('.lego-build-layer, .lego-studs'));
-        layers.forEach((layer) => {
-            try {
-                layer.remove();
-            } catch {
-                if (layer.parentNode) layer.parentNode.removeChild(layer);
-            }
-        });
     }
 
     function isTitleSlide(slideEl) {
@@ -316,63 +116,817 @@
         return slideEl.querySelectorAll('.tile').length > 0;
     }
 
-    function isSplitFriendly(slideEl) {
+    // ═══════════════════════════════════════════════════════════════════════════
+    // SNOO 3D SLIDE DETECTION & CAMERA ANIMATION
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    function isSnooSlide(slideEl) {
         if (!slideEl) return false;
-        // Avoid split on complex layouts (two-column, bleed-image, tiled, flowchart)
-        if (isFlowchartSlide(slideEl)) return false;
-        if (isBleedImageSlide(slideEl)) return false;
-        if (isTwoColumnSlide(slideEl)) return false;
-        if (hasTiles(slideEl)) return false;
-        return true;
+        return !!slideEl.querySelector('.title-snoo-embed iframe');
     }
 
-    function splitWords(el) {
-        if (!el) return null;
-        // If already split, reuse existing spans to avoid DOM churn and layout snaps.
-        if (el.getAttribute('data-gsap-split') === 'words') {
-            const existing = Array.from(el.querySelectorAll('.gsap-word'));
-            if (existing.length) return existing;
+    function getSnooIframe(slideEl) {
+        if (!slideEl) return null;
+        return slideEl.querySelector('.title-snoo-embed iframe');
+    }
+
+    /**
+     * Animate the Snoo 3D camera before transitioning away from the intro slide
+     * Creates a dramatic zoom-out and rotation effect
+     */
+    function animateSnooCamera(iframe, direction) {
+        return new Promise((resolve) => {
+            if (!iframe || !iframe.contentWindow) {
+                resolve();
+                return;
+            }
+
+            try {
+                const snoo = iframe.contentWindow.snoo;
+                if (!snoo || !snoo.camera || !snoo.controls) {
+                    resolve();
+                    return;
+                }
+
+                const camera = snoo.camera;
+                const controls = snoo.controls;
+                const THREE = iframe.contentWindow.THREE;
+
+                if (!THREE) {
+                    resolve();
+                    return;
+                }
+
+                // Store original camera values
+                const originalPos = {
+                    x: camera.position.x,
+                    y: camera.position.y,
+                    z: camera.position.z
+                };
+                const originalTarget = {
+                    x: controls.target.x,
+                    y: controls.target.y,
+                    z: controls.target.z
+                };
+
+                // Define cinematic camera movement
+                // Zoom out and rotate around for a dramatic effect
+                const isForward = direction === 'next';
+                
+                const targetPos = isForward 
+                    ? { x: 5, y: 3.5, z: 5 }    // Zoom out diagonally
+                    : { x: -3, y: 2.5, z: 4 };  // Different angle for backward
+
+                const targetLookAt = isForward
+                    ? { x: 0, y: 0.8, z: 0 }    // Look down slightly
+                    : { x: 0, y: 1.2, z: 0 };
+
+                // Use GSAP to animate if available
+                if (window.gsap) {
+                    // Animated target for lookAt
+                    const animTarget = { ...originalTarget };
+
+                    const tl = window.gsap.timeline({
+                        onUpdate: () => {
+                            camera.updateProjectionMatrix();
+                            controls.target.set(animTarget.x, animTarget.y, animTarget.z);
+                            controls.update();
+                        },
+                        onComplete: () => {
+                            // Reset camera for next time
+                            window.gsap.to(camera.position, {
+                                x: originalPos.x,
+                                y: originalPos.y,
+                                z: originalPos.z,
+                                duration: 0.01,
+                                onComplete: () => {
+                                    controls.target.set(originalTarget.x, originalTarget.y, originalTarget.z);
+                                    controls.update();
+                                }
+                            });
+                            resolve();
+                        }
+                    });
+
+                    // Camera position animation
+                    tl.to(camera.position, {
+                        x: targetPos.x,
+                        y: targetPos.y,
+                        z: targetPos.z,
+                        duration: 0.5,
+                        ease: 'power2.inOut'
+                    }, 0);
+
+                    // LookAt target animation
+                    tl.to(animTarget, {
+                        x: targetLookAt.x,
+                        y: targetLookAt.y,
+                        z: targetLookAt.z,
+                        duration: 0.5,
+                        ease: 'power2.inOut'
+                    }, 0);
+
+                    // Optional: Scale down the model slightly
+                    if (snoo.vrmScene) {
+                        tl.to(snoo.vrmScene.scale, {
+                            x: 0.85,
+                            y: 0.85,
+                            z: 0.85,
+                            duration: 0.4,
+                            ease: 'power2.in'
+                        }, 0.1);
+
+                        // Reset scale after
+                        tl.set(snoo.vrmScene.scale, { x: 1, y: 1, z: 1 }, 0.55);
+                    }
+
+                } else {
+                    // Fallback without GSAP
+                    resolve();
+                }
+
+            } catch (e) {
+                console.warn('Snoo camera animation failed:', e);
+                resolve();
+            }
+        });
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // DIRECTIONAL VALUES
+    // Direction: 1 = forward (→), -1 = backward (←)
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    function getDirectionalValues(direction) {
+        const dir = direction === 'prev' ? -1 : 1;
+        return {
+            // Exit offsets (element moves in opposite direction of navigation)
+            exitTitle: -50 * dir,
+            exitContent: -70 * dir,
+            exitImage: -90 * dir,  // 1.3x parallax
+            exitTiles: -40 * dir,
+            exitList: -30 * dir,
+            // Enter offsets (element comes from direction of navigation)
+            enterTitle: 60 * dir,
+            enterContent: 80 * dir,
+            enterImage: 100 * dir,  // 1.3x parallax
+            enterTiles: 50 * dir,
+            enterList: 40 * dir,
+            // Stagger direction
+            staggerFrom: dir === 1 ? 'start' : 'end',
+            staggerFromReverse: dir === 1 ? 'end' : 'start',
+        };
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // SPLITTEXT MANAGEMENT
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    function splitTitle(titleElement) {
+        if (!titleElement || !hasSplitText()) return null;
+        
+        // Check if already split
+        const existingId = titleElement.getAttribute('data-split-id');
+        if (existingId && STATE.splitInstances.has(existingId)) {
+            return STATE.splitInstances.get(existingId);
         }
 
-        // If this element was previously split and never restored (e.g. interrupted), restore first.
-        restoreSplit(el);
-        // Minimal SplitText-like fallback (words only).
-        // We only use this on simple headings where innerHTML isn't meaningful.
-        const originalText = el.textContent;
-        const trimmed = (originalText || '').trim();
-        if (!trimmed) return null;
-
-        const words = trimmed.split(/\s+/g);
-        // IMPORTANT: Keep normal word spacing (literal spaces), no extra spacer spans.
-        const spans = words
-            .map((w) => `<span class="gsap-word" style="display:inline-block;">${w}</span>`)
-            .join(' ');
-
-        el.setAttribute('data-gsap-original-text', originalText);
-        el.setAttribute('data-gsap-split', 'words');
-        el.innerHTML = spans;
-        return Array.from(el.querySelectorAll('.gsap-word'));
+        try {
+            const split = new window.SplitText(titleElement, {
+                type: 'chars,words',
+                charsClass: 'gsap-char',
+                wordsClass: 'gsap-word',
+            });
+            
+            const id = `split-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+            titleElement.setAttribute('data-split-id', id);
+            STATE.splitInstances.set(id, split);
+            
+            // Set initial styles for chars
+            window.gsap.set(split.chars, { 
+                display: 'inline-block',
+                willChange: 'transform, opacity'
+            });
+            
+            return split;
+        } catch (e) {
+            console.warn('SplitText failed:', e);
+            return null;
+        }
     }
 
-    function restoreSplit(el) {
-        if (!el) return;
-        const original = el.getAttribute('data-gsap-original-text');
-        if (original == null) return;
-        el.textContent = original;
-        el.removeAttribute('data-gsap-original-text');
-        el.removeAttribute('data-gsap-split');
+    function cleanupSplit(titleElement) {
+        if (!titleElement) return;
+        
+        const id = titleElement.getAttribute('data-split-id');
+        if (id && STATE.splitInstances.has(id)) {
+            const split = STATE.splitInstances.get(id);
+            try {
+                split.revert();
+            } catch {
+                // Ignore revert errors
+            }
+            STATE.splitInstances.delete(id);
+            titleElement.removeAttribute('data-split-id');
+        }
     }
 
-    function setObserverToCurrentState() {
-        setObserverEnabled(shouldEnableObserverNow());
+    function cleanupAllSplits() {
+        STATE.splitInstances.forEach((split, id) => {
+            try {
+                split.revert();
+            } catch {
+                // Ignore
+            }
+        });
+        STATE.splitInstances.clear();
+        
+        // Also clean up any orphaned data attributes
+        document.querySelectorAll('[data-split-id]').forEach(el => {
+            el.removeAttribute('data-split-id');
+        });
     }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // EXIT ANIMATIONS
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    function createExitTimeline(slideEl, direction) {
+        if (!slideEl || !hasGSAP()) return null;
+        if (isFlowchartSlide(slideEl)) return null; // Protect React Flow
+
+        // ═══════════════════════════════════════════════════════════════════
+        // GOING BACKWARDS: Quick fade out, no elaborate animations
+        // ═══════════════════════════════════════════════════════════════════
+        if (direction === 'prev') {
+            const tl = window.gsap.timeline({ defaults: { ease: 'power2.in' } });
+            tl.to(slideEl, { opacity: 0, duration: 0.2 }, 0);
+            return tl;
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // GOING FORWARD: Full exit animations
+        // ═══════════════════════════════════════════════════════════════════
+        const vals = getDirectionalValues(direction);
+        const tl = window.gsap.timeline({ defaults: { ease: 'power2.in' } });
+
+        // Title with SplitText (if available)
+        const title = slideEl.querySelector('.slide-title, h1, h2');
+        if (title && hasSplitText() && !isFlowchartSlide(slideEl)) {
+            const split = splitTitle(title);
+            if (split && split.chars && split.chars.length) {
+                tl.to(split.chars, {
+                    x: vals.exitTitle * 0.8,
+                    opacity: 0,
+                    duration: 0.25,
+                    stagger: {
+                        each: 0.015,
+                        from: vals.staggerFromReverse,
+                    },
+                    ease: 'power2.in',
+                }, 0);
+            } else {
+                tl.to(title, { x: vals.exitTitle, opacity: 0, duration: 0.25 }, 0);
+            }
+        } else if (title) {
+            tl.to(title, { x: vals.exitTitle, opacity: 0, duration: 0.25 }, 0);
+        }
+
+        // Content areas
+        const content = slideEl.querySelector('.content-area, .content-container');
+        if (content) {
+            tl.to(content, { x: vals.exitContent, opacity: 0, duration: 0.25 }, 0.03);
+        }
+
+        // Two-column layouts with parallax
+        if (isTwoColumnSlide(slideEl)) {
+            const columns = slideEl.querySelectorAll('.two-column > div');
+            const leftCol = columns[0];
+            const rightCol = columns[1];
+            
+            if (leftCol) {
+                tl.to(leftCol, { x: vals.exitContent, opacity: 0, duration: 0.25 }, 0.02);
+            }
+            if (rightCol) {
+                // Image column gets more offset (parallax 1.3x)
+                const hasImage = rightCol.querySelector('img, .image-wrapper');
+                const offset = hasImage ? vals.exitImage : vals.exitContent;
+                tl.to(rightCol, { x: offset, opacity: 0, scale: 0.98, duration: 0.25 }, 0.02);
+            }
+        }
+
+        // Tiles with stagger
+        const tiles = Array.from(slideEl.querySelectorAll('.tile'));
+        if (tiles.length) {
+            tl.to(tiles, {
+                x: vals.exitTiles,
+                opacity: 0,
+                rotation: direction === 'prev' ? 2 : -2,
+                duration: 0.22,
+                stagger: { each: 0.03, from: vals.staggerFromReverse },
+            }, 0.02);
+        }
+
+        // Bleed images
+        const bleedImg = slideEl.querySelector('.bleed-image-side');
+        if (bleedImg) {
+            tl.to(bleedImg, {
+                x: vals.exitImage,
+                scale: 0.95,
+                opacity: 0,
+                duration: 0.28,
+            }, 0);
+        }
+
+        // Lists
+        const listItems = Array.from(slideEl.querySelectorAll('ul li'));
+        if (listItems.length) {
+            tl.to(listItems, {
+                x: vals.exitList,
+                opacity: 0,
+                duration: 0.2,
+                stagger: { each: 0.02, from: vals.staggerFromReverse },
+            }, 0.02);
+        }
+
+        // Subtitle and hr
+        const subtitle = slideEl.querySelector('.subtitle');
+        const hr = slideEl.querySelector('hr');
+        if (subtitle) tl.to(subtitle, { x: vals.exitContent * 0.5, opacity: 0, duration: 0.2 }, 0.02);
+        if (hr) tl.to(hr, { scaleX: 0, opacity: 0, duration: 0.2 }, 0.02);
+
+        // 3D Snoo iframe (title slide)
+        const snooFrame = slideEl.querySelector('.snoo-frame');
+        if (snooFrame) {
+            tl.to(snooFrame, { scale: 0.9, opacity: 0, duration: 0.25 }, 0.02);
+        }
+
+        return tl;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ENTRANCE ANIMATIONS
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    function createEntranceTimeline(slideEl, direction) {
+        if (!slideEl || !hasGSAP()) return null;
+        
+        // For flowchart slide - always simple fade
+        if (isFlowchartSlide(slideEl)) {
+            const tl = window.gsap.timeline();
+            tl.fromTo(slideEl, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out' });
+            return tl;
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // GOING BACKWARDS: Quick fade, no elaborate animations
+        // Elements appear already in their final position
+        // ═══════════════════════════════════════════════════════════════════
+        if (direction === 'prev') {
+            const tl = window.gsap.timeline({ defaults: { ease: 'power2.out' } });
+            
+            // Just fade in the whole slide quickly - everything already in place
+            // No need to animate individual elements
+            tl.fromTo(slideEl, 
+                { opacity: 0 }, 
+                { opacity: 1, duration: 0.25 }
+            , 0);
+            
+            return tl;
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // GOING FORWARD: Full entrance animations
+        // ═══════════════════════════════════════════════════════════════════
+        const vals = getDirectionalValues(direction);
+        const tl = window.gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+        // ─────────────────────────────────────────────────────────────────────
+        // TITLE SLIDE
+        // ─────────────────────────────────────────────────────────────────────
+        if (isTitleSlide(slideEl)) {
+            const h1 = slideEl.querySelector('h1');
+            const subtitle = slideEl.querySelector('.subtitle');
+            const hr = slideEl.querySelector('hr');
+            const snooFrame = slideEl.querySelector('.snoo-frame');
+
+            if (h1 && hasSplitText()) {
+                const split = splitTitle(h1);
+                if (split && split.chars && split.chars.length) {
+                    window.gsap.set(split.chars, { x: vals.enterTitle, opacity: 0 });
+                    tl.to(split.chars, {
+                        x: 0,
+                        opacity: 1,
+                        duration: 0.4,
+                        stagger: {
+                            each: 0.02,
+                            from: 'center',
+                        },
+                        ease: 'elastic.out(1, 0.6)',
+                    }, 0);
+                }
+            } else if (h1) {
+                tl.fromTo(h1, { y: vals.enterTitle * 0.3, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 0);
+            }
+
+            if (hr) {
+                tl.fromTo(hr, 
+                    { scaleX: 0, transformOrigin: 'center center', opacity: 0 }, 
+                    { scaleX: 1, opacity: 1, duration: 0.4, ease: 'power2.out' }, 
+                0.15);
+            }
+            if (subtitle) {
+                tl.fromTo(subtitle, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, 0.2);
+            }
+            if (snooFrame) {
+                tl.fromTo(snooFrame, { scale: 0.85, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.2)' }, 0.1);
+            }
+            return tl;
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // SECTION TITLE SLIDE
+        // ─────────────────────────────────────────────────────────────────────
+        if (isSectionTitleSlide(slideEl)) {
+            const h2 = slideEl.querySelector('h2');
+            const p = slideEl.querySelector('p');
+
+            if (h2 && hasSplitText()) {
+                const split = splitTitle(h2);
+                if (split && split.words && split.words.length) {
+                    window.gsap.set(split.words, { y: 40, opacity: 0 });
+                    tl.to(split.words, {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.5,
+                        stagger: {
+                            each: 0.08,
+                            from: 'center',
+                        },
+                        ease: 'back.out(1.4)',
+                    }, 0);
+                }
+            } else if (h2) {
+                tl.fromTo(h2, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: 'back.out(1.2)' }, 0);
+            }
+
+            if (p) {
+                tl.fromTo(p, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, 0.2);
+            }
+            return tl;
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // TILED LAYOUTS
+        // ─────────────────────────────────────────────────────────────────────
+        if (hasTiles(slideEl)) {
+            const title = slideEl.querySelector('.slide-title, h2');
+            const tiles = Array.from(slideEl.querySelectorAll('.tile'));
+
+            if (title && hasSplitText()) {
+                const split = splitTitle(title);
+                if (split && split.chars && split.chars.length) {
+                    window.gsap.set(split.chars, { x: vals.enterTitle * 0.5, opacity: 0 });
+                    tl.to(split.chars, {
+                        x: 0, opacity: 1, duration: 0.3,
+                        stagger: { each: 0.018, from: vals.staggerFrom },
+                        ease: 'back.out(1.2)',
+                    }, 0);
+                }
+            } else if (title) {
+                tl.fromTo(title, { x: vals.enterTitle * 0.4, opacity: 0 }, { x: 0, opacity: 1, duration: 0.3 }, 0);
+            }
+
+            if (tiles.length) {
+                window.gsap.set(tiles, { x: vals.enterTiles, opacity: 0, rotation: direction === 'prev' ? -2 : 2 });
+                tl.to(tiles, {
+                    x: 0, opacity: 1, rotation: 0, duration: 0.4,
+                    stagger: { each: 0.06, from: vals.staggerFrom },
+                    ease: 'power2.out',
+                }, 0.1);
+            }
+            return tl;
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // BLEED IMAGE LAYOUTS
+        // ─────────────────────────────────────────────────────────────────────
+        if (isBleedImageSlide(slideEl)) {
+            const title = slideEl.querySelector('.slide-title, h2');
+            const content = slideEl.querySelector('.content-area, .content-container');
+            const bleedImg = slideEl.querySelector('.bleed-image-side');
+            const listItems = Array.from(slideEl.querySelectorAll('ul li'));
+
+            if (bleedImg) {
+                // Clip-path reveal for dramatic effect
+                const clipFrom = direction === 'prev' ? 'inset(0 100% 0 0)' : 'inset(0 0 0 100%)';
+                window.gsap.set(bleedImg, { clipPath: clipFrom, opacity: 1, scale: 1.02 });
+                tl.to(bleedImg, {
+                    clipPath: 'inset(0 0% 0 0%)',
+                    scale: 1,
+                    duration: 0.5,
+                    ease: 'power3.out',
+                }, 0);
+            }
+
+            if (title && hasSplitText()) {
+                const split = splitTitle(title);
+                if (split && split.chars && split.chars.length) {
+                    window.gsap.set(split.chars, { x: vals.enterTitle * 0.4, opacity: 0 });
+                    tl.to(split.chars, {
+                        x: 0, opacity: 1, duration: 0.35,
+                        stagger: { each: 0.02, from: vals.staggerFrom },
+                        ease: 'back.out(1.2)',
+                    }, 0.08);
+                }
+            } else if (title) {
+                tl.fromTo(title, { x: vals.enterTitle * 0.3, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35 }, 0.08);
+            }
+
+            if (content) {
+                tl.fromTo(content, { x: vals.enterContent * 0.3, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4 }, 0.15);
+            }
+
+            if (listItems.length) {
+                window.gsap.set(listItems, { x: vals.enterList, opacity: 0 });
+                tl.to(listItems, {
+                    x: 0, opacity: 1, duration: 0.35,
+                    stagger: { each: 0.04, from: vals.staggerFrom },
+                }, 0.2);
+            }
+            return tl;
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // TWO-COLUMN LAYOUTS
+        // ─────────────────────────────────────────────────────────────────────
+        if (isTwoColumnSlide(slideEl)) {
+            const title = slideEl.querySelector('.slide-title, h2');
+            const columns = slideEl.querySelectorAll('.two-column > div');
+            const leftCol = columns[0];
+            const rightCol = columns[1];
+            const listItems = Array.from(slideEl.querySelectorAll('ul li'));
+
+            if (title && hasSplitText()) {
+                const split = splitTitle(title);
+                if (split && split.chars && split.chars.length) {
+                    window.gsap.set(split.chars, { x: vals.enterTitle * 0.5, opacity: 0 });
+                    tl.to(split.chars, {
+                        x: 0, opacity: 1, duration: 0.35,
+                        stagger: { each: 0.02, from: vals.staggerFrom },
+                        ease: 'back.out(1.2)',
+                    }, 0);
+                }
+            } else if (title) {
+                tl.fromTo(title, { x: vals.enterTitle * 0.4, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35 }, 0);
+            }
+
+            if (leftCol) {
+                tl.fromTo(leftCol, { x: vals.enterContent * 0.4, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4 }, 0.08);
+            }
+
+            if (rightCol) {
+                // Parallax 1.3x on image column
+                const hasImage = rightCol.querySelector('img, .image-wrapper');
+                if (hasImage) {
+                    tl.fromTo(rightCol, 
+                        { x: vals.enterImage * 0.5, opacity: 0, scale: 0.95 }, 
+                        { x: 0, opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out' }, 
+                    0.1);
+                } else {
+                    tl.fromTo(rightCol, { x: vals.enterContent * 0.4, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4 }, 0.1);
+                }
+            }
+
+            if (listItems.length) {
+                window.gsap.set(listItems, { x: vals.enterList, opacity: 0 });
+                tl.to(listItems, {
+                    x: 0, opacity: 1, duration: 0.3,
+                    stagger: { each: 0.04, from: vals.staggerFrom },
+                }, 0.15);
+            }
+            return tl;
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // DEFAULT FALLBACK
+        // ─────────────────────────────────────────────────────────────────────
+        const title = slideEl.querySelector('.slide-title, h1, h2');
+        const content = slideEl.querySelector('.content-area, .content-container');
+
+        if (title) {
+            tl.fromTo(title, { x: vals.enterTitle * 0.4, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35 }, 0);
+        }
+        if (content) {
+            tl.fromTo(content, { x: vals.enterContent * 0.3, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4 }, 0.08);
+        }
+
+        return tl;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // MASTER TRANSITION ORCHESTRATOR
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    function performTransition(outgoing, incoming, targetIndex, direction, options) {
+        if (!hasGSAP()) {
+            STATE.original.showSlide(targetIndex, direction, options);
+            return;
+        }
+
+        // Handle reduced motion
+        if (prefersReducedMotion()) {
+            STATE.original.showSlide(targetIndex, direction, { ...(options || {}), force: true });
+            return;
+        }
+
+        STATE.transitioning = true;
+        STATE.transitionCycle++;
+        const cycleId = STATE.transitionCycle;
+
+        // Kill any running animations on both slides
+        window.gsap.killTweensOf(outgoing);
+        window.gsap.killTweensOf(incoming);
+        
+        // Get animated elements and kill their tweens (exclude React Flow elements)
+        if (outgoing && !isFlowchartSlide(outgoing)) {
+            const outElements = outgoing.querySelectorAll('*:not(.react-flow *):not(#flowchart-root *):not([class*="react-flow"])');
+            window.gsap.killTweensOf(outElements);
+        }
+        if (incoming && !isFlowchartSlide(incoming)) {
+            const inElements = incoming.querySelectorAll('*:not(.react-flow *):not(#flowchart-root *):not([class*="react-flow"])');
+            window.gsap.killTweensOf(inElements);
+        }
+
+        // Create master timeline (total 0.6s)
+        const masterTL = window.gsap.timeline({
+            onComplete: () => {
+                if (cycleId !== STATE.transitionCycle) return; // Stale
+
+                // Cleanup outgoing slide - clear ALL inline styles and transforms
+                // BUT exclude React Flow elements which have their own positioning
+                if (outgoing && !isFlowchartSlide(outgoing)) {
+                    // Clear props on animated children (exclude flowchart elements)
+                    const outChildren = outgoing.querySelectorAll('*:not(.react-flow *):not(#flowchart-root *):not([class*="react-flow"])');
+                    outChildren.forEach(child => {
+                        window.gsap.set(child, { clearProps: 'all' });
+                    });
+                    window.gsap.set(outgoing, { clearProps: 'all' });
+                    
+                    // Cleanup SplitText
+                    const outTitle = outgoing.querySelector('.slide-title, h1, h2');
+                    if (outTitle) cleanupSplit(outTitle);
+                }
+                
+                // For flowchart slide, only clear the container opacity
+                if (outgoing && isFlowchartSlide(outgoing)) {
+                    window.gsap.set(outgoing, { clearProps: 'opacity' });
+                }
+                
+                // Remove active class from outgoing
+                if (outgoing) {
+                    outgoing.classList.remove('active');
+                }
+
+                // Set final state
+                STATE.original.showSlide(targetIndex, direction, { ...(options || {}), force: true });
+
+                // Clear inline styles from incoming and its children
+                // BUT exclude React Flow elements
+                if (incoming && !isFlowchartSlide(incoming)) {
+                    const inChildren = incoming.querySelectorAll('*:not(.react-flow *):not(#flowchart-root *):not([class*="react-flow"])');
+                    inChildren.forEach(child => {
+                        window.gsap.set(child, { clearProps: 'x,y,opacity,scale,rotation,rotateX,rotateY,clipPath,transform' });
+                    });
+                }
+                if (incoming) {
+                    window.gsap.set(incoming, { clearProps: 'opacity,visibility' });
+                }
+
+                STATE.transitioning = false;
+                setObserverToCurrentState();
+            }
+        });
+
+        // ─────────────────────────────────────────────────────────────────────
+        // PHASE 1: EXIT (0 - 0.3s)
+        // ─────────────────────────────────────────────────────────────────────
+        if (outgoing && !isFlowchartSlide(outgoing)) {
+            const exitTL = createExitTimeline(outgoing, direction);
+            if (exitTL) {
+                masterTL.add(exitTL, 0);
+            }
+            // Fade out the slide container
+            masterTL.to(outgoing, {
+                opacity: 0,
+                duration: 0.15,
+                ease: 'power2.in',
+            }, 0.15);
+        } else if (outgoing) {
+            // Simple fade for flowchart
+            masterTL.to(outgoing, { opacity: 0, duration: 0.2, ease: 'power2.in' }, 0);
+        }
+
+        // ─────────────────────────────────────────────────────────────────────
+        // PHASE 2: CROSSFADE (0.2 - 0.3s overlap)
+        // ─────────────────────────────────────────────────────────────────────
+        // Reset incoming slide children BEFORE animating
+        // BUT exclude React Flow elements which have their own positioning
+        if (!isFlowchartSlide(incoming)) {
+            const incomingChildren = incoming.querySelectorAll('*:not(.react-flow *):not(#flowchart-root *):not([class*="react-flow"])');
+            incomingChildren.forEach(child => {
+                window.gsap.set(child, { clearProps: 'x,y,opacity,scale,rotation,rotateX,rotateY,clipPath,transform' });
+            });
+        }
+        
+        // Prepare incoming slide
+        incoming.classList.add('active');
+        incoming.style.visibility = 'visible';
+        incoming.style.pointerEvents = 'auto';
+        window.gsap.set(incoming, { opacity: 0 });
+
+        // Fade in incoming slide container
+        masterTL.to(incoming, {
+            opacity: 1,
+            duration: 0.2,
+            ease: 'power2.out',
+        }, 0.2);
+
+        // ─────────────────────────────────────────────────────────────────────
+        // PHASE 3: ENTRANCE (0.25 - 0.6s)
+        // ─────────────────────────────────────────────────────────────────────
+        const entranceTL = createEntranceTimeline(incoming, direction);
+        if (entranceTL) {
+            masterTL.add(entranceTL, 0.25);
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // SIMPLE CROSSFADE (for edge cases)
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    async function simpleCrossfadeToIndex(targetIndex, direction, options) {
+        const slides = getSlides();
+        const total = slides.length;
+        if (total === 0) return;
+
+        const nextIndex = normalizeIndex(targetIndex, total);
+        const incoming = slides[nextIndex];
+        const outgoing = document.querySelector('.slide-container.active');
+
+        if (!outgoing || outgoing === incoming) {
+            STATE.original.showSlide(targetIndex, direction, { ...(options || {}), force: true });
+            return;
+        }
+
+        if (!hasGSAP()) {
+            STATE.original.showSlide(targetIndex, direction, options);
+            return;
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // SNOO 3D CAMERA ANIMATION - When leaving the intro slide
+        // ═══════════════════════════════════════════════════════════════════
+        if (isSnooSlide(outgoing) && direction === 'next') {
+            const iframe = getSnooIframe(outgoing);
+            if (iframe) {
+                // Animate Snoo camera before transitioning
+                await animateSnooCamera(iframe, direction);
+            }
+        }
+
+        performTransition(outgoing, incoming, targetIndex, direction, options);
+    }
+
+    async function transitionToIndex(targetIndex, direction, options) {
+        const slides = getSlides();
+        const total = slides.length;
+        if (total === 0) return;
+
+        const nextIndex = normalizeIndex(targetIndex, total);
+        const incoming = slides[nextIndex];
+        const outgoing = document.querySelector('.slide-container.active');
+
+        if (!outgoing || outgoing === incoming) {
+            return await simpleCrossfadeToIndex(targetIndex, direction, options);
+        }
+
+        if (!hasGSAP() || prefersReducedMotion()) {
+            return STATE.original.showSlide(targetIndex, direction, options);
+        }
+
+        return await simpleCrossfadeToIndex(targetIndex, direction, options);
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // GRID VIEW ANIMATIONS
+    // ═══════════════════════════════════════════════════════════════════════════
 
     function animateGridEnter() {
         if (!hasGSAP() || prefersReducedMotion()) return;
         const wrapper = document.querySelector('.slides-wrapper');
         const slides = getSlides();
 
-        // In grid view, all slides are active + positioned relative; safe to animate.
         window.gsap.killTweensOf([wrapper, ...slides]);
         window.gsap.set(wrapper, { willChange: 'opacity,transform' });
         window.gsap.set(slides, { willChange: 'opacity,transform' });
@@ -384,19 +938,15 @@
             },
         });
 
-        tl.fromTo(wrapper, { opacity: 0 }, { opacity: 1, duration: 0.22 }, 0);
-        tl.fromTo(slides, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.38, stagger: 0.015 }, 0.02);
+        tl.fromTo(wrapper, { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0);
+        tl.fromTo(slides, { opacity: 0, y: 15, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, stagger: 0.02 }, 0.05);
     }
 
     function clearGridScrollReveal() {
         if (!STATE.gridScrollTriggers || !STATE.gridScrollTriggers.length) return;
         try {
             STATE.gridScrollTriggers.forEach((t) => {
-                try {
-                    if (t && typeof t.kill === 'function') t.kill();
-                } catch {
-                    // Ignore
-                }
+                try { if (t && typeof t.kill === 'function') t.kill(); } catch {}
             });
         } finally {
             STATE.gridScrollTriggers = [];
@@ -404,7 +954,6 @@
     }
 
     function setupGridScrollReveal() {
-        // Only meaningful in grid view where wrapper scrolls.
         if (!hasScrollTrigger() || prefersReducedMotion()) return;
         if (!isGridView()) return;
 
@@ -416,24 +965,14 @@
         const slides = getSlides();
         if (!slides.length) return;
 
-        // Lightweight: reveal only once per tile as it comes into view.
         slides.forEach((slideEl) => {
-            // Avoid doing anything special with the flowchart slide; it’s heavier.
             if (isFlowchartSlide(slideEl)) return;
 
-            // Ensure a clean base.
             window.gsap.set(slideEl, { clearProps: 'opacity,transform' });
 
-            const tween = window.gsap.fromTo(
-                slideEl,
-                { opacity: 0, y: 10 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.35,
-                    ease: 'power2.out',
-                    paused: true,
-                }
+            const tween = window.gsap.fromTo(slideEl,
+                { opacity: 0, y: 15 },
+                { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', paused: true }
             );
 
             const trigger = window.ScrollTrigger.create({
@@ -447,12 +986,7 @@
             STATE.gridScrollTriggers.push(trigger);
         });
 
-        // Refresh in case layout changed.
-        try {
-            window.ScrollTrigger.refresh();
-        } catch {
-            // Ignore
-        }
+        try { window.ScrollTrigger.refresh(); } catch {}
     }
 
     function animateGridExit(onDone) {
@@ -469,174 +1003,19 @@
         window.gsap.killTweensOf(wrapper);
         window.gsap.to(wrapper, {
             opacity: 0,
-            duration: 0.14,
+            scale: 0.98,
+            duration: 0.18,
             ease: 'power2.in',
             onComplete: () => {
                 onDone();
-                window.gsap.set(wrapper, { clearProps: 'opacity' });
+                window.gsap.set(wrapper, { clearProps: 'opacity,scale' });
             },
         });
     }
 
-    function animateListStagger(slideEl, direction) {
-        if (!hasGSAP() || prefersReducedMotion()) return;
-        if (!slideEl || isFlowchartSlide(slideEl)) return;
-        const items = Array.from(slideEl.querySelectorAll('ul li'));
-        if (!items.length) return;
-
-        const fromY = direction === 'prev' ? -8 : 8;
-        window.gsap.killTweensOf(items);
-        window.gsap.set(items, { willChange: 'transform,opacity' });
-        window.gsap.fromTo(items, { y: fromY, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, stagger: 0.03, ease: 'power2.out', clearProps: 'willChange,transform,opacity' });
-    }
-
-    function collectEntranceTargets(slideEl) {
-        if (!slideEl) return [];
-
-        // Avoid interfering with the React Flow mount.
-        if (isFlowchartSlide(slideEl)) return [];
-
-        const targets = [];
-
-        // Generic targets: title, content blocks, tiles, images.
-        const title = slideEl.querySelector('.slide-title, h1, h2');
-        if (title) targets.push(title);
-
-        // Title slide layout.
-        const subtitle = slideEl.querySelector('.subtitle');
-        const hr = slideEl.querySelector('hr');
-        if (subtitle) targets.push(subtitle);
-        if (hr) targets.push(hr);
-
-        // Common content regions.
-        const contentArea = slideEl.querySelector('.content-area');
-        if (contentArea) targets.push(contentArea);
-
-        // Tiles (staggered).
-        const tiles = Array.from(slideEl.querySelectorAll('.tile'));
-        if (tiles.length) targets.push(...tiles);
-
-        // Two-column / lists.
-        const columns = Array.from(slideEl.querySelectorAll('.two-column > div'));
-        if (columns.length) targets.push(...columns);
-
-        // Bleed image.
-        const bleedImg = slideEl.querySelector('.bleed-image-side');
-        if (bleedImg) targets.push(bleedImg);
-
-        // De-dup.
-        return Array.from(new Set(targets)).filter(Boolean);
-    }
-
-    function animateEntrance(slideEl, direction) {
-        if (!hasGSAP() || prefersReducedMotion()) return;
-
-        // Never interfere with the flowchart slide (wheel/pinch/drag).
-        if (isFlowchartSlide(slideEl)) return;
-
-
-        // Special: Modular Lego Concept image assembles as blocks (image-only, never overlaps text).
-        const legoImg = getLegoConceptImage(slideEl);
-        if (legoImg) {
-            const fromY = direction === 'prev' ? -12 : 12;
-            const tl = window.gsap.timeline({ defaults: { ease: 'power2.out' } });
-
-            const title = slideEl.querySelector('.slide-title, h2');
-            const leftCol = slideEl.querySelector('.two-column > div:first-child');
-            if (title) {
-                tl.fromTo(title, { y: fromY, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35 }, 0);
-            }
-            if (leftCol) {
-                tl.fromTo(leftCol, { y: fromY * 0.7, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45 }, 0.08);
-            }
-            // Run the lego build inside the image wrapper.
-            tl.call(() => animateLegoAssemble(legoImg), [], 0.02);
-            return;
-        }
-
-        // Keep this subtle; no blur filters, no heavy transforms.
-        // NOTE: We only animate child elements, never `.slide-container` itself.
-        const fromY = direction === 'prev' ? -12 : 12;
-        const tl = window.gsap.timeline({ defaults: { ease: 'power2.out' } });
-
-        // Title slide: animate as a whole (no word/letter splitting to avoid kerning snaps).
-        if (isTitleSlide(slideEl)) {
-            const h1 = slideEl.querySelector('h1');
-            const subtitle = slideEl.querySelector('.subtitle');
-            const hr = slideEl.querySelector('hr');
-
-            if (h1) {
-                tl.fromTo(h1, { y: fromY, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55 }, 0);
-            }
-            if (hr) {
-                tl.fromTo(hr, { scaleX: 0, transformOrigin: 'left center', opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.45 }, 0.12);
-            }
-            if (subtitle) {
-                tl.fromTo(subtitle, { y: fromY * 0.5, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45 }, 0.18);
-            }
-            return;
-        }
-
-        // Section title slide: gentle title focus (no splitting).
-        if (isSectionTitleSlide(slideEl)) {
-            const h2 = slideEl.querySelector('h2');
-            const p = slideEl.querySelector('p');
-            if (h2) {
-                tl.fromTo(h2, { y: fromY, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45 }, 0);
-            }
-            if (p) {
-                tl.fromTo(p, { y: fromY * 0.5, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, 0.12);
-            }
-            return;
-        }
-
-        // Tiled slides: title + tile cascade.
-        if (hasTiles(slideEl)) {
-            const title = slideEl.querySelector('.slide-title, h2');
-            const tiles = Array.from(slideEl.querySelectorAll('.tile'));
-            if (title) {
-                tl.fromTo(title, { y: fromY, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35 }, 0);
-            }
-            tl.fromTo(
-                tiles,
-                { y: fromY + 8, opacity: 0 },
-                { y: 0, opacity: 1, duration: 0.5, stagger: 0.06 },
-                0.08
-            );
-            return;
-        }
-
-        // Bleed image slides: image + copy.
-        if (isBleedImageSlide(slideEl)) {
-            const title = slideEl.querySelector('.slide-title, h2');
-            const content = slideEl.querySelector('.content-area, .content-container');
-            const img = slideEl.querySelector('.bleed-image-side');
-            if (title) {
-                tl.fromTo(title, { y: fromY, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35 }, 0);
-            }
-            if (content) {
-                tl.fromTo(content, { y: fromY * 0.6, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45 }, 0.08);
-            }
-            if (img) {
-                tl.fromTo(img, { opacity: 0, scale: 1.02 }, { opacity: 1, scale: 1, duration: 0.7, ease: 'power2.out' }, 0);
-            }
-            return;
-        }
-
-        // Default: light stagger across common targets.
-        const targets = collectEntranceTargets(slideEl);
-        if (!targets.length) return;
-        window.gsap.killTweensOf(targets);
-        window.gsap.set(targets, { willChange: 'transform,opacity' });
-        tl.fromTo(targets, { y: fromY, opacity: 0 }, { y: 0, opacity: 1, duration: 0.42, stagger: 0.04 }, 0);
-        tl.eventCallback('onComplete', () => {
-            window.gsap.set(targets, { clearProps: 'willChange,transform,opacity' });
-        });
-    }
-
-    function currentActiveSlide() {
-        return document.querySelector('.slide-container.active');
-    }
+    // ═══════════════════════════════════════════════════════════════════════════
+    // OBSERVER NAVIGATION (wheel/touch/drag)
+    // ═══════════════════════════════════════════════════════════════════════════
 
     function shouldEnableObserverNow() {
         if (prefersReducedMotion()) return false;
@@ -655,19 +1034,20 @@
         else STATE.observer.disable();
     }
 
+    function setObserverToCurrentState() {
+        setObserverEnabled(shouldEnableObserverNow());
+    }
+
     function setupObserverNav() {
         if (!hasObserver() || STATE.observer) return;
 
-        // Ultra-safe gesture nav: wheel/touch/drag gestures trigger prev/next.
-        // We explicitly ignore the React Flow area and disable in grid view.
-        const cooldownMs = 520;
+        const cooldownMs = 650; // Slightly longer for 0.6s transitions
         let lastNavAt = 0;
 
         STATE.observer = window.gsap.plugins.Observer.create({
             target: window,
             type: 'wheel,touch,pointer',
             wheelSpeed: -1,
-            // Do NOT preventDefault globally — keep it non-invasive.
             preventDefault: false,
             tolerance: 18,
             ignore: '#flowchart-root, .react-flow, .flowchart-toggles, input, button, a',
@@ -687,185 +1067,82 @@
             },
         });
 
-        // Start disabled until we confirm we should be active.
         setObserverEnabled(false);
     }
 
-    function simpleCrossfadeToIndex(targetIndex, direction, options) {
-        const slides = getSlides();
-        const total = slides.length;
-        if (total === 0) return;
+    // ═══════════════════════════════════════════════════════════════════════════
+    // MICRO-INTERACTIONS (hover effects)
+    // ═══════════════════════════════════════════════════════════════════════════
 
-        const nextIndex = normalizeIndex(targetIndex, total);
-        const incoming = slides[nextIndex];
-        const outgoing = document.querySelector('.slide-container.active');
+    function setupHoverEffects() {
+        if (!hasGSAP() || prefersReducedMotion()) return;
 
-        // If we're leaving the Lego slide, reset so it can replay next time.
-        if (outgoing) resetLegoAnimation(outgoing);
+        // Tiles hover
+        document.querySelectorAll('.tile').forEach(tile => {
+            tile.addEventListener('mouseenter', () => {
+                window.gsap.to(tile, {
+                    scale: 1.02,
+                    y: -4,
+                    boxShadow: '0 12px 40px rgba(0,0,0,0.15)',
+                    duration: 0.25,
+                    ease: 'power2.out',
+                });
+            });
+            tile.addEventListener('mouseleave', () => {
+                window.gsap.to(tile, {
+                    scale: 1,
+                    y: 0,
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+                    duration: 0.25,
+                    ease: 'power2.out',
+                });
+            });
+        });
 
-        // If there's no outgoing (first paint), keep it simple.
-        if (!outgoing || outgoing === incoming) {
-            STATE.original.showSlide(targetIndex, direction, { ...(options || {}), force: true });
-            return;
-        }
+        // Control buttons hover
+        document.querySelectorAll('.controls button, .btn').forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                window.gsap.to(btn, {
+                    scale: 1.08,
+                    duration: 0.2,
+                    ease: 'power2.out',
+                });
+            });
+            btn.addEventListener('mouseleave', () => {
+                window.gsap.to(btn, {
+                    scale: 1,
+                    duration: 0.2,
+                    ease: 'power2.out',
+                });
+            });
+        });
 
-        // If GSAP isn't available, fall back to instant.
-        if (!hasGSAP()) {
-            STATE.original.showSlide(targetIndex, direction, options);
-            return;
-        }
-
-        // Kill any ongoing animations on these slides
-        window.gsap.killTweensOf([outgoing, incoming]);
-
-        // Commit the state change first, then animate
-        STATE.transitioning = true;
-        
-        // Set incoming to opacity 0 before making it active
-        incoming.style.opacity = '0';
-        
-        STATE.original.showSlide(targetIndex, direction, { ...(options || {}), force: true });
-
-        // Now animate the fade
-        window.gsap.to(incoming, {
-            opacity: 1,
-            duration: 0.35,
-            ease: 'power2.out',
-            onComplete: () => {
-                incoming.style.opacity = '';
-                STATE.transitioning = false;
-                setObserverToCurrentState();
-            }
+        // Image wrappers subtle hover
+        document.querySelectorAll('.image-wrapper').forEach(wrapper => {
+            wrapper.addEventListener('mouseenter', () => {
+                window.gsap.to(wrapper, {
+                    scale: 1.01,
+                    duration: 0.3,
+                    ease: 'power2.out',
+                });
+            });
+            wrapper.addEventListener('mouseleave', () => {
+                window.gsap.to(wrapper, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: 'power2.out',
+                });
+            });
         });
     }
 
-    function doPushTransition(outgoing, incoming, targetIndex, direction, options) {
-        const layer = createTransitionLayer();
-        const outData = cloneSlideForLayer(outgoing);
-        const inData = cloneSlideForLayer(incoming);
-
-        layer.appendChild(outData.clone);
-        layer.appendChild(inData.clone);
-
-        // Hide real slides during animation.
-        setTempVisible(outgoing, 0);
-        setTempVisible(incoming, 0);
-
-        window.gsap.set([outData.clone, inData.clone], { willChange: 'transform,opacity' });
-        window.gsap.set(inData.clone, { y: direction === 'prev' ? -80 : 80, opacity: 0.001 });
-
-        STATE.transitioning = true;
-
-        window.gsap.timeline({
-            defaults: { ease: 'power3.inOut' },
-            onComplete: () => {
-                STATE.original.showSlide(targetIndex, direction, { ...(options || {}), force: true });
-                clearTempStyles(outgoing);
-                clearTempStyles(incoming);
-                cleanupTransitionLayer(layer);
-                STATE.transitioning = false;
-                if (!prefersReducedMotion()) {
-                    const active = currentActiveSlide();
-                    if (active) {
-                        animateEntrance(active, direction);
-                        animateListStagger(active, direction);
-                    }
-                }
-                setObserverToCurrentState();
-            },
-        })
-            .to(outData.clone, { y: direction === 'prev' ? 80 : -80, opacity: 0, duration: 0.55 }, 0)
-            .to(inData.clone, { y: 0, opacity: 1, duration: 0.6 }, 0.06);
-    }
-
-    function doSplitRevealTransition(outgoing, incoming, targetIndex, direction, options) {
-        const layer = createTransitionLayer();
-
-        const outTop = cloneSlideForLayer(outgoing).clone;
-        const outBottom = cloneSlideForLayer(outgoing).clone;
-        const inTop = cloneSlideForLayer(incoming).clone;
-        const inBottom = cloneSlideForLayer(incoming).clone;
-
-        // Clip halves
-        const topHalf = 'inset(0% 0% 50% 0%)';
-        const bottomHalf = 'inset(50% 0% 0% 0%)';
-        outTop.style.clipPath = topHalf;
-        outBottom.style.clipPath = bottomHalf;
-        inTop.style.clipPath = 'inset(0% 0% 100% 0%)';
-        inBottom.style.clipPath = 'inset(100% 0% 0% 0%)';
-
-        layer.appendChild(outTop);
-        layer.appendChild(outBottom);
-        layer.appendChild(inTop);
-        layer.appendChild(inBottom);
-
-        // Hide real slides during animation.
-        setTempVisible(outgoing, 0);
-        setTempVisible(incoming, 0);
-
-        window.gsap.set([outTop, outBottom, inTop, inBottom], { willChange: 'transform,opacity,clip-path' });
-        window.gsap.set([inTop, inBottom], { opacity: 1 });
-
-        STATE.transitioning = true;
-
-        const outY = 70;
-        const inY = 14;
-
-        window.gsap.timeline({
-            defaults: { ease: 'power3.inOut' },
-            onComplete: () => {
-                STATE.original.showSlide(targetIndex, direction, { ...(options || {}), force: true });
-                clearTempStyles(outgoing);
-                clearTempStyles(incoming);
-                cleanupTransitionLayer(layer);
-                STATE.transitioning = false;
-                if (!prefersReducedMotion()) {
-                    const active = currentActiveSlide();
-                    if (active) {
-                        animateEntrance(active, direction);
-                        animateListStagger(active, direction);
-                    }
-                }
-                setObserverToCurrentState();
-            },
-        })
-            // Outgoing splits away
-            .to(outTop, { y: -outY, opacity: 0, duration: 0.5 }, 0)
-            .to(outBottom, { y: outY, opacity: 0, duration: 0.5 }, 0)
-            // Incoming reveals top then bottom
-            .fromTo(inTop, { y: inY }, { y: 0, duration: 0.45 }, 0.08)
-            .to(inTop, { clipPath: topHalf, duration: 0.55 }, 0.08)
-            .fromTo(inBottom, { y: inY }, { y: 0, duration: 0.45 }, 0.22)
-            .to(inBottom, { clipPath: bottomHalf, duration: 0.55 }, 0.22);
-    }
-
-    function transitionToIndex(targetIndex, direction, options) {
-        const slides = getSlides();
-        const total = slides.length;
-        if (total === 0) return;
-
-        const nextIndex = normalizeIndex(targetIndex, total);
-        const incoming = slides[nextIndex];
-        const outgoing = document.querySelector('.slide-container.active');
-
-        // First paint / no-op.
-        if (!outgoing || outgoing === incoming) {
-            return simpleCrossfadeToIndex(targetIndex, direction, options);
-        }
-
-        // Reduced motion or missing GSAP -> fallback.
-        if (!hasGSAP() || prefersReducedMotion()) {
-            return STATE.original.showSlide(targetIndex, direction, options);
-        }
-
-        // Use simple crossfade for all transitions to avoid stutter
-        return simpleCrossfadeToIndex(targetIndex, direction, options);
-    }
+    // ═══════════════════════════════════════════════════════════════════════════
+    // NAVIGATION WRAPPER
+    // ═══════════════════════════════════════════════════════════════════════════
 
     function wrapNavigation() {
         if (STATE.initialized) return;
 
-        // These are global function declarations from animations.js
         const originalShowSlide = window.showSlide;
         const originalNext = window.nextSlide;
         const originalPrev = window.prevSlide;
@@ -878,25 +1155,24 @@
         STATE.original.prevSlide = typeof originalPrev === 'function' ? originalPrev : null;
         STATE.original.toggleGridView = typeof originalToggleGridView === 'function' ? originalToggleGridView : null;
 
-        // Wrap showSlide for arrow keys + buttons.
+        // Wrap showSlide
         window.showSlide = function (n, direction, options) {
             if (STATE.transitioning) return;
             if (isGridView()) {
-                // Preserve existing behavior: no slide changes during grid view.
                 return STATE.original.showSlide(n, direction, options);
             }
             transitionToIndex(n, direction, options);
         };
 
-        // Wrap next/prev too, in case they’re called directly.
+        // Wrap nextSlide
         if (STATE.original.nextSlide) {
             window.nextSlide = function () {
                 if (STATE.transitioning || isGridView()) return;
-                // Delegate to showSlide wrapper by calling the original.
                 STATE.original.nextSlide();
             };
         }
 
+        // Wrap prevSlide
         if (STATE.original.prevSlide) {
             window.prevSlide = function () {
                 if (STATE.transitioning || isGridView()) return;
@@ -904,7 +1180,7 @@
             };
         }
 
-        // Wrap grid toggle with a subtle enter/exit polish.
+        // Wrap toggleGridView
         if (STATE.original.toggleGridView) {
             window.toggleGridView = function () {
                 if (!hasGSAP() || prefersReducedMotion()) {
@@ -913,28 +1189,27 @@
                     return result;
                 }
 
-                // Determine current state BEFORE toggling.
                 const currentlyGrid = isGridView();
 
                 if (!currentlyGrid) {
-                    // Enter grid: toggle first so layout is correct, then animate in.
+                    // Enter grid view
+                    cleanupAllSplits(); // Clean up any active splits
                     const result = STATE.original.toggleGridView();
-                    // Observer should be off in grid.
                     setObserverToCurrentState();
                     animateGridEnter();
                     setupGridScrollReveal();
                     return result;
                 }
 
-                // Exit grid: animate out, then toggle.
+                // Exit grid view
                 return animateGridExit(() => {
                     STATE.original.toggleGridView();
                     setObserverToCurrentState();
 
                     const active = currentActiveSlide();
                     if (active && hasGSAP() && !prefersReducedMotion()) {
-                        animateEntrance(active, 'next');
-                        animateListStagger(active, 'next');
+                        const entranceTL = createEntranceTimeline(active, 'next');
+                        if (entranceTL) entranceTL.play();
                     }
                 });
             };
@@ -943,25 +1218,40 @@
         STATE.initialized = true;
     }
 
-    // Init when DOM is ready; also retry briefly in case scripts load out of order.
+    // ═══════════════════════════════════════════════════════════════════════════
+    // INITIALIZATION
+    // ═══════════════════════════════════════════════════════════════════════════
+
     function init() {
         registerPlugins();
         wrapNavigation();
         setupObserverNav();
+        setupHoverEffects();
 
-        // Keep observer state in sync with slide changes and grid view.
+        // Keep observer state in sync
         const syncObserver = () => setObserverEnabled(shouldEnableObserverNow());
         window.addEventListener('keydown', () => syncObserver(), { passive: true });
         window.addEventListener('click', () => syncObserver(), { passive: true });
         window.addEventListener('resize', () => syncObserver(), { passive: true });
-        // Initial sync.
         syncObserver();
 
+        // Log status
+        if (hasGSAP()) {
+            console.log('🎬 GSAP Premium Animations loaded');
+            if (hasSplitText()) {
+                console.log('✨ SplitText enabled for title animations');
+            } else {
+                console.log('⚠️ SplitText not available - using fallback animations');
+            }
+        }
+
         if (STATE.initialized) return;
-        // Retry a few times (CDN + script order safety)
+        
+        // Retry a few times for script load order safety
         let tries = 0;
         const timer = setInterval(() => {
             wrapNavigation();
+            setupHoverEffects();
             tries += 1;
             if (STATE.initialized || tries > 50) clearInterval(timer);
         }, 50);

@@ -378,7 +378,7 @@ body.grid-view .slide--dark .flowchart-toggles {
 }
 
 .slide--light .image-wrapper {
-    background-color: var(--color-bg);
+    background-color: transparent;
     border: 1px solid rgba(26, 46, 40, 0.1);
 }
 
@@ -554,7 +554,7 @@ ul li::before {
     max-height: 450px; /* Restricted height */
     width: 100%;
     box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    background-color: var(--color-bg);
+    background-color: transparent;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -564,7 +564,7 @@ ul li::before {
 .image-wrapper img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 /* Scan slideshow */
@@ -939,7 +939,7 @@ ul li::before {
                 <p style="margin-bottom: 20px;">Choose which AR features to activate—each is a separate option the client can select based on event goals.</p>
                 <ul>
                     <li><strong>AR Filters (Face):</strong> Fun face filters featuring your customized Snoo. Perfect for social sharing and selfies.</li>
-                    <li><strong>AR Placement (SLAM):</strong> Place your 3D Snoo in real space—on tables, floors, or anywhere. Take photos with your Snoo in the venue.</li>
+                    <li><strong>AR Placement (FOOH-style):</strong> Place your 3D Snoo in real space—on tables, floors, or anywhere. Take photos with your Snoo in the venue.</li>
                     <li><strong>Augmented Physical Merch:</strong> AR overlays let you preview real-world swag before claiming it—try on hats, hoodies, and branded items virtually.</li>
                     <li><strong>Virtual Merch:</strong> Unlock digital collectibles and exclusive Snoo accessories—items that live in your profile.</li>
                 </ul>
@@ -1029,7 +1029,6 @@ ul li::before {
             <ul>
                 <li><strong>Live Infographic:</strong> Send your Snoo to screens at different locations. See "I was here" and how many Snoos visited each spot.</li>
                 <li><strong>Phone as Controller:</strong> Scan a QR, and your phone becomes the gamepad for the big screen.</li>
-                <li><strong>See Your Snoo on Screen:</strong> Your customized Snoo appears in infographics, games, and visualizations.</li>
                 <li><strong>No custom hardware needed:</strong> Only a screen with internet access to see the web experience.</li>
                 <li><strong>Conversations Starter:</strong> Designed to spark networking among attendees—play together, meet new people.</li>
             </ul>
@@ -1140,10 +1139,11 @@ ul li::before {
 
 <script src="animations.js"></script>
 
-<!-- GSAP (Phase 1: safe crossfades) -->
+<!-- GSAP Premium Animations -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Observer.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js"></script>
 <script src="gsap-animations.js"></script>
 
 <!-- React + React Flow CDN (production UMD builds) -->
