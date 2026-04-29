@@ -135,6 +135,70 @@ window.addEventListener('keydown', (event) => {
     }
 });
 
+// Touch / swipe navigation for mobile + on-screen prev/next buttons
+(function setupTouchNavigation() {
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartTime = 0;
+    let trackingTouch = false;
+
+    const SWIPE_THRESHOLD = 50;      // min horizontal px
+    const VERTICAL_LIMIT = 80;       // max vertical drift
+    const MAX_DURATION = 800;        // ms
+
+    function isInteractiveTarget(target) {
+        if (!target || !(target instanceof Element)) return false;
+        return !!target.closest(
+            'button, a, input, textarea, select, label, ' +
+            '#flowchart-root, .flowchart-toggles, ' +
+            '#sidebar-flowchart-root, .flowchart-sidebar, ' +
+            '.title-snoo-embed, .scan-slideshow, .react-flow'
+        );
+    }
+
+    window.addEventListener('touchstart', (e) => {
+        if (isGridView || isSidebarOpen) { trackingTouch = false; return; }
+        if (e.touches.length !== 1) { trackingTouch = false; return; }
+        if (isInteractiveTarget(e.target)) { trackingTouch = false; return; }
+        const t = e.touches[0];
+        touchStartX = t.clientX;
+        touchStartY = t.clientY;
+        touchStartTime = Date.now();
+        trackingTouch = true;
+    }, { passive: true });
+
+    window.addEventListener('touchend', (e) => {
+        if (!trackingTouch) return;
+        trackingTouch = false;
+        const t = e.changedTouches[0];
+        const dx = t.clientX - touchStartX;
+        const dy = t.clientY - touchStartY;
+        const dt = Date.now() - touchStartTime;
+        if (dt > MAX_DURATION) return;
+        if (Math.abs(dy) > VERTICAL_LIMIT) return;
+        if (Math.abs(dx) < SWIPE_THRESHOLD) return;
+        if (dx < 0) nextSlide(); else prevSlide();
+    }, { passive: true });
+
+    // Inject on-screen prev/next buttons (mobile-friendly fallback)
+    window.addEventListener('DOMContentLoaded', () => {
+        const controls = document.querySelector('.controls');
+        if (!controls || document.getElementById('mobileNavBtns')) return;
+        const wrap = document.createElement('div');
+        wrap.id = 'mobileNavBtns';
+        wrap.className = 'mobile-nav-btns';
+        wrap.innerHTML = `
+            <button class="btn nav-btn" aria-label="Previous slide" onclick="prevSlide()">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button class="btn nav-btn" aria-label="Next slide" onclick="nextSlide()">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        `;
+        controls.parentNode.insertBefore(wrap, controls);
+    });
+})();
+
 // Animate the first slide in on load
 window.addEventListener('DOMContentLoaded', () => {
     const totalSlides = getSlides().length;
