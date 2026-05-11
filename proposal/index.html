@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-K68S7LCJ');</script>
+    <!-- End Google Tag Manager -->
+</head>
+    <meta charset="UTF-8">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K68S7LCJ"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="../">
+    <title>proposal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/reactflow@11.11.4/dist/style.css">
+    <style>
+/* ===========================================
+   IMMERSIVE RECAP — Stylesheet
+   Based on the Reddit Slides design system
+   =========================================== */
+
+:root {
+    --color-primary:       #d8ff85;
+    --color-primary-dark:  #b8e05a;
+    --color-primary-light: #e5ffa8;
+    --color-bg:            #1a2e28;
+    --color-bg-dark:       #0f1f1a;
+    --color-bg-light:      #f7f9f2;
+    --color-white:         #f7f9f2;
+    --color-text:          #f7f9f2;
+    --color-text-dark:     #1a2e28;
+    --color-text-muted:    #8a9a92;
+    --font-main:           'Inter Tight', sans-serif;
+    --font-display:        'Playfair Display', serif;
+    --font-title:          'Instrument Serif', serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background-color: var(--color-bg);
+    font-family: var(--font-main);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.slides-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ── REEL SLIDE (persistent styles — immune to GSAP clearProps) ── */
+#slide-reel {
+    padding: 0 !important;
+    background: #0a0a0a !important;
+    overflow: hidden !important;
+}
+#slide-reel .reel-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1.7fr;
+    height: 100%;
+    position: relative;
+}
+#slide-reel .reel-left {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    padding: 50px 44px;
+    z-index: 2;
+    position: relative;
+    overflow: hidden;
+}
+#slide-reel .reel-left .accent-tag {
+    color: var(--color-primary) !important;
+    opacity: 0.8;
+    margin-bottom: 20px;
+}
+#slide-reel .reel-left h2 {
+    font-family: var(--font-title) !important;
+    font-size: 48px !important;
+    font-weight: 400 !important;
+    color: #f7f9f2 !important;
+    line-height: 1.0 !important;
+    margin-bottom: 16px !important;
+}
+#slide-reel .reel-left h2 em {
+    font-family: var(--font-display) !important;
+    font-style: italic;
+    color: var(--color-primary) !important;
+}
+#slide-reel .reel-cities {
+    font-size: 13px !important;
+    line-height: 1.8;
+    color: rgba(247,249,242,0.45) !important;
+    margin-bottom: 0 !important;
+}
+#slide-reel .reel-right {
+    position: relative !important;
+    overflow: hidden;
+}
+#slide-reel .reel-overlay {
+    position: absolute !important;
+    inset: 0;
+    background: linear-gradient(to right, #0a0a0a 0%, transparent 28%);
+    z-index: 1;
+    pointer-events: none;
+}
+#slide-reel video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+    display: block !important;
+}
+
+/* ── PROJECT MEDIA (video/image — immune to GSAP clearProps) ── */
+.project-video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+    border-radius: 8px;
+    min-height: 260px;
+}
+.project-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+    border-radius: 8px;
+    min-height: 260px;
+}
+#slide-pipeline {
+    position: relative;
+}
+#slide-pipeline .pipeline-bg {
+    position: absolute !important;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.1;
+    z-index: 0;
+    pointer-events: none;
+}
+#slide-pipeline .pipeline-hero {
+    position: relative;
+    z-index: 1;
+}
+
+/* ── TILE HOVER MEDIA POPUP ── */
+.tile-media {
+    position: relative;
+    cursor: pointer;
+    isolation: isolate;
+}
+.tile-media .hover-img,
+.tile-media .hover-vid {
+    position: absolute;
+    top: calc(100% + 14px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px) scale(0.96);
+    width: 300px;
+    border-radius: 16px;
+    box-shadow: 0 24px 72px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    z-index: 200;
+    display: block;
+    object-fit: cover;
+    overflow: hidden;
+}
+.tile-media:hover .hover-img,
+.tile-media:hover .hover-vid {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+    pointer-events: auto;
+    cursor: zoom-in;
+}
+
+/* ── Tile Lightbox ── */
+#tile-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(5, 12, 10, 0);
+    pointer-events: none;
+    transition: background 0.3s ease;
+}
+#tile-lightbox.open {
+    background: rgba(5, 12, 10, 0.85);
+    pointer-events: auto;
+    cursor: zoom-out;
+}
+#tile-lightbox-inner {
+    width: 72vw;
+    max-width: 1080px;
+    max-height: 72vh;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.07);
+    transform: scale(0.86);
+    opacity: 0;
+    transition: transform 0.38s cubic-bezier(0.34,1.35,0.64,1), opacity 0.28s ease;
+    cursor: auto;
+    background: #000;
+}
+#tile-lightbox.open #tile-lightbox-inner {
+    transform: scale(1);
+    opacity: 1;
+}
+#tile-lightbox-inner video,
+#tile-lightbox-inner img {
+    width: 100%;
+    max-height: 72vh;
+    display: block;
+    object-fit: contain;
+}
+
+/* AI slide: allow popup to overflow below the slide */
+#slide-ai {
+    overflow: visible !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    padding: 50px 80px !important;
+}
+#slide-ai .slide-title {
+    font-size: 38px !important;
+    margin-bottom: 8px !important;
+    color: var(--color-text-dark) !important;
+}
+#slide-ai > p {
+    font-size: 15px !important;
+    color: #4a5a52 !important;
+    margin-bottom: 28px !important;
+    opacity: 1 !important;
+}
+#slide-ai .tiled-content {
+    display: flex !important;
+    gap: 20px !important;
+    margin-top: 0 !important;
+    align-items: stretch !important;
+    width: 100% !important;
+}
+#slide-ai .tile {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    padding: 24px 20px !important;
+    flex: 1 !important;
+    border-radius: 12px !important;
+    background-color: rgba(26,46,40,0.06) !important;
+    border: 1px solid rgba(26,46,40,0.12) !important;
+}
+#slide-ai .tile .icon {
+    font-size: 24px !important;
+    color: var(--color-bg) !important;
+    margin-bottom: 4px !important;
+}
+#slide-ai .tile h3 {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: var(--color-text-dark) !important;
+    margin: 0 !important;
+}
+#slide-ai .tile p {
+    font-size: 13px !important;
+    color: #4a5a52 !important;
+    line-height: 1.5 !important;
+    margin: 0 !important;
+}
+
+/* ── WORKFLOW SLIDE ── */
+#slide-workflow {
+    background: var(--color-bg-dark) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    padding: 40px 60px !important;
+    overflow: hidden !important;
+}
+#slide-workflow .slide-title {
+    font-size: 38px !important;
+    margin-bottom: 4px !important;
+}
+#slide-workflow .slide-subtitle {
+    font-size: 15px !important;
+    color: var(--color-text-muted) !important;
+    margin-bottom: 20px !important;
+}
+#slide-workflow .workflow-container {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    max-height: calc(100vh - 200px) !important;
+}
+#slide-workflow .react-flow__node {
+    font-family: var(--font-main) !important;
+}
+#slide-workflow .react-flow__edge-textbg {
+    rx: 6;
+    ry: 6;
+}
+
+/* ── VASTEROIDS ── */
+#slide-vasteroids .vasteroids-video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+    border-radius: 8px;
+    min-height: 260px;
+}
+
+/* Floating comment popup */
+#vasteroids-comment {
+    position: absolute !important;
+    bottom: 64px;
+    left: 80px;
+    width: 270px;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.07);
+    z-index: 10;
+    opacity: 0;
+    transform: translateY(22px);
+    pointer-events: none;
+}
+#vasteroids-comment img {
+    width: 100% !important;
+    display: block !important;
+    border-radius: 14px;
+}
+
+#reddit-comment {
+    position: absolute !important;
+    right: 110px;
+    bottom: 72px;
+    width: 245px;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.07);
+    z-index: 10;
+    opacity: 0;
+    transform: translateY(22px);
+    pointer-events: none;
+}
+#reddit-comment img {
+    width: 100% !important;
+    display: block !important;
+    border-radius: 14px;
+}
+
+/* ── SLIDE BASE ── */
+.slide-container {
+    background-color: var(--color-bg-dark);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+    overflow: hidden;
+    padding: 60px 80px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    color: var(--color-white);
+    transform: none;
+}
+
+.slide-container.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* ── GRID VIEW ── */
+body.grid-view {
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+}
+
+body.grid-view .slides-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    grid-auto-rows: 220px;
+    gap: 12px;
+    padding: 12px;
+    padding-bottom: 70px;
+    width: 100vw;
+    max-height: 100vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+body.grid-view .slide-container {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, outline 0.2s ease;
+    outline: 2px solid transparent;
+    padding: 15px 20px 30px 20px;
+}
+
+body.grid-view .slide-container:hover {
+    box-shadow: 0 10px 30px rgba(216,255,133,0.3);
+    outline: 2px solid var(--color-primary);
+}
+
+body.grid-view .slide-container::after {
+    content: attr(data-slide-num);
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    background: var(--color-primary);
+    color: #1a2e28;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 700;
+    z-index: 10;
+}
+
+body.grid-view .slide-title        { font-size: 14px; margin-bottom: 8px; padding-left: 8px; border-left-width: 4px; }
+body.grid-view p, body.grid-view li { font-size: 8px; line-height: 1.3; margin-bottom: 4px; }
+body.grid-view h3                  { font-size: 10px; margin-bottom: 4px; }
+body.grid-view .title-layout h1    { font-size: 24px; margin-bottom: 8px; }
+body.grid-view .title-layout .subtitle { font-size: 10px; }
+body.grid-view .section-title-layout h2 { font-size: 20px; }
+body.grid-view .two-column         { gap: 10px; }
+body.grid-view .tile               { padding: 8px; border-radius: 6px; }
+body.grid-view .tile .icon         { font-size: 14px; margin-bottom: 4px; }
+body.grid-view .tile h3            { font-size: 8px; }
+body.grid-view .tile p             { font-size: 7px; }
+body.grid-view .tiled-content      { gap: 8px; margin-top: 8px; }
+body.grid-view .budget-badge       { font-size: 7px; padding: 2px 6px; }
+body.grid-view .stat-hero          { font-size: 32px; }
+body.grid-view .pipeline-row       { font-size: 7px; padding: 4px 0; }
+body.grid-view .team-name          { font-size: 9px; }
+body.grid-view .timeline-flow      { gap: 6px; margin-top: 8px; }
+body.grid-view .timeline-node      { padding: 6px 8px; min-width: auto; }
+body.grid-view .timeline-node h4   { font-size: 8px; }
+body.grid-view .timeline-node p    { font-size: 6px; }
+body.grid-view .journey-byline     { font-size: 7px; }
+
+/* ── TYPOGRAPHY ── */
+h1, h2, h3, h4 { color: var(--color-white); font-weight: 600; }
+
+p, li {
+    color: var(--color-text-muted);
+    font-size: 17px;
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+strong { color: var(--color-white); font-weight: 600; }
+
+.slide-title {
+    font-size: 38px;
+    margin-bottom: 25px;
+    color: var(--color-white);
+    border-left: 8px solid var(--color-primary);
+    padding-left: 20px;
+    font-family: var(--font-title);
+    font-weight: 400;
+}
+
+/* ── LAYOUT: TITLE ── */
+.title-layout {
+    text-align: center;
+    background: linear-gradient(145deg, var(--color-bg-dark) 0%, var(--color-bg) 100%);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0; left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px;
+}
+
+.title-layout > * { position: relative; z-index: 2; }
+
+.title-layout h1 {
+    color: var(--color-white);
+    font-size: 78px;
+    margin-bottom: 16px;
+    font-family: var(--font-title);
+    font-weight: 400;
+    line-height: 1.05;
+}
+
+.title-layout h1 em {
+    color: var(--color-primary);
+    font-family: var(--font-display);
+    font-style: italic;
+}
+
+.title-layout .subtitle {
+    color: var(--color-primary);
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 500;
+    font-style: italic;
+    margin-bottom: 40px;
+}
+
+.title-layout .byline {
+    color: var(--color-text-muted);
+    font-size: 15px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.title-layout .byline strong {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.title-layout hr {
+    border: none;
+    border-top: 1px solid rgba(216,255,133,0.25);
+    width: 80px;
+    margin: 28px auto;
+}
+
+/* ── LAYOUT: SECTION DIVIDER ── */
+.section-title-layout {
+    text-align: center;
+    background: linear-gradient(145deg, var(--color-bg-dark) 0%, var(--color-bg) 50%, #122018 100%);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0; left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 80px;
+}
+
+.section-title-layout > * { position: relative; z-index: 2; }
+
+.section-title-layout hr {
+    border: none;
+    border-top: 1px solid rgba(216,255,133,0.25);
+    width: 60px;
+    margin: 24px auto;
+}
+
+.section-title-layout h2 {
+    font-family: var(--font-title);
+    font-size: 52px;
+    font-weight: 400;
+    color: var(--color-white);
+    line-height: 1.1;
+    max-width: 860px;
+}
+
+.section-title-layout h2 em {
+    color: var(--color-primary);
+    font-family: var(--font-display);
+    font-style: italic;
+}
+
+.section-title-layout p {
+    color: var(--color-text-muted);
+    font-size: 19px;
+    max-width: 620px;
+    margin-top: 20px;
+    line-height: 1.6;
+}
+
+.section-title-layout .label-tag {
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+/* ── LAYOUT: TWO COLUMN ── */
+.two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.content-area {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
+}
+
+/* ── LAYOUT: TILED ── */
+.tiled-content {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    align-items: stretch;
+    margin-top: 15px;
+}
+
+.tile {
+    background-color: rgba(216,255,133,0.05);
+    border: 1px solid rgba(216,255,133,0.15);
+    border-radius: 12px;
+    padding: 24px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: border-color 0.2s ease;
+}
+
+.tile:hover { border-color: rgba(216,255,133,0.4); }
+
+.tile .icon {
+    font-size: 24px;
+    color: var(--color-primary);
+    margin-bottom: 4px;
+}
+
+.tile h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-white);
+    margin: 0;
+}
+
+.tile p {
+    font-size: 14px;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ── LISTS ── */
+ul { list-style: none; }
+
+ul li {
+    margin-bottom: 10px;
+    padding-left: 25px;
+    position: relative;
+}
+
+ul li::before {
+    content: '\f138';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: var(--color-primary);
+    position: absolute;
+    left: 0;
+    top: 3px;
+    font-size: 16px;
+}
+
+/* ── IMAGE PLACEHOLDER ── */
+.image-wrapper {
+    border-radius: 16px;
+    overflow: hidden;
+    height: 100%;
+    max-height: 460px;
+    width: 100%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(216,255,133,0.15);
+}
+
+.image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-placeholder {
+    border: 2px dashed rgba(216,255,133,0.2);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    min-height: 320px;
+    color: rgba(216,255,133,0.3);
+    gap: 14px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.image-placeholder i { font-size: 2.8rem; }
+
+/* ── BUDGET BADGE ── */
+.budget-badge {
+    display: inline-block;
+    background: rgba(216,255,133,0.12);
+    border: 1px solid rgba(216,255,133,0.4);
+    color: var(--color-primary);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-top: 4px;
+}
+
+/* ── LIGHT SLIDES ── */
+.slide--light {
+    background-color: var(--color-bg-light);
+    color: var(--color-text-dark);
+}
+
+.slide--light .slide-title {
+    color: var(--color-text-dark);
+    border-left-color: var(--color-bg);
+}
+
+.slide--light h1,
+.slide--light h2,
+.slide--light h3,
+.slide--light h4 { color: var(--color-text-dark); }
+
+.slide--light p,
+.slide--light li { color: #4a5a52; }
+
+.slide--light strong { color: var(--color-text-dark); }
+
+.slide--light ul li::before { color: var(--color-bg); }
+
+.slide--light .tile {
+    background-color: rgba(26,46,40,0.06);
+    border: 1px solid rgba(26,46,40,0.12);
+}
+
+.slide--light .tile .icon  { color: var(--color-bg); }
+.slide--light .tile h3     { color: var(--color-text-dark); }
+.slide--light .tile p      { color: #4a5a52; }
+
+.slide--light .image-placeholder {
+    border-color: rgba(26,46,40,0.2);
+    color: rgba(26,46,40,0.3);
+}
+
+/* ── TIMELINE JOURNEY ── */
+.timeline-flow {
+    display: flex;
+    gap: 0;
+    align-items: stretch;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.timeline-node {
+    flex: 1;
+    position: relative;
+    background: rgba(216,255,133,0.05);
+    border: 1px solid rgba(216,255,133,0.15);
+    border-radius: 12px;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.timeline-node + .timeline-node {
+    margin-left: 0;
+}
+
+.timeline-connector {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    color: rgba(216,255,133,0.5);
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.timeline-node .node-year {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+}
+
+.timeline-node h4 {
+    font-family: var(--font-title);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--color-white);
+    line-height: 1.2;
+}
+
+.timeline-node p {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.timeline-node.timeline-node--active {
+    border-color: rgba(216,255,133,0.5);
+    background: rgba(216,255,133,0.09);
+}
+
+.journey-byline {
+    font-size: 14px;
+    color: var(--color-text-muted);
+    font-style: italic;
+    font-family: var(--font-display);
+    margin-top: 24px;
+}
+
+/* ── PIPELINE RECAP ── */
+.pipeline-hero {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.stat-label {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 18px;
+}
+
+.stat-hero {
+    font-family: var(--font-title);
+    font-size: 88px;
+    font-weight: 400;
+    color: var(--color-white);
+    line-height: 1;
+    margin-bottom: 10px;
+}
+
+.stat-hero em {
+    color: var(--color-primary);
+    font-family: var(--font-display);
+    font-style: italic;
+}
+
+.stat-sub {
+    font-size: 16px;
+    color: var(--color-text-muted);
+    margin-bottom: 48px;
+}
+
+.pipeline-rows {
+    width: 100%;
+    max-width: 700px;
+    border-top: 1px solid rgba(216,255,133,0.1);
+}
+
+.pipeline-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(216,255,133,0.08);
+    font-size: 16px;
+}
+
+.pipeline-row .proj-name {
+    color: var(--color-white);
+    font-weight: 500;
+}
+
+.pipeline-row .proj-range {
+    color: var(--color-primary);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+}
+
+/* ── TEAM SLIDE ── */
+.team-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+    max-width: 700px;
+    margin-top: 10px;
+}
+
+.team-name {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(216,255,133,0.08);
+    font-size: 18px;
+    color: var(--color-white);
+    font-weight: 400;
+}
+
+.team-name:last-child { border-bottom: none; }
+
+.team-name .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.team-name .role {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    margin-left: auto;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+}
+
+.team-name.team-name--you .dot {
+    width: 10px;
+    height: 10px;
+    box-shadow: 0 0 0 3px rgba(216,255,133,0.25);
+}
+
+.team-name.team-name--you {
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+/* ── CLOSING SLIDE ── */
+.closing-layout {
+    text-align: center;
+    background: linear-gradient(145deg, var(--color-bg-dark) 0%, #0c1e14 100%);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0; left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 80px;
+}
+
+.closing-layout > * { position: relative; z-index: 2; }
+
+.closing-layout .closing-headline {
+    font-family: var(--font-title);
+    font-size: 72px;
+    font-weight: 400;
+    color: var(--color-white);
+    line-height: 1.1;
+    margin-bottom: 20px;
+}
+
+.closing-layout .closing-headline em {
+    color: var(--color-primary);
+    font-family: var(--font-display);
+    font-style: italic;
+}
+
+.closing-layout .closing-sub {
+    font-size: 18px;
+    color: var(--color-text-muted);
+    max-width: 540px;
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+.closing-layout .closing-byline {
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(216,255,133,0.5);
+    margin-top: 40px;
+}
+
+/* ── ABOUT PLACEHOLDER SLIDE ── */
+.about-placeholder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100%;
+    gap: 20px;
+}
+
+.about-note {
+    display: inline-block;
+    border: 1px dashed rgba(216,255,133,0.3);
+    color: rgba(216,255,133,0.5);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+/* ── SLIDE INDICATOR ── */
+.slide-indicator {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15,31,26,0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(216,255,133,0.15);
+    color: var(--color-text-muted);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    padding: 8px 20px;
+    border-radius: 20px;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+/* ── CONTROLS ── */
+.controls {
+    position: fixed;
+    bottom: 20px;
+    right: 24px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+}
+
+.controls button {
+    background: rgba(15,31,26,0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(216,255,133,0.2);
+    color: var(--color-primary);
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: var(--font-main);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    transition: all 0.2s ease;
+}
+
+.controls button:hover {
+    background: rgba(216,255,133,0.1);
+    border-color: rgba(216,255,133,0.5);
+}
+
+/* ── ACCENT TAG ── */
+.accent-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 14px;
+}
+
+/* ── URGENCY TILES ── */
+.urgency-tile {
+    background: rgba(216,255,133,0.04);
+    border: 1px solid rgba(216,255,133,0.12);
+    border-left: 4px solid var(--color-primary);
+    border-radius: 8px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.urgency-tile h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-white);
+    margin: 0;
+}
+
+.urgency-tile p {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.urgency-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+body.grid-view .urgency-tile h4 { font-size: 7px; }
+body.grid-view .urgency-tile p  { font-size: 6px; }
+body.grid-view .urgency-grid    { gap: 6px; margin-top: 8px; }
+
+/* ── Unified Closing Slide ── */
+#slide-whynow {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.closing-unified {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    max-width: 900px;
+    width: 100%;
+}
+.closing-unified__header h2 {
+    font-family: var(--font-display);
+    font-size: 52px;
+    font-weight: 400;
+    line-height: 1.1;
+}
+.closing-unified__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+.cu-tile {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: rgba(216,255,133,0.04);
+    border: 1px solid rgba(216,255,133,0.12);
+    border-radius: 12px;
+    padding: 20px 22px;
+}
+.cu-tile__icon {
+    font-size: 20px;
+    color: var(--color-primary);
+    margin-top: 2px;
+    flex-shrink: 0;
+    width: 28px;
+    text-align: center;
+}
+.cu-tile h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-white);
+    margin: 0 0 5px;
+    letter-spacing: 0.01em;
+}
+.cu-tile p {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+    margin: 0;
+}
+.closing-unified__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+    </style>
+</head>
+<body>
+
+<div class="slides-wrapper">
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 1 — TITLE
+         ═══════════════════════════════════════════ -->
+    <div class="slide-container active" id="slide-title">
+        <div class="title-layout">
+            <p class="accent-tag"><i class="fa fa-file-lines"></i> &nbsp;proposal</p>
+            <h1>proposal</h1>
+            <p class="subtitle">Same format and design as recap, ready for the new content</p>
+            <hr>
+            <p class="byline"><strong>Route live at /proposal/</strong> &nbsp;·&nbsp; Draft shell active &nbsp;·&nbsp; Content pending</p>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 2 — ABOUT MANUEL
+         ═══════════════════════════════════════════ -->
+    <div class="slide-container slide--light" id="slide-about">
+        <div class="two-column" style="gap:60px;">
+            <div class="content-area" style="justify-content:center;gap:0;">
+                <p class="accent-tag" style="color:#2a7a4f;opacity:0.85;"><i class="fa fa-diagram-project"></i> &nbsp;Proposal Structure</p>
+                <h2 style="font-family:var(--font-title);font-size:40px;font-weight:400;color:var(--color-text-dark);line-height:1.1;margin-bottom:18px;">Deck scaffold<br><em style="font-family:var(--font-display);font-style:italic;color:#2a7a4f;">ready to swap</em></h2>
+
+                <ul style="list-style:none;padding:0;margin:0 0 22px 0;display:flex;flex-direction:column;gap:11px;">
+                    <li style="display:flex;gap:12px;align-items:flex-start;font-size:14px;line-height:1.6;color:#3a4a42;">
+                        <span style="color:#2a7a4f;font-size:16px;line-height:1.4;flex-shrink:0;">&#8594;</span>
+                        <span><strong style="color:var(--color-text-dark);">New route exposed from /proposal/</strong> so you can review this deck separately from the recap.</span>
+                    </li>
+                    <li style="display:flex;gap:12px;align-items:flex-start;font-size:14px;line-height:1.6;color:#3a4a42;">
+                        <span style="color:#2a7a4f;font-size:16px;line-height:1.4;flex-shrink:0;">&#8594;</span>
+                        <span>Same visual system, slide transitions, indicator, and interaction model as the recap deck.</span>
+                    </li>
+                    <li style="display:flex;gap:12px;align-items:flex-start;font-size:14px;line-height:1.6;color:#3a4a42;">
+                        <span style="color:#2a7a4f;font-size:16px;line-height:1.4;flex-shrink:0;">&#8594;</span>
+                        <span>From here we can replace each section one by one with the new proposal content you send, without touching the recap page.</span>
+                    </li>
+                </ul>
+
+                <p style="font-size:11px;font-weight:700;letter-spacing:0.1em;color:#2a7a4f;text-transform:uppercase;margin-bottom:12px;">Already wired</p>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                    <div style="font-size:12px;color:#3a4a42;background:rgba(26,46,40,0.05);border:1px solid rgba(26,46,40,0.1);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;">
+                        <i class="fa fa-cube" style="color:#2a7a4f;width:14px;text-align:center;"></i> Title slide
+                    </div>
+                    <div style="font-size:12px;color:#3a4a42;background:rgba(26,46,40,0.05);border:1px solid rgba(26,46,40,0.1);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;">
+                        <i class="fa fa-mobile-screen" style="color:#2a7a4f;width:14px;text-align:center;"></i> Two-column slides
+                    </div>
+                    <div style="font-size:12px;color:#3a4a42;background:rgba(26,46,40,0.05);border:1px solid rgba(26,46,40,0.1);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;">
+                        <i class="fa fa-gamepad" style="color:#2a7a4f;width:14px;text-align:center;"></i> Section dividers
+                    </div>
+                    <div style="font-size:12px;color:#3a4a42;background:rgba(26,46,40,0.05);border:1px solid rgba(26,46,40,0.1);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;">
+                        <i class="fa fa-vr-cardboard" style="color:#2a7a4f;width:14px;text-align:center;"></i> Media slides
+                    </div>
+                    <div style="font-size:12px;color:#3a4a42;background:rgba(26,46,40,0.05);border:1px solid rgba(26,46,40,0.1);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;">
+                        <i class="fa fa-lightbulb" style="color:#2a7a4f;width:14px;text-align:center;"></i> Summary slide
+                    </div>
+                    <div style="font-size:12px;color:#3a4a42;background:rgba(26,46,40,0.05);border:1px solid rgba(26,46,40,0.1);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;">
+                        <i class="fa fa-chart-bar" style="color:#2a7a4f;width:14px;text-align:center;"></i> Closing slide
+                    </div>
+                </div>
+            </div>
+            <div class="content-area" style="justify-content:center;align-items:stretch;">
+                <div style="width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;gap:18px;background:linear-gradient(135deg, rgba(42,122,79,0.12), rgba(216,255,133,0.24));border:1px solid rgba(42,122,79,0.14);border-radius:20px;padding:32px;">
+                    <p style="font-size:11px;font-weight:700;letter-spacing:0.1em;color:#2a7a4f;text-transform:uppercase;">Working mode</p>
+                    <h3 style="font-family:var(--font-title);font-size:42px;font-weight:400;color:var(--color-text-dark);line-height:1.05;">Send me the new copy,<br><em style="font-family:var(--font-display);font-style:italic;color:#2a7a4f;">and I replace the deck.</em></h3>
+                    <p style="font-size:14px;line-height:1.7;color:#3a4a42;max-width:420px;">We can keep the same number of slides as the recap or cut it down. The route and the design system are now isolated, so the next passes can focus only on content.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 3 — REEL
+         ═══════════════════════════════════════════ -->
+    <div class="slide-container" id="slide-reel">
+        <div class="reel-grid">
+            <!-- Left text panel -->
+            <div class="reel-left">
+                <p class="accent-tag"><i class="fa fa-film"></i> &nbsp;Reel</p>
+                <h2>15 years.<br><em>In motion.</em></h2>
+                <p class="reel-cities">Tokyo &mdash; Hong Kong &mdash; Berlin &mdash; United States</p>
+                <ul style="list-style:none;padding:0;margin-top:28px;display:flex;flex-direction:column;gap:14px;">
+                    <li style="display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.6;color:rgba(255,255,255,0.6);">
+                        <span style="color:var(--color-primary);flex-shrink:0;">&#8594;</span>
+                        <span>Coordinated large-scale immersive shows in <strong style="color:rgba(255,255,255,0.85);">Tokyo, Hong Kong, Berlin</strong> and across the US — from concept to execution</span>
+                    </li>
+                    <li style="display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.6;color:rgba(255,255,255,0.6);">
+                        <span style="color:var(--color-primary);flex-shrink:0;">&#8594;</span>
+                        <span>Speaker and educator on immersive tech, creative coding, and interactive design</span>
+                    </li>
+                    <li style="display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.6;color:rgba(255,255,255,0.6);">
+                        <span style="color:var(--color-primary);flex-shrink:0;">&#8594;</span>
+                        <span>@ <strong style="color:rgba(255,255,255,0.85);">Superside</strong> since November 2024 — building the experiential tech practice</span>
+                    </li>
+                </ul>
+            </div>
+            <!-- Right video panel -->
+            <div class="reel-right">
+                <!-- Gradient overlay blending left edge into dark panel -->
+                <div class="reel-overlay"></div>
+                <video autoplay loop muted playsinline>
+                    <source src="reelshort.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 4 — THE JOURNEY (Timeline)
+         ═══════════════════════════════════════════ -->
+    <div class="slide-container" id="slide-journey">
+        <h2 class="slide-title">The Journey</h2>
+        <p style="margin-bottom: 0; font-size:16px;">How we got from creative experiments to enterprise-scale immersive experiences.</p>
+        <div class="timeline-flow">
+            <div class="timeline-node">
+                <span class="node-year">Nov 2024 — Start</span>
+                <h4>Creative Technologist<br>&amp; AR Developer</h4>
+                <p>Joined Superside. First projects in AR filters, interactive prototypes, and emerging-format content for enterprise brands.</p>
+            </div>
+            <div class="timeline-connector"><i class="fa fa-arrow-right"></i></div>
+            <div class="timeline-node">
+                <span class="node-year">Dec 2024 — Scale</span>
+                <h4>No onboarding.<br>Straight to work.</h4>
+                <p>Brought a development capacity that didn't exist before. Led AR-first projects using AI — and taught the team entirely new ways of working, expanding what Superside could technically offer.</p>
+            </div>
+            <div class="timeline-connector"><i class="fa fa-arrow-right"></i></div>
+            <div class="timeline-node timeline-node--active">
+                <span class="node-year">2025 — Breakthrough</span>
+                <h4>Reddit Magic Mirror<br>2025 &amp; Beyond</h4>
+                <p>Delivered the headline experiential project of the year. Established a repeatable playbook for high-visibility enterprise event tech.</p>
+            </div>
+            <div class="timeline-connector"><i class="fa fa-arrow-right"></i></div>
+            <div class="timeline-node timeline-node--active">
+                <span class="node-year">2026 — Now</span>
+                <h4>Cross-Studio<br>Experiential Practice</h4>
+                <p>$300K+ active pipeline. Multiple blue-chip clients. A clear case for a dedicated Experiential Tech team spanning all Studios.</p>
+            </div>
+        </div>
+        <p class="journey-byline">"From one engineer with a creative idea to a practice generating real enterprise revenue."</p>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 4 — PHILOSOPHY / SECTION DIVIDER
+         ═══════════════════════════════════════════ -->
+    <div class="slide-container" id="slide-philosophy">
+        <div class="section-title-layout">
+            <p class="label-tag"><i class="fa fa-bolt"></i> &nbsp;What Drives Us</p>
+            <hr>
+            <h2>We build the <em>unexpected.</em><br>New. Different. Unanticipated.</h2>
+            <p>Our edge isn't just technical — it's the willingness to attempt things that shouldn't be possible and deliver them live.</p>
+            <div style="display:flex; gap:32px; margin-top:40px; text-align:center; justify-content:center;">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:8px;min-width:140px;">
+                    <i class="fa fa-star" style="font-size:28px;color:var(--color-primary);"></i>
+                    <span style="font-size:13px;font-weight:600;color:var(--color-white);letter-spacing:0.05em;">Events-First</span>
+                    <span style="font-size:12px;color:var(--color-text-muted);">Live moments create the strongest impressions</span>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:8px;min-width:140px;">
+                    <i class="fa fa-handshake" style="font-size:28px;color:var(--color-primary);"></i>
+                    <span style="font-size:13px;font-weight:600;color:var(--color-white);letter-spacing:0.05em;">Enterprise Trust</span>
+                    <span style="font-size:12px;color:var(--color-text-muted);">Deep relationships that go beyond deliverables</span>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:8px;min-width:140px;">
+                    <i class="fa fa-person-rays" style="font-size:28px;color:var(--color-primary);"></i>
+                    <span style="font-size:13px;font-weight:600;color:var(--color-white);letter-spacing:0.05em;">Human Edge</span>
+                    <span style="font-size:12px;color:var(--color-text-muted);">There are still no robots at a trade show booth</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 5 — AI-POWERED WORKFLOWS
+         ═══════════════════════════════════════════ -->
+    <div class="slide-container slide--light" id="slide-ai">
+        <h2 class="slide-title">AI-Powered Workflows</h2>
+        <p>Every project runs on a fully AI-enabled pipeline — from first concept to client delivery. Speed and quality aren't a tradeoff anymore.</p>
+        <div class="tiled-content">
+            <div class="tile tile-media">
+                <video class="hover-vid" src="ai.mp4" muted loop playsinline></video>
+                <div class="icon"><i class="fa fa-code"></i></div>
+                <h3>AI-Assisted Coding</h3>
+                <p>From rapid prototyping to debugging complex interactive scenes — compressing weeks into days.</p>
+            </div>
+            <div class="tile tile-media">
+                <img class="hover-img" src="aqui.png" alt="3D Asset Generation preview">
+                <div class="icon"><i class="fa fa-cube"></i></div>
+                <h3>3D Asset Generation</h3>
+                <p>AI-generated 3D models and textures at a fraction of traditional production cost.</p>
+            </div>
+            <div class="tile tile-media">
+                <video class="hover-vid" src="viz.mp4" muted loop playsinline></video>
+                <div class="icon"><i class="fa fa-chart-bar"></i></div>
+                <h3>Data Viz &amp; Insights</h3>
+                <p>Raw event data into interactive visualizations — live dashboards, AR overlays, and more.</p>
+            </div>
+            <div class="tile tile-media">
+                <video class="hover-vid" src="mcpfigma.mp4" muted loop playsinline></video>
+                <div class="icon"><i class="fa fa-plug"></i></div>
+                <h3>MCP Connections</h3>
+                <p>AI connected directly into <strong>Figma, Blender, Unity</strong> — seamless cross-tool workflows.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 6 — WORKFLOW FLOWCHART
+         ═══════════════════════════════════════════ -->
+    <div class="slide-container" id="slide-workflow">
+        <h2 class="slide-title">Our Workflow</h2>
+        <p class="slide-subtitle">How we take projects from brief to delivery — two paths, one team.</p>
+        <div class="workflow-container" id="workflow-root"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 7 — PROJECT: VAsteroids
+         ═══════════════════════════════════════════ -->
+    <div class="slide-container" id="slide-vasteroids">
+        <div class="two-column">
+            <div class="content-area">
+                <p class="accent-tag"><i class="fa fa-gamepad-modern"></i> &nbsp;Project</p>
+                <h2 class="slide-title" style="border-left-width:0;padding-left:0;font-size:44px;">VAsteroids</h2>
+                <span class="budget-badge">$33,000 – $36,000</span>
+                <br><br>
+                <ul style="margin-top:8px;">
+                    <li>Born from the energy generated by <strong>Connectria</strong>, a retro-game activation that stopped the floor.</li>
+                    <li>VAST renewed their contract and are excited to continue developing the game project further.</li>
+                    <li>Proved that bold, creative proposals from our team are a direct lever for <strong>elevating the client relationship.</strong></li>
+                    <li>When we bring something unexpected and exciting, clients don't just stay — they invest more.</li>
+                </ul>
+            </div>
+            <div>
+                <video class="vasteroids-video" autoplay loop muted playsinline>
+                    <source src="vasteroids.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+        <!-- Floating comment card — animates in on slide load -->
+        <div id="vasteroids-comment">
+            <img src="image%20copy.png" alt="Client comment">
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 8 — PROJECT: Reddit
+         ═══════════════════════════════════════════ -->
+    <div class="slide-container" id="slide-reddit">
+        <div class="two-column">
+            <div class="content-area">
+                <p class="accent-tag"><i class="fa fa-circle-r"></i> &nbsp;Project</p>
+                <h2 class="slide-title" style="border-left-width:0;padding-left:0;font-size:44px;">Reddit</h2>
+                <span class="budget-badge">$76,000 – $90,000</span>
+                <br><br>
+                <ul style="margin-top:8px;">
+                    <li><strong>Magic Mirror 2025</strong> was a clear success and became the launchpad for the next phase of the relationship.</li>
+                    <li>For <strong>2026</strong>, Reddit has already confirmed <strong>two events: OMR and Cannes</strong>, with additional opportunities expected throughout the year.</li>
+                    <li>We proposed a <strong>modular system</strong> so the experience can scale up, add new features, and adapt to each event's size and goals.</li>
+                    <li>This is evolving into a <strong>year-round partnership</strong> with strong creative upside and repeat business potential.</li>
+                </ul>
+            </div>
+            <div>
+                <video class="project-video" autoplay loop muted playsinline>
+                    <source src="redditmiami.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+        <div id="reddit-comment">
+            <img src="image%20copy%202.png" alt="Reddit client comment">
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 9 — PROJECT: Albertsons AMC
+         ═══════════════════════════════════════════ -->
+    <div class="slide-container" id="slide-albertsons">
+        <div class="two-column">
+            <div class="content-area">
+                <p class="accent-tag"><i class="fa fa-store"></i> &nbsp;Project</p>
+                <h2 class="slide-title" style="border-left-width:0;padding-left:0;font-size:44px;">Albertsons AMC</h2>
+                <span class="budget-badge">$121,875 – $159,250</span>
+                <br><br>
+                <ul style="margin-top:8px;">
+                    <li>A direct consequence of Reddit's success — this client noticed and came to us.</li>
+                    <li>Scope: <strong>full booth design and concept</strong> + multiple immersive experiences throughout the space.</li>
+                    <li>Unique challenge: guiding a client <em>new to immersive</em> — translating ambition into executable activations.</li>
+                    <li>High probability of <strong>recurring event work</strong> across their retail and media calendar.</li>
+                </ul>
+            </div>
+            <div>
+                <img class="project-img" src="albertsons.png" alt="Albertsons AMC Booth">
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 10 — PROJECT: Wurth VR
+         ═══════════════════════════════════════════ -->
+    <div class="slide-container" id="slide-wurth">
+        <div class="two-column">
+            <div class="content-area">
+                <p class="accent-tag"><i class="fa fa-vr-cardboard"></i> &nbsp;Project</p>
+                <h2 class="slide-title" style="border-left-width:0;padding-left:0;font-size:44px;">Wurth VR</h2>
+                <span class="budget-badge">$71,950 – $78,610</span>
+                <br><br>
+                <ul style="margin-top:8px;">
+                    <li>A <strong>VR experience</strong> designed for scalability across multiple trade shows and events.</li>
+                    <li>Built to run without on-site specialist support — once deployed, it travels.</li>
+                    <li>Demonstrates our ability to deliver <strong>standalone immersive products</strong>, not just one-off activations.</li>
+                    <li>Opens the door to hardware-as-a-service models for future engagements.</li>
+                </ul>
+            </div>
+            <div>
+                <img class="project-img" src="image.png" alt="Wurth VR">
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 11 — PIPELINE RECAP
+         ═══════════════════════════════════════════ -->
+    <div class="slide-container" id="slide-pipeline">
+        <div class="pipeline-hero">
+            <p class="stat-label"><i class="fa fa-chart-line"></i> &nbsp;Active Q1 Experiential Pipeline</p>
+            <h2 class="stat-hero"><em>$302K</em> – $363K</h2>
+            <p class="stat-sub">Delivering through early May 2026</p>
+            <div class="pipeline-rows">
+                <div class="pipeline-row">
+                    <span class="proj-name">Reddit Experience</span>
+                    <span class="proj-range">$76,000 – $90,000</span>
+                </div>
+                <div class="pipeline-row">
+                    <span class="proj-name">Albertsons AMC Booth</span>
+                    <span class="proj-range">$121,875 – $159,250</span>
+                </div>
+                <div class="pipeline-row">
+                    <span class="proj-name">Wurth VR</span>
+                    <span class="proj-range">$71,950 – $78,610</span>
+                </div>
+                <div class="pipeline-row">
+                    <span class="proj-name">VAST (VAsteroids)</span>
+                    <span class="proj-range">$33,000 – $36,000</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 12 — THE TEAM
+         ═══════════════════════════════════════════ -->
+    <div class="slide-container" id="slide-team">
+        <div class="two-column">
+            <div class="content-area">
+                <p class="accent-tag"><i class="fa fa-people-group"></i> &nbsp;Our Core Specialists</p>
+                <h2 class="slide-title" style="margin-bottom:10px;">The Team</h2>
+                <p style="margin-bottom:20px;">Five specialists with deep experience in experiential tech. Currently scattered across studios. The capability exists — it just needs a center.</p>
+                <div class="team-grid">
+                    <div class="team-name"><div class="dot"></div> Federico Perini <span class="role">3D Artist</span></div>
+                    <div class="team-name"><div class="dot"></div> Victor Alonso <span class="role">UX / 3D Artist</span></div>
+                    <div class="team-name"><div class="dot"></div> Javier Velazquez <span class="role">Creative Technologist</span></div>
+                    <div class="team-name"><div class="dot"></div> Carolina Piedrahita <span class="role">Producer</span></div>
+                    <div class="team-name team-name--you"><div class="dot"></div> Manuel Palenque <span class="role" style="color:var(--color-primary);opacity:0.8;">Lead · Proposed</span></div>
+                </div>
+            </div>
+            <div class="content-area">
+                <div style="background:rgba(216,255,133,0.04);border:1px solid rgba(216,255,133,0.12);border-radius:16px;padding:32px;height:100%;max-height:420px;display:flex;flex-direction:column;justify-content:center;gap:20px;">
+                    <p style="font-size:15px;line-height:1.7;">Without a central point of coordination, we risk:</p>
+                    <ul style="font-size:15px;">
+                        <li>Capacity bottlenecks at critical delivery moments</li>
+                        <li>Scoping errors on high-risk activations</li>
+                        <li>Client relationship gaps between projects</li>
+                        <li>Missed upsells on follow-on event work</li>
+                    </ul>
+                    <p style="font-size:14px;font-style:italic;font-family:var(--font-display);color:var(--color-text-muted);">"The talent is here. It needs a home."</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 13 — THE VISION
+         ═══════════════════════════════════════════ -->
+    <div class="slide-container" id="slide-vision">
+        <div class="section-title-layout">
+            <p class="label-tag"><i class="fa fa-compass"></i> &nbsp;The Proposal</p>
+            <hr>
+            <h2>A cross-studio<br><em>Experiential Tech</em> team</h2>
+            <p>One team. One point of contact. Plugs into every Studio and delivers with confidence on every high-margin experiential opportunity Superside pursues.</p>
+            <div class="tiled-content" style="max-width:860px;margin-top:40px;">
+                <div class="tile" style="text-align:left;">
+                    <div class="icon"><i class="fa fa-bullhorn"></i></div>
+                    <h3>Technical Sales Lead</h3>
+                    <p>Own the client conversation on experiential proposals — from scoping to close. Speak both creative and engineering fluently.</p>
+                </div>
+                <div class="tile" style="text-align:left;">
+                    <div class="icon"><i class="fa fa-sliders"></i></div>
+                    <h3>Scope &amp; Resource Hub</h3>
+                    <p>Single point for approving technical scopes, allocating specialists, and preventing over-commitment across simultaneous projects.</p>
+                </div>
+                <div class="tile" style="text-align:left;">
+                    <div class="icon"><i class="fa fa-circle-check"></i></div>
+                    <h3>Flawless Execution</h3>
+                    <p>Accountable end-to-end. From concept deck to event floor — no handoff gaps, no execution surprises, no client second-guessing.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 14 — CLOSING: THE PRACTICE IS LIVE
+         ═══════════════════════════════════════════ -->
+    <div class="slide-container" id="slide-whynow">
+        <div class="closing-unified">
+            <div class="closing-unified__header">
+                <p class="accent-tag" style="font-size:13px;margin-bottom:16px;"><i class="fa fa-bullhorn"></i> &nbsp;The Next Step</p>
+                <h2 style="font-family:var(--font-display);font-size:52px;font-weight:400;color:var(--color-white);margin:0 0 16px;">Superside needs to know<br><em style="color:var(--color-primary);">what we can build.</em></h2>
+                <p style="font-size:16px;color:var(--color-text-muted);max-width:720px;line-height:1.6;">The capability is real, the team is here, and the results speak for themselves. The missing piece is visibility — making sure every Studio at Superside knows to bring us in when the opportunity calls for something extraordinary.</p>
+            </div>
+            <div class="closing-unified__grid">
+                <div class="cu-tile">
+                    <div class="cu-tile__icon"><i class="fa fa-sitemap"></i></div>
+                    <div>
+                        <h4>One Clear Point of Contact</h4>
+                        <p>Any Studio, any client, any brief with an experiential angle — one person to call who knows exactly what's possible and how to scope it.</p>
+                    </div>
+                </div>
+                <div class="cu-tile">
+                    <div class="cu-tile__icon"><i class="fa fa-wand-magic-sparkles"></i></div>
+                    <div>
+                        <h4>Capabilities Most Studios Don't Know Exist</h4>
+                        <p>Real-time 3D, AI pipelines, interactive event tech, custom games — this is already being delivered. It just isn't visible across the organization yet.</p>
+                    </div>
+                </div>
+                <div class="cu-tile">
+                    <div class="cu-tile__icon"><i class="fa fa-arrow-up-right-dots"></i></div>
+                    <div>
+                        <h4>Every Studio Is a Growth Channel</h4>
+                        <p>The more Studios that know what we offer, the more enterprise clients get exposed to it — and the bigger the pipeline of high-margin experiential work.</p>
+                    </div>
+                </div>
+                <div class="cu-tile">
+                    <div class="cu-tile__icon"><i class="fa fa-circle-nodes"></i></div>
+                    <div>
+                        <h4>Internal Visibility = External Revenue</h4>
+                        <p>Formalizing this role creates a feedback loop: Studios bring leads, we deliver, clients scale — and Superside owns a space no other agency can match.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="closing-unified__footer">
+            </div>
+        </div>
+    </div>
+
+</div><!-- /slides-wrapper -->
+
+<!-- ── TILE LIGHTBOX OVERLAY ── -->
+<div id="tile-lightbox">
+    <div id="tile-lightbox-inner"></div>
+</div>
+
+<!-- ── INDICATOR & CONTROLS ── -->
+<div class="slide-indicator" id="slideIndicator">1 / 14</div>
+
+<!-- ── SCRIPTS ── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Observer.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js"></script>
+<script src="animations.js"></script>
+<script src="gsap-animations.js"></script>
+<script>
+    // Hover video play/pause for all .tile-media elements
+    document.querySelectorAll('.tile-media').forEach(function(el) {
+        var vid = el.querySelector('.hover-vid');
+        if (!vid) return;
+        el.addEventListener('mouseenter', function() { vid.currentTime = 0; vid.play(); });
+        el.addEventListener('mouseleave', function() { vid.pause(); vid.currentTime = 0; });
+    });
+
+    // Tile-media lightbox
+    (function() {
+        var lb     = document.getElementById('tile-lightbox');
+        var lbIn   = document.getElementById('tile-lightbox-inner');
+        var lbVid  = null;
+
+        function openLightbox(src, isVideo) {
+            lbIn.innerHTML = '';
+            lbVid = null;
+            if (isVideo) {
+                var v = document.createElement('video');
+                v.src = src;
+                v.autoplay = true;
+                v.loop = true;
+                v.muted = true;
+                v.setAttribute('playsinline', '');
+                lbIn.appendChild(v);
+                lbVid = v;
+                v.play();
+            } else {
+                var img = document.createElement('img');
+                img.src = src;
+                lbIn.appendChild(img);
+            }
+            lb.classList.add('open');
+        }
+
+        function closeLightbox() {
+            lb.classList.remove('open');
+            setTimeout(function() {
+                if (lbVid) { lbVid.pause(); }
+                lbIn.innerHTML = '';
+                lbVid = null;
+            }, 380);
+        }
+
+        // Click backdrop to close
+        lb.addEventListener('click', function(e) {
+            if (e.target === lb) closeLightbox();
+        });
+
+        // ESC to close
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        // Wire up click on the whole tile to open lightbox
+        document.querySelectorAll('.tile-media').forEach(function(tile) {
+            tile.style.cursor = 'pointer';
+            tile.addEventListener('click', function(e) {
+                var vid = tile.querySelector('.hover-vid');
+                var img = tile.querySelector('.hover-img');
+                if (vid) {
+                    openLightbox(vid.getAttribute('src'), true);
+                } else if (img) {
+                    openLightbox(img.getAttribute('src'), false);
+                }
+            });
+        });
+    })();
+
+    // Floating comment popups — animate in when slide becomes active
+    (function () {
+        function initSlidePopup(slideId, popupId, delay) {
+            const slide = document.getElementById(slideId);
+            const popup = document.getElementById(popupId);
+            if (!slide || !popup) return;
+
+            let wasActive = false;
+            let animTimer = null;
+
+            new MutationObserver(function () {
+                const isActive = slide.classList.contains('active');
+                if (isActive === wasActive) return; // no real change
+                wasActive = isActive;
+
+                if (isActive) {
+                    clearTimeout(animTimer);
+                    if (window.gsap) {
+                        gsap.killTweensOf(popup);
+                        gsap.set(popup, { opacity: 0, y: 22 });
+                        animTimer = setTimeout(function () {
+                            gsap.to(popup, { opacity: 1, y: 0, duration: 0.6, ease: 'back.out(1.3)' });
+                        }, delay || 450);
+                    }
+                } else {
+                    clearTimeout(animTimer);
+                    if (window.gsap) gsap.set(popup, { opacity: 0, y: 22 });
+                }
+            }).observe(slide, { attributes: true, attributeFilter: ['class'] });
+        }
+
+        function initFloatingCommentPopups() {
+            initSlidePopup('slide-vasteroids', 'vasteroids-comment', 450);
+            initSlidePopup('slide-reddit', 'reddit-comment', 450);
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initFloatingCommentPopups);
+        } else {
+            initFloatingCommentPopups();
+        }
+    })();
+</script>
+
+<!-- React + ReactFlow (UMD) for workflow slide -->
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/reactflow@11.11.4/dist/umd/index.js"></script>
+<script src="workflow-flow.js"></script>
+
+</body>
+</html>
