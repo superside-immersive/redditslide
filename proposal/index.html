@@ -1,5 +1,7 @@
+
 <!DOCTYPE html>
 <html lang="en">
+<head>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -7,41 +9,31 @@
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-K68S7LCJ');</script>
     <!-- End Google Tag Manager -->
-</head>
-    <meta charset="UTF-8">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K68S7LCJ"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
 
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="../">
-    <title>proposal</title>
+    <title>Immersive proposal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/reactflow@11.11.4/dist/style.css">
     <style>
-/* ===========================================
-   IMMERSIVE RECAP — Stylesheet
-   Based on the Reddit Slides design system
-   =========================================== */
-
 :root {
-    --color-primary:       #d8ff85;
-    --color-primary-dark:  #b8e05a;
-    --color-primary-light: #e5ffa8;
-    --color-bg:            #1a2e28;
-    --color-bg-dark:       #0f1f1a;
-    --color-bg-light:      #f7f9f2;
-    --color-white:         #f7f9f2;
-    --color-text:          #f7f9f2;
-    --color-text-dark:     #1a2e28;
-    --color-text-muted:    #8a9a92;
-    --font-main:           'Inter Tight', sans-serif;
-    --font-display:        'Playfair Display', serif;
-    --font-title:          'Instrument Serif', serif;
+    --color-primary: #d8ff85;
+    --color-primary-dark: #b8e05a;
+    --color-bg: #1a2e28;
+    --color-bg-dark: #0f1f1a;
+    --color-bg-light: #f7f9f2;
+    --color-white: #f7f9f2;
+    --color-text: #f7f9f2;
+    --color-text-dark: #1a2e28;
+    --color-text-muted: #8a9a92;
+    --color-line: rgba(216,255,133,0.16);
+    --color-line-dark: rgba(26,46,40,0.14);
+    --font-main: 'Inter Tight', sans-serif;
+    --font-display: 'Playfair Display', serif;
+    --font-title: 'Instrument Serif', serif;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -67,330 +59,22 @@ body {
     align-items: center;
 }
 
-/* ── REEL SLIDE (persistent styles — immune to GSAP clearProps) ── */
-#slide-reel {
-    padding: 0 !important;
-    background: #0a0a0a !important;
-    overflow: hidden !important;
-}
-#slide-reel .reel-grid {
-    display: grid !important;
-    grid-template-columns: 1fr 1.7fr;
-    height: 100%;
-    position: relative;
-}
-#slide-reel .reel-left {
-    display: flex !important;
-    flex-direction: column;
-    justify-content: center;
-    padding: 50px 44px;
-    z-index: 2;
-    position: relative;
-    overflow: hidden;
-}
-#slide-reel .reel-left .accent-tag {
-    color: var(--color-primary) !important;
-    opacity: 0.8;
-    margin-bottom: 20px;
-}
-#slide-reel .reel-left h2 {
-    font-family: var(--font-title) !important;
-    font-size: 48px !important;
-    font-weight: 400 !important;
-    color: #f7f9f2 !important;
-    line-height: 1.0 !important;
-    margin-bottom: 16px !important;
-}
-#slide-reel .reel-left h2 em {
-    font-family: var(--font-display) !important;
-    font-style: italic;
-    color: var(--color-primary) !important;
-}
-#slide-reel .reel-cities {
-    font-size: 13px !important;
-    line-height: 1.8;
-    color: rgba(247,249,242,0.45) !important;
-    margin-bottom: 0 !important;
-}
-#slide-reel .reel-right {
-    position: relative !important;
-    overflow: hidden;
-}
-#slide-reel .reel-overlay {
-    position: absolute !important;
-    inset: 0;
-    background: linear-gradient(to right, #0a0a0a 0%, transparent 28%);
-    z-index: 1;
-    pointer-events: none;
-}
-#slide-reel video {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover;
-    display: block !important;
-}
-
-/* ── PROJECT MEDIA (video/image — immune to GSAP clearProps) ── */
-.project-video {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    display: block !important;
-    border-radius: 8px;
-    min-height: 260px;
-}
-.project-img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    display: block !important;
-    border-radius: 8px;
-    min-height: 260px;
-}
-#slide-pipeline {
-    position: relative;
-}
-#slide-pipeline .pipeline-bg {
-    position: absolute !important;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.1;
-    z-index: 0;
-    pointer-events: none;
-}
-#slide-pipeline .pipeline-hero {
-    position: relative;
-    z-index: 1;
-}
-
-/* ── TILE HOVER MEDIA POPUP ── */
-.tile-media {
-    position: relative;
-    cursor: pointer;
-    isolation: isolate;
-}
-.tile-media .hover-img,
-.tile-media .hover-vid {
-    position: absolute;
-    top: calc(100% + 14px);
-    left: 50%;
-    transform: translateX(-50%) translateY(-10px) scale(0.96);
-    width: 300px;
-    border-radius: 16px;
-    box-shadow: 0 24px 72px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
-    z-index: 200;
-    display: block;
-    object-fit: cover;
-    overflow: hidden;
-}
-.tile-media:hover .hover-img,
-.tile-media:hover .hover-vid {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0) scale(1);
-    pointer-events: auto;
-    cursor: zoom-in;
-}
-
-/* ── Tile Lightbox ── */
-#tile-lightbox {
-    position: fixed;
-    inset: 0;
-    z-index: 9900;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(5, 12, 10, 0);
-    pointer-events: none;
-    transition: background 0.3s ease;
-}
-#tile-lightbox.open {
-    background: rgba(5, 12, 10, 0.85);
-    pointer-events: auto;
-    cursor: zoom-out;
-}
-#tile-lightbox-inner {
-    width: 72vw;
-    max-width: 1080px;
-    max-height: 72vh;
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 40px 120px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.07);
-    transform: scale(0.86);
-    opacity: 0;
-    transition: transform 0.38s cubic-bezier(0.34,1.35,0.64,1), opacity 0.28s ease;
-    cursor: auto;
-    background: #000;
-}
-#tile-lightbox.open #tile-lightbox-inner {
-    transform: scale(1);
-    opacity: 1;
-}
-#tile-lightbox-inner video,
-#tile-lightbox-inner img {
-    width: 100%;
-    max-height: 72vh;
-    display: block;
-    object-fit: contain;
-}
-
-/* AI slide: allow popup to overflow below the slide */
-#slide-ai {
-    overflow: visible !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    padding: 50px 80px !important;
-}
-#slide-ai .slide-title {
-    font-size: 38px !important;
-    margin-bottom: 8px !important;
-    color: var(--color-text-dark) !important;
-}
-#slide-ai > p {
-    font-size: 15px !important;
-    color: #4a5a52 !important;
-    margin-bottom: 28px !important;
-    opacity: 1 !important;
-}
-#slide-ai .tiled-content {
-    display: flex !important;
-    gap: 20px !important;
-    margin-top: 0 !important;
-    align-items: stretch !important;
-    width: 100% !important;
-}
-#slide-ai .tile {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 10px !important;
-    padding: 24px 20px !important;
-    flex: 1 !important;
-    border-radius: 12px !important;
-    background-color: rgba(26,46,40,0.06) !important;
-    border: 1px solid rgba(26,46,40,0.12) !important;
-}
-#slide-ai .tile .icon {
-    font-size: 24px !important;
-    color: var(--color-bg) !important;
-    margin-bottom: 4px !important;
-}
-#slide-ai .tile h3 {
-    font-size: 16px !important;
-    font-weight: 600 !important;
-    color: var(--color-text-dark) !important;
-    margin: 0 !important;
-}
-#slide-ai .tile p {
-    font-size: 13px !important;
-    color: #4a5a52 !important;
-    line-height: 1.5 !important;
-    margin: 0 !important;
-}
-
-/* ── WORKFLOW SLIDE ── */
-#slide-workflow {
-    background: var(--color-bg-dark) !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    padding: 40px 60px !important;
-    overflow: hidden !important;
-}
-#slide-workflow .slide-title {
-    font-size: 38px !important;
-    margin-bottom: 4px !important;
-}
-#slide-workflow .slide-subtitle {
-    font-size: 15px !important;
-    color: var(--color-text-muted) !important;
-    margin-bottom: 20px !important;
-}
-#slide-workflow .workflow-container {
-    flex: 1 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    min-height: 0 !important;
-    max-height: calc(100vh - 200px) !important;
-}
-#slide-workflow .react-flow__node {
-    font-family: var(--font-main) !important;
-}
-#slide-workflow .react-flow__edge-textbg {
-    rx: 6;
-    ry: 6;
-}
-
-/* ── VASTEROIDS ── */
-#slide-vasteroids .vasteroids-video {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    display: block !important;
-    border-radius: 8px;
-    min-height: 260px;
-}
-
-/* Floating comment popup */
-#vasteroids-comment {
-    position: absolute !important;
-    bottom: 64px;
-    left: 80px;
-    width: 270px;
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.07);
-    z-index: 10;
-    opacity: 0;
-    transform: translateY(22px);
-    pointer-events: none;
-}
-#vasteroids-comment img {
-    width: 100% !important;
-    display: block !important;
-    border-radius: 14px;
-}
-
-#reddit-comment {
-    position: absolute !important;
-    right: 110px;
-    bottom: 72px;
-    width: 245px;
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.07);
-    z-index: 10;
-    opacity: 0;
-    transform: translateY(22px);
-    pointer-events: none;
-}
-#reddit-comment img {
-    width: 100% !important;
-    display: block !important;
-    border-radius: 14px;
-}
-
-/* ── SLIDE BASE ── */
 .slide-container {
     background-color: var(--color-bg-dark);
+    color: var(--color-white);
     display: flex;
     flex-direction: column;
     height: 100vh;
     width: 100vw;
     justify-content: center;
     overflow: hidden;
-    padding: 60px 80px;
+    padding: 58px 76px;
     position: absolute;
     top: 0;
     left: 0;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    color: var(--color-white);
     transform: none;
 }
 
@@ -400,7 +84,908 @@ body {
     pointer-events: auto;
 }
 
-/* ── GRID VIEW ── */
+.slide-container::before {
+    content: none;
+}
+
+.slide--light {
+    background-color: var(--color-bg-light);
+    color: var(--color-text-dark);
+}
+
+.slide--light::before {
+    content: none;
+}
+
+.slide--deep {
+    background-color: var(--color-bg-dark);
+}
+
+.slide--accent {
+    background-color: var(--color-bg);
+}
+
+.slide-container > * {
+    position: relative;
+    z-index: 2;
+}
+
+h1, h2, h3, h4 { color: inherit; font-weight: 600; }
+
+p, li {
+    color: var(--color-text-muted);
+    font-size: 17px;
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+strong { color: inherit; font-weight: 650; }
+
+.slide--light p,
+.slide--light li { color: var(--color-bg); }
+
+.accent-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 16px;
+}
+
+.slide--light .accent-tag { color: var(--color-bg); }
+
+.slide-title {
+    font-family: var(--font-title);
+    font-size: 44px;
+    line-height: 1.05;
+    font-weight: 400;
+    margin-bottom: 22px;
+    border-left: 8px solid var(--color-primary);
+    padding-left: 20px;
+}
+
+.slide--light .slide-title { border-left-color: var(--color-bg); }
+
+.title-layout {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 70px;
+    background-color: var(--color-bg-dark);
+}
+
+.title-layout h1 {
+    font-family: var(--font-title);
+    font-size: 86px;
+    line-height: 0.98;
+    font-weight: 400;
+    color: var(--color-white);
+    margin-bottom: 18px;
+}
+
+.title-layout .subtitle {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-style: italic;
+    color: var(--color-primary);
+    max-width: 840px;
+    margin-bottom: 36px;
+}
+
+.title-layout .byline {
+    max-width: 780px;
+    font-size: 14px;
+    line-height: 1.8;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(247,249,242,0.58);
+}
+
+.title-layout hr,
+.section-title-layout hr {
+    border: none;
+    border-top: 1px solid rgba(216,255,133,0.25);
+    width: 78px;
+    margin: 26px auto;
+}
+
+.section-title-layout {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 84px;
+    background-color: var(--color-bg-dark);
+}
+
+.section-title-layout h2 {
+    font-family: var(--font-title);
+    font-size: 60px;
+    line-height: 1.03;
+    font-weight: 400;
+    max-width: 900px;
+}
+
+.section-title-layout h2 em,
+.title-layout h1 em {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--color-primary);
+}
+
+.section-title-layout p {
+    max-width: 760px;
+    font-size: 19px;
+    line-height: 1.62;
+}
+
+.two-column {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: 44px;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.two-column--even {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.content-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+}
+
+.lead {
+    font-size: 20px;
+    line-height: 1.55;
+    color: rgba(247,249,242,0.72);
+    max-width: 760px;
+}
+
+.slide--light .lead { color: var(--color-bg); }
+
+.muted { color: var(--color-text-muted); }
+.slide--light .muted { color: var(--color-text-muted); }
+
+.tiled-content {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    align-items: stretch;
+    margin-top: 28px;
+}
+
+.tiled-content--two,
+.tiled-content--four { display: flex; }
+
+.tile {
+    min-height: 178px;
+    background: rgba(216,255,133,0.05);
+    border: 1px solid rgba(216,255,133,0.16);
+    border-radius: 12px;
+    padding: 22px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.slide--light .tile {
+    background: rgba(26,46,40,0.055);
+    border-color: rgba(26,46,40,0.13);
+}
+
+.tile .icon {
+    font-size: 24px;
+    color: var(--color-primary);
+    margin-bottom: 4px;
+}
+
+.slide--light .tile .icon {
+    color: var(--color-bg);
+}
+
+.tile h3 {
+    font-size: 17px;
+    line-height: 1.25;
+    color: inherit;
+}
+
+.tile p {
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.signal-list {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    margin-top: 26px;
+}
+
+.signal-row {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 14px;
+    align-items: flex-start;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--color-line);
+}
+
+.slide--light .signal-row { border-bottom-color: var(--color-line-dark); }
+
+.signal-row .marker {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(216,255,133,0.28);
+    color: var(--color-primary);
+    font-size: 13px;
+}
+
+.slide--light .signal-row .marker {
+    border-color: rgba(26,46,40,0.2);
+    color: var(--color-bg);
+}
+
+.signal-row h3 {
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.signal-row p {
+    font-size: 15px;
+    line-height: 1.55;
+}
+
+.priority-callout {
+    border: 1px solid rgba(216,255,133,0.22);
+    border-left: 8px solid var(--color-primary);
+    border-radius: 12px;
+    background: rgba(216,255,133,0.07);
+    padding: 30px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.priority-callout__label {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+.priority-callout h3 {
+    font-family: var(--font-title);
+    font-size: 46px;
+    font-weight: 400;
+    line-height: 1.02;
+    max-width: 720px;
+}
+
+.priority-callout p {
+    font-size: 22px;
+    line-height: 1.38;
+    color: rgba(247,249,242,0.82);
+    max-width: 780px;
+}
+
+.priority-callout + .signal-row {
+    margin-top: 8px;
+}
+
+.spotlight-layout {
+    display: flex;
+    gap: 22px;
+    align-items: stretch;
+    margin-top: 30px;
+}
+
+.spotlight-layout .priority-callout {
+    flex: 1.35;
+    justify-content: center;
+    min-height: 340px;
+}
+
+.spotlight-layout .signal-list {
+    flex: 1;
+    margin-top: 0;
+    justify-content: center;
+}
+
+.visual-panel {
+    min-height: 450px;
+    border-radius: 18px;
+    border: 1px solid rgba(216,255,133,0.16);
+    background: rgba(216,255,133,0.05);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.28);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.slide--light .visual-panel {
+    border-color: rgba(26,46,40,0.12);
+    background: rgba(26,46,40,0.055);
+    box-shadow: 0 24px 70px rgba(26,46,40,0.12);
+}
+
+.visual-panel__label {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+.slide--light .visual-panel__label { color: var(--color-bg); }
+
+.visual-panel__headline {
+    font-family: var(--font-title);
+    font-size: 46px;
+    line-height: 1;
+    font-weight: 400;
+    color: inherit;
+    max-width: 440px;
+}
+
+.metric-stack {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.metric {
+    padding: 18px;
+    border-radius: 12px;
+    background: rgba(216,255,133,0.06);
+    border: 1px solid rgba(216,255,133,0.15);
+}
+
+.slide--light .metric {
+    background: rgba(26,46,40,0.06);
+    border-color: rgba(26,46,40,0.13);
+}
+
+.metric strong {
+    display: block;
+    font-family: var(--font-title);
+    font-size: 40px;
+    line-height: 1;
+    font-weight: 400;
+    color: var(--color-primary);
+    margin-bottom: 8px;
+}
+
+.slide--light .metric strong { color: var(--color-bg); }
+
+.metric span {
+    display: block;
+    font-size: 12px;
+    line-height: 1.35;
+    color: var(--color-text-muted);
+}
+
+.slide--light .metric span { color: var(--color-text-muted); }
+
+.risk-panel {
+    justify-content: center;
+    gap: 24px;
+    padding: 34px;
+}
+
+.risk-panel .visual-panel__headline {
+    max-width: 560px;
+    font-size: 44px;
+}
+
+.risk-metric-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 4px;
+}
+
+.risk-metric {
+    display: grid;
+    grid-template-columns: 68px minmax(0, 1fr);
+    gap: 18px;
+    align-items: center;
+    border-radius: 14px;
+    border: 1px solid rgba(26,46,40,0.13);
+    border-left: 5px solid var(--color-bg);
+    background: rgba(26,46,40,0.055);
+    padding: 18px 20px;
+}
+
+.risk-metric strong {
+    font-family: var(--font-title);
+    font-size: 44px;
+    line-height: 1;
+    font-weight: 400;
+    color: var(--color-bg);
+}
+
+.risk-metric h3 {
+    font-size: 18px;
+    line-height: 1.2;
+    color: var(--color-bg);
+    margin-bottom: 4px;
+}
+
+.risk-metric p {
+    font-size: 14px;
+    line-height: 1.45;
+    color: #4a5a52;
+}
+
+.matrix {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 26px;
+}
+
+.matrix-item {
+    min-height: 132px;
+    border: 1px solid var(--color-line);
+    border-radius: 12px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: rgba(26,46,40,0.04);
+}
+
+.slide--light .matrix-item { border-color: var(--color-line-dark); }
+
+.matrix-item span {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+.slide--light .matrix-item span { color: var(--color-bg); }
+
+.matrix-item h3 {
+    font-family: var(--font-title);
+    font-size: 29px;
+    font-weight: 400;
+    line-height: 1.06;
+}
+
+.matrix-caption {
+    margin-top: 18px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #4a5a52;
+    max-width: 540px;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 28px;
+}
+
+.team-card {
+    min-height: 250px;
+    border-radius: 14px;
+    border: 1px solid var(--color-line-dark);
+    background: rgba(26,46,40,0.055);
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.team-card__role {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-bg);
+    font-weight: 700;
+}
+
+.team-card h3 {
+    font-family: var(--font-title);
+    font-size: 31px;
+    font-weight: 400;
+    line-height: 1.06;
+}
+
+.team-card p {
+    font-size: 14px;
+    line-height: 1.52;
+}
+
+.talent-rail {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 26px;
+}
+
+.talent-row {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 18px;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--color-line);
+}
+
+.talent-row h3 {
+    font-size: 18px;
+    color: var(--color-primary);
+}
+
+.talent-row p {
+    font-size: 15px;
+}
+
+.ask-panel {
+    border-radius: 18px;
+    border: 1px solid rgba(216,255,133,0.2);
+    background: rgba(216,255,133,0.065);
+    padding: 34px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ask-panel h3 {
+    font-family: var(--font-title);
+    font-size: 46px;
+    line-height: 1;
+    font-weight: 400;
+}
+
+.ask-panel p { font-size: 16px; }
+
+.validation-list {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+}
+
+.validation-list span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    border-radius: 18px;
+    border: 1px solid rgba(216,255,133,0.22);
+    padding: 0 16px;
+    color: var(--color-primary);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.reference-note {
+    margin-top: 14px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: rgba(247,249,242,0.78);
+}
+
+.slide--light .reference-note {
+    color: var(--color-bg);
+}
+
+.compact-team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 22px;
+}
+
+.compact-card {
+    min-height: 0;
+    border-radius: 14px;
+    border: 1px solid var(--color-line-dark);
+    background: rgba(26,46,40,0.055);
+    padding: 18px;
+}
+
+.compact-card span {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-bg);
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.compact-card h3 {
+    font-family: var(--font-title);
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.05;
+    margin-bottom: 8px;
+}
+
+.compact-card p {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.ai-confessional-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: 28px;
+    align-items: stretch;
+    width: 100%;
+    height: 100%;
+}
+
+.ai-confessional-media {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 14px;
+    min-height: 420px;
+}
+
+.ai-media-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+    border: 1px solid rgba(216,255,133,0.16);
+    background: rgba(216,255,133,0.05);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.28);
+}
+
+.ai-media-card img,
+.ai-media-card video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.ai-media-card__label {
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: rgba(15,31,26,0.82);
+    border: 1px solid rgba(216,255,133,0.2);
+    color: var(--color-primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.team-system-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: 28px;
+    align-items: stretch;
+    width: 100%;
+    height: 100%;
+}
+
+.team-command-panel {
+    border-radius: 20px;
+    border: 1px solid rgba(26,46,40,0.14);
+    background: rgba(247,249,242,0.92);
+    color: var(--color-bg);
+    padding: 34px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 24px 70px rgba(26,46,40,0.12);
+}
+
+.team-command-panel .accent-tag { color: var(--color-bg); }
+.team-command-panel .slide-title { border-left-color: var(--color-bg); color: var(--color-bg); }
+.team-command-panel .lead { color: #4a5a52; font-size: 18px; }
+
+.team-core-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.team-core-card {
+    min-height: 150px;
+    border-radius: 14px;
+    border: 1px solid rgba(26,46,40,0.12);
+    background: rgba(26,46,40,0.05);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.team-core-card span,
+.bench-label,
+.medialab-frame span {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.team-core-card span { color: var(--color-bg); }
+.team-core-card h3 { font-family: var(--font-title); font-size: 25px; font-weight: 400; line-height: 1.05; color: var(--color-bg); }
+.team-core-card p { color: #4a5a52; font-size: 12px; line-height: 1.45; }
+
+.team-scale-panel {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 14px;
+    min-height: 0;
+}
+
+.bench-card {
+    border-radius: 20px;
+    border: 1px solid rgba(26,46,40,0.13);
+    background: rgba(247,249,242,0.7);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.bench-label { color: var(--color-bg); margin-bottom: 14px; }
+.bench-card h3 { font-family: var(--font-title); font-size: 38px; font-weight: 400; line-height: 1.04; max-width: 520px; }
+
+.bench-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 22px;
+    border-top: 1px solid rgba(26,46,40,0.14);
+}
+
+.bench-item {
+    display: grid;
+    grid-template-columns: 168px minmax(0, 1fr);
+    gap: 18px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(26,46,40,0.12);
+}
+
+.bench-item h4 { font-size: 16px; color: var(--color-bg); }
+.bench-item p { font-size: 14px; line-height: 1.5; color: #4a5a52; }
+
+
+.rd-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+    gap: 30px;
+    align-items: stretch;
+    width: 100%;
+    height: 100%;
+}
+
+.rd-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+}
+
+.rd-proof-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.rd-proof-item {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 13px;
+    align-items: flex-start;
+    padding: 13px 0;
+    border-bottom: 1px solid rgba(216,255,133,0.12);
+}
+
+.rd-proof-item .marker {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(216,255,133,0.24);
+    color: var(--color-primary);
+    font-size: 13px;
+}
+
+.rd-proof-item h3 { font-size: 16px; margin-bottom: 4px; }
+.rd-proof-item p { font-size: 13px; line-height: 1.45; }
+
+.medialab-collage {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: minmax(0, 1.3fr) minmax(0, 0.78fr);
+    gap: 12px;
+    min-height: 0;
+}
+
+.medialab-frame {
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+    border: 1px solid rgba(216,255,133,0.16);
+    background: rgba(216,255,133,0.06);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.22);
+}
+
+.medialab-frame--hero { grid-column: 1 / -1; }
+.medialab-frame--wide { grid-column: span 2; }
+.medialab-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.medialab-frame span {
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    min-height: 30px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 12px;
+    border-radius: 999px;
+    color: var(--color-primary);
+    background: rgba(15,31,26,0.82);
+    border: 1px solid rgba(216,255,133,0.2);
+}
+
+.slide-indicator {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15,31,26,0.86);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(216,255,133,0.15);
+    color: var(--color-text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 8px 20px;
+    border-radius: 20px;
+    z-index: 1000;
+    pointer-events: none;
+}
+
 body.grid-view {
     overflow: hidden;
     align-items: center;
@@ -434,7 +1019,7 @@ body.grid-view .slide-container {
     cursor: pointer;
     transition: box-shadow 0.2s ease, outline 0.2s ease;
     outline: 2px solid transparent;
-    padding: 15px 20px 30px 20px;
+    padding: 18px 20px 32px;
 }
 
 body.grid-view .slide-container:hover {
@@ -449,8 +1034,8 @@ body.grid-view .slide-container::after {
     right: 6px;
     background: var(--color-primary);
     color: #1a2e28;
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -460,1348 +1045,847 @@ body.grid-view .slide-container::after {
     z-index: 10;
 }
 
-body.grid-view .slide-title        { font-size: 14px; margin-bottom: 8px; padding-left: 8px; border-left-width: 4px; }
-body.grid-view p, body.grid-view li { font-size: 8px; line-height: 1.3; margin-bottom: 4px; }
-body.grid-view h3                  { font-size: 10px; margin-bottom: 4px; }
-body.grid-view .title-layout h1    { font-size: 24px; margin-bottom: 8px; }
-body.grid-view .title-layout .subtitle { font-size: 10px; }
-body.grid-view .section-title-layout h2 { font-size: 20px; }
-body.grid-view .two-column         { gap: 10px; }
-body.grid-view .tile               { padding: 8px; border-radius: 6px; }
-body.grid-view .tile .icon         { font-size: 14px; margin-bottom: 4px; }
-body.grid-view .tile h3            { font-size: 8px; }
-body.grid-view .tile p             { font-size: 7px; }
-body.grid-view .tiled-content      { gap: 8px; margin-top: 8px; }
-body.grid-view .budget-badge       { font-size: 7px; padding: 2px 6px; }
-body.grid-view .stat-hero          { font-size: 32px; }
-body.grid-view .pipeline-row       { font-size: 7px; padding: 4px 0; }
-body.grid-view .team-name          { font-size: 9px; }
-body.grid-view .timeline-flow      { gap: 6px; margin-top: 8px; }
-body.grid-view .timeline-node      { padding: 6px 8px; min-width: auto; }
-body.grid-view .timeline-node h4   { font-size: 8px; }
-body.grid-view .timeline-node p    { font-size: 6px; }
-body.grid-view .journey-byline     { font-size: 7px; }
+body.grid-view .slide-title { font-size: 20px; margin-bottom: 8px; padding-left: 10px; border-left-width: 4px; }
+body.grid-view p, body.grid-view li { font-size: 8px; line-height: 1.35; }
+body.grid-view h1 { font-size: 28px; }
+body.grid-view h2 { font-size: 24px; }
+body.grid-view h3 { font-size: 11px; }
+body.grid-view .title-layout { padding: 24px; }
+body.grid-view .title-layout h1 { font-size: 34px; }
+body.grid-view .title-layout .subtitle { font-size: 12px; }
+body.grid-view .section-title-layout h2 { font-size: 28px; }
+body.grid-view .two-column, body.grid-view .team-grid, body.grid-view .tiled-content { gap: 8px; }
+body.grid-view .tile, body.grid-view .team-card, body.grid-view .visual-panel, body.grid-view .ask-panel { min-height: 0; padding: 10px; border-radius: 8px; }
+body.grid-view .visual-panel__headline, body.grid-view .ask-panel h3 { font-size: 22px; }
+body.grid-view .metric-stack, body.grid-view .matrix { gap: 6px; margin-top: 8px; }
+body.grid-view .signal-row { grid-template-columns: 18px 1fr; gap: 6px; padding: 5px 0; }
+body.grid-view .signal-row .marker { width: 18px; height: 18px; font-size: 8px; }
+body.grid-view .priority-callout { min-height: 0; padding: 10px; gap: 5px; border-left-width: 4px; }
+body.grid-view .priority-callout h3 { font-size: 18px; }
+body.grid-view .priority-callout p { font-size: 8px; }
 
-/* ── TYPOGRAPHY ── */
-h1, h2, h3, h4 { color: var(--color-white); font-weight: 600; }
-
-p, li {
-    color: var(--color-text-muted);
-    font-size: 17px;
-    line-height: 1.5;
-    font-weight: 400;
+@media (max-width: 920px) {
+    .slide-container { padding: 36px 28px; }
+    .title-layout { padding: 40px 28px; }
+    .title-layout h1 { font-size: 58px; }
+    .title-layout .subtitle { font-size: 22px; }
+    .two-column, .two-column--even { grid-template-columns: 1fr; gap: 24px; }
+    .ai-confessional-layout,
+    .ai-confessional-media,
+    .compact-team-grid,
+    .team-core-cards,
+    .medialab-collage { grid-template-columns: 1fr; }
+    .team-system-layout { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); gap: 14px; }
+    .risk-panel { padding: 22px; }
+    .risk-panel .visual-panel__headline { font-size: 34px; }
+    .risk-metric { grid-template-columns: 52px minmax(0, 1fr); gap: 12px; padding: 14px 16px; }
+    .risk-metric strong { font-size: 34px; }
+    .risk-metric h3 { font-size: 16px; }
+    .risk-metric p { font-size: 12px; line-height: 1.38; }
+    .team-command-panel { padding: 22px; border-radius: 16px; }
+    .team-command-panel .slide-title { font-size: 30px; margin-bottom: 12px; }
+    .team-command-panel .lead { font-size: 14px; }
+    .team-core-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 16px; }
+    .team-core-card { min-height: 112px; padding: 10px; }
+    .team-core-card span { font-size: 9px; }
+    .team-core-card h3 { font-size: 17px; }
+    .team-core-card p { font-size: 9.5px; line-height: 1.35; }
+    .bench-card { padding: 18px; border-radius: 16px; }
+    .bench-label { margin-bottom: 8px; font-size: 9px; }
+    .bench-card h3 { font-size: 24px; }
+    .bench-list { margin-top: 12px; }
+    .bench-item { grid-template-columns: 90px minmax(0, 1fr); gap: 10px; padding: 8px 0; }
+    .bench-item h4 { font-size: 13px; }
+    .bench-item p { font-size: 10.5px; line-height: 1.35; }
+    .rd-layout { grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr); gap: 14px; }
+    .rd-copy .slide-title { font-size: 28px; margin-bottom: 12px; }
+    .rd-copy .lead { font-size: 13px; line-height: 1.45; }
+    .rd-proof-list { gap: 4px; margin-top: 14px; }
+    .rd-proof-item { grid-template-columns: 28px minmax(0, 1fr); gap: 9px; padding: 7px 0; }
+    .rd-proof-item .marker { width: 28px; height: 28px; font-size: 10px; }
+    .rd-proof-item h3 { font-size: 13px; margin-bottom: 2px; }
+    .rd-proof-item p { font-size: 10px; line-height: 1.32; }
+    .rd-copy .ask-panel { padding: 14px !important; gap: 8px !important; margin-top: 14px !important; }
+    .rd-copy .ask-panel h3 { font-size: 24px; }
+    .rd-copy .ask-panel p { font-size: 10px; line-height: 1.35; }
+    .rd-copy .validation-list { gap: 6px; margin-top: 4px; }
+    .rd-copy .validation-list span { min-height: 24px; padding: 0 8px; font-size: 9px; }
+    .rd-copy .reference-note { margin-top: 2px; font-size: 9px; line-height: 1.3; }
+    .medialab-collage { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: 8px; }
+    .medialab-frame--hero { grid-column: 1 / -1; }
+    .medialab-frame { border-radius: 12px; }
+    .medialab-frame span { left: 8px; bottom: 8px; min-height: 22px; padding: 0 8px; font-size: 8px; }
+    #slide-role .two-column { grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); gap: 14px; }
+    #slide-role .slide-title { font-size: 34px; margin-bottom: 12px; }
+    #slide-role .lead { font-size: 14px; line-height: 1.45; }
+    #slide-role .ask-panel { padding: 18px; gap: 12px; }
+    #slide-role .ask-panel h3 { font-size: 30px; }
+    #slide-role .ask-panel p { font-size: 12px; line-height: 1.42; }
+    #slide-role .ask-panel .tiled-content { flex-direction: row; gap: 10px; }
+    #slide-role .ask-panel .tile { padding: 12px; min-height: 112px; }
+    #slide-role .ask-panel .tile .icon { font-size: 18px; }
+    #slide-role .ask-panel .tile h3 { font-size: 13px; }
+    #slide-role .ask-panel .tile p { font-size: 10px; line-height: 1.35; }
+    .visual-panel { min-height: 260px; }
+    .tiled-content, .tiled-content--two, .tiled-content--four { flex-direction: column; }
+    .team-grid { grid-template-columns: 1fr; }
+    .metric-stack { grid-template-columns: 1fr; }
+    .talent-row { grid-template-columns: 1fr; gap: 8px; }
+    .spotlight-layout { flex-direction: column; }
+    .priority-callout h3 { font-size: 34px; }
+    .priority-callout p { font-size: 18px; }
 }
-
-strong { color: var(--color-white); font-weight: 600; }
-
-.slide-title {
-    font-size: 38px;
-    margin-bottom: 25px;
-    color: var(--color-white);
-    border-left: 8px solid var(--color-primary);
-    padding-left: 20px;
-    font-family: var(--font-title);
-    font-weight: 400;
-}
-
-/* ── LAYOUT: TITLE ── */
-.title-layout {
-    text-align: center;
-    background: linear-gradient(145deg, var(--color-bg-dark) 0%, var(--color-bg) 100%);
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 0; left: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 60px;
-}
-
-.title-layout > * { position: relative; z-index: 2; }
-
-.title-layout h1 {
-    color: var(--color-white);
-    font-size: 78px;
-    margin-bottom: 16px;
-    font-family: var(--font-title);
-    font-weight: 400;
-    line-height: 1.05;
-}
-
-.title-layout h1 em {
-    color: var(--color-primary);
-    font-family: var(--font-display);
-    font-style: italic;
-}
-
-.title-layout .subtitle {
-    color: var(--color-primary);
-    font-family: var(--font-display);
-    font-size: 26px;
-    font-weight: 500;
-    font-style: italic;
-    margin-bottom: 40px;
-}
-
-.title-layout .byline {
-    color: var(--color-text-muted);
-    font-size: 15px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-weight: 500;
-}
-
-.title-layout .byline strong {
-    color: var(--color-primary);
-    font-weight: 600;
-}
-
-.title-layout hr {
-    border: none;
-    border-top: 1px solid rgba(216,255,133,0.25);
-    width: 80px;
-    margin: 28px auto;
-}
-
-/* ── LAYOUT: SECTION DIVIDER ── */
-.section-title-layout {
-    text-align: center;
-    background: linear-gradient(145deg, var(--color-bg-dark) 0%, var(--color-bg) 50%, #122018 100%);
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 0; left: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 80px;
-}
-
-.section-title-layout > * { position: relative; z-index: 2; }
-
-.section-title-layout hr {
-    border: none;
-    border-top: 1px solid rgba(216,255,133,0.25);
-    width: 60px;
-    margin: 24px auto;
-}
-
-.section-title-layout h2 {
-    font-family: var(--font-title);
-    font-size: 52px;
-    font-weight: 400;
-    color: var(--color-white);
-    line-height: 1.1;
-    max-width: 860px;
-}
-
-.section-title-layout h2 em {
-    color: var(--color-primary);
-    font-family: var(--font-display);
-    font-style: italic;
-}
-
-.section-title-layout p {
-    color: var(--color-text-muted);
-    font-size: 19px;
-    max-width: 620px;
-    margin-top: 20px;
-    line-height: 1.6;
-}
-
-.section-title-layout .label-tag {
-    font-size: 12px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--color-primary);
-    font-weight: 600;
-    margin-bottom: 12px;
-}
-
-/* ── LAYOUT: TWO COLUMN ── */
-.two-column {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-}
-
-.content-area {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: center;
-    width: 100%;
-}
-
-/* ── LAYOUT: TILED ── */
-.tiled-content {
-    display: flex;
+/* Proposal refinement pass */
+.risk-copy {
     gap: 20px;
-    width: 100%;
-    align-items: stretch;
-    margin-top: 15px;
 }
 
-.tile {
-    background-color: rgba(216,255,133,0.05);
-    border: 1px solid rgba(216,255,133,0.15);
-    border-radius: 12px;
-    padding: 24px 20px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    transition: border-color 0.2s ease;
+.risk-copy .lead {
+    font-size: 20px;
+    line-height: 1.45;
+    max-width: 640px;
 }
 
-.tile:hover { border-color: rgba(216,255,133,0.4); }
-
-.tile .icon {
-    font-size: 24px;
-    color: var(--color-primary);
-    margin-bottom: 4px;
+.risk-copy .lead strong {
+    color: var(--color-bg);
 }
 
-.tile h3 {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--color-white);
-    margin: 0;
-}
-
-.tile p {
-    font-size: 14px;
-    color: var(--color-text-muted);
-    line-height: 1.5;
-    margin: 0;
-}
-
-/* ── LISTS ── */
-ul { list-style: none; }
-
-ul li {
-    margin-bottom: 10px;
-    padding-left: 25px;
-    position: relative;
-}
-
-ul li::before {
-    content: '\f138';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    color: var(--color-primary);
-    position: absolute;
-    left: 0;
-    top: 3px;
-    font-size: 16px;
-}
-
-/* ── IMAGE PLACEHOLDER ── */
-.image-wrapper {
-    border-radius: 16px;
-    overflow: hidden;
-    height: 100%;
-    max-height: 460px;
-    width: 100%;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    background-color: transparent;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid rgba(216,255,133,0.15);
-}
-
-.image-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.image-placeholder {
-    border: 2px dashed rgba(216,255,133,0.2);
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    min-height: 320px;
-    color: rgba(216,255,133,0.3);
-    gap: 14px;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-}
-
-.image-placeholder i { font-size: 2.8rem; }
-
-/* ── BUDGET BADGE ── */
-.budget-badge {
-    display: inline-block;
-    background: rgba(216,255,133,0.12);
-    border: 1px solid rgba(216,255,133,0.4);
-    color: var(--color-primary);
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    padding: 5px 14px;
-    border-radius: 20px;
+.risk-highlight {
     margin-top: 4px;
+    border-left: 6px solid var(--color-bg);
+    border-radius: 14px;
+    border: 1px solid rgba(26,46,40,0.13);
+    background: rgba(26,46,40,0.065);
+    padding: 20px 22px;
+    max-width: 620px;
 }
 
-/* ── LIGHT SLIDES ── */
-.slide--light {
-    background-color: var(--color-bg-light);
-    color: var(--color-text-dark);
+.risk-highlight span,
+.commercial-thesis span,
+.ai-positioning-note span {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--color-bg);
+    margin-bottom: 8px;
 }
 
-.slide--light .slide-title {
-    color: var(--color-text-dark);
+.risk-highlight h3,
+.commercial-thesis h3 {
+    font-family: var(--font-title);
+    font-size: 34px;
+    font-weight: 400;
+    line-height: 1.04;
+    color: var(--color-bg);
+    margin-bottom: 8px;
+}
+
+.risk-highlight p,
+.commercial-thesis p {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #4a5a52;
+}
+
+.risk-panel {
+    background: rgba(247,249,242,0.82);
+    border-color: rgba(26,46,40,0.14);
+}
+
+.risk-panel .visual-panel__label {
+    color: var(--color-bg);
+}
+
+.risk-panel .visual-panel__headline {
+    font-size: 48px;
+    line-height: 1;
+    color: var(--color-bg);
+}
+
+.risk-metric {
+    grid-template-columns: 58px minmax(0, 1fr);
+    background: rgba(26,46,40,0.04);
     border-left-color: var(--color-bg);
 }
 
-.slide--light h1,
-.slide--light h2,
-.slide--light h3,
-.slide--light h4 { color: var(--color-text-dark); }
-
-.slide--light p,
-.slide--light li { color: #4a5a52; }
-
-.slide--light strong { color: var(--color-text-dark); }
-
-.slide--light ul li::before { color: var(--color-bg); }
-
-.slide--light .tile {
-    background-color: rgba(26,46,40,0.06);
-    border: 1px solid rgba(26,46,40,0.12);
-}
-
-.slide--light .tile .icon  { color: var(--color-bg); }
-.slide--light .tile h3     { color: var(--color-text-dark); }
-.slide--light .tile p      { color: #4a5a52; }
-
-.slide--light .image-placeholder {
-    border-color: rgba(26,46,40,0.2);
-    color: rgba(26,46,40,0.3);
-}
-
-/* ── TIMELINE JOURNEY ── */
-.timeline-flow {
-    display: flex;
-    gap: 0;
-    align-items: stretch;
-    width: 100%;
-    margin-top: 30px;
-}
-
-.timeline-node {
-    flex: 1;
-    position: relative;
-    background: rgba(216,255,133,0.05);
-    border: 1px solid rgba(216,255,133,0.15);
-    border-radius: 12px;
-    padding: 24px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.timeline-node + .timeline-node {
-    margin-left: 0;
-}
-
-.timeline-connector {
-    display: flex;
-    align-items: center;
-    padding: 0 10px;
-    color: rgba(216,255,133,0.5);
-    font-size: 20px;
-    flex-shrink: 0;
-}
-
-.timeline-node .node-year {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-primary);
-}
-
-.timeline-node h4 {
-    font-family: var(--font-title);
-    font-size: 18px;
-    font-weight: 400;
-    color: var(--color-white);
-    line-height: 1.2;
-}
-
-.timeline-node p {
-    font-size: 13px;
-    color: var(--color-text-muted);
-    line-height: 1.5;
-    margin: 0;
-}
-
-.timeline-node.timeline-node--active {
-    border-color: rgba(216,255,133,0.5);
-    background: rgba(216,255,133,0.09);
-}
-
-.journey-byline {
-    font-size: 14px;
-    color: var(--color-text-muted);
-    font-style: italic;
-    font-family: var(--font-display);
-    margin-top: 24px;
-}
-
-/* ── PIPELINE RECAP ── */
-.pipeline-hero {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
+.risk-metric strong {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    width: 100%;
-}
-
-.stat-label {
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--color-primary);
-    margin-bottom: 18px;
-}
-
-.stat-hero {
-    font-family: var(--font-title);
-    font-size: 88px;
-    font-weight: 400;
-    color: var(--color-white);
-    line-height: 1;
-    margin-bottom: 10px;
-}
-
-.stat-hero em {
-    color: var(--color-primary);
-    font-family: var(--font-display);
-    font-style: italic;
-}
-
-.stat-sub {
-    font-size: 16px;
-    color: var(--color-text-muted);
-    margin-bottom: 48px;
-}
-
-.pipeline-rows {
-    width: 100%;
-    max-width: 700px;
-    border-top: 1px solid rgba(216,255,133,0.1);
-}
-
-.pipeline-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 0;
-    border-bottom: 1px solid rgba(216,255,133,0.08);
-    font-size: 16px;
-}
-
-.pipeline-row .proj-name {
-    color: var(--color-white);
-    font-weight: 500;
-}
-
-.pipeline-row .proj-range {
-    color: var(--color-primary);
-    font-weight: 700;
-    font-size: 15px;
-    letter-spacing: 0.04em;
-}
-
-/* ── TEAM SLIDE ── */
-.team-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    width: 100%;
-    max-width: 700px;
-    margin-top: 10px;
-}
-
-.team-name {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 16px 0;
-    border-bottom: 1px solid rgba(216,255,133,0.08);
-    font-size: 18px;
-    color: var(--color-white);
-    font-weight: 400;
-}
-
-.team-name:last-child { border-bottom: none; }
-
-.team-name .dot {
-    width: 8px;
-    height: 8px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
-    background: var(--color-primary);
-    flex-shrink: 0;
-}
-
-.team-name .role {
-    font-size: 13px;
-    color: var(--color-text-muted);
-    margin-left: auto;
-    font-weight: 400;
-    letter-spacing: 0.05em;
-}
-
-.team-name.team-name--you .dot {
-    width: 10px;
-    height: 10px;
-    box-shadow: 0 0 0 3px rgba(216,255,133,0.25);
-}
-
-.team-name.team-name--you {
-    font-weight: 600;
+    background: var(--color-bg);
     color: var(--color-primary);
+    font-size: 27px;
 }
 
-/* ── CLOSING SLIDE ── */
-.closing-layout {
-    text-align: center;
-    background: linear-gradient(145deg, var(--color-bg-dark) 0%, #0c1e14 100%);
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 0; left: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 80px;
+.momentum-layout {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 34px;
 }
 
-.closing-layout > * { position: relative; z-index: 2; }
-
-.closing-layout .closing-headline {
-    font-family: var(--font-title);
-    font-size: 72px;
-    font-weight: 400;
-    color: var(--color-white);
-    line-height: 1.1;
-    margin-bottom: 20px;
-}
-
-.closing-layout .closing-headline em {
-    color: var(--color-primary);
-    font-family: var(--font-display);
-    font-style: italic;
-}
-
-.closing-layout .closing-sub {
-    font-size: 18px;
-    color: var(--color-text-muted);
-    max-width: 540px;
-    line-height: 1.6;
-    margin-bottom: 40px;
-}
-
-.closing-layout .closing-byline {
-    font-size: 13px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgba(216,255,133,0.5);
-    margin-top: 40px;
-}
-
-/* ── ABOUT PLACEHOLDER SLIDE ── */
-.about-placeholder {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    height: 100%;
+.momentum-copy {
     gap: 20px;
 }
 
-.about-note {
-    display: inline-block;
-    border: 1px dashed rgba(216,255,133,0.3);
-    color: rgba(216,255,133,0.5);
-    font-size: 12px;
-    font-weight: 500;
+.momentum-copy .lead {
+    font-size: 20px;
+    max-width: 660px;
+}
+
+.momentum-points {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.momentum-point {
+    min-height: 96px;
+    border-radius: 12px;
+    border: 1px solid rgba(216,255,133,0.17);
+    border-top: 4px solid var(--color-primary);
+    background: rgba(216,255,133,0.055);
+    padding: 14px;
+}
+
+.momentum-point span {
+    display: block;
+    font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    padding: 8px 16px;
-    border-radius: 6px;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 8px;
+}
+
+.momentum-point p {
+    font-size: 13px;
+    line-height: 1.42;
+    color: var(--color-text-muted);
+}
+
+.momentum-proof {
+    gap: 12px;
+}
+
+.momentum-proof .priority-callout {
+    background: rgba(216,255,133,0.075);
+}
+
+.concept-layout {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: 34px;
+}
+
+.concept-copy {
+    gap: 18px;
+}
+
+.concept-statement {
+    border-radius: 14px;
+    border: 1px solid rgba(26,46,40,0.13);
+    border-left: 6px solid var(--color-bg);
+    background: rgba(26,46,40,0.06);
+    padding: 20px 22px;
+    max-width: 640px;
+}
+
+.concept-statement h3 {
+    font-family: var(--font-title);
+    font-size: 34px;
+    line-height: 1.04;
+    font-weight: 400;
+    color: var(--color-bg);
+    margin-bottom: 8px;
+}
+
+.concept-statement p {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #4a5a52;
+}
+
+.concept-frame {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 0;
+}
+
+.matrix--concept {
+    gap: 12px;
+    margin-top: 0;
+}
+
+.matrix--concept .matrix-item {
+    min-height: 150px;
+    padding: 20px;
+}
+
+.matrix-item p {
+    font-size: 13px;
+    line-height: 1.42;
+    color: #4a5a52;
     margin-top: 10px;
 }
 
-/* ── SLIDE INDICATOR ── */
-.slide-indicator {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(15,31,26,0.85);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(216,255,133,0.15);
-    color: var(--color-text-muted);
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    padding: 8px 20px;
-    border-radius: 20px;
-    z-index: 1000;
-    pointer-events: none;
+.matrix-caption {
+    border-top: 1px solid rgba(26,46,40,0.14);
+    padding-top: 16px;
 }
 
-/* ── CONTROLS ── */
-.controls {
-    position: fixed;
-    bottom: 20px;
-    right: 24px;
-    z-index: 1000;
-    display: flex;
-    gap: 10px;
+.team-system-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 24px;
 }
 
-.controls button {
-    background: rgba(15,31,26,0.85);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(216,255,133,0.2);
-    color: var(--color-primary);
-    font-size: 14px;
-    padding: 8px 16px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-family: var(--font-main);
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    transition: all 0.2s ease;
+.team-command-panel {
+    background: rgba(247,249,242,0.94);
+    padding: 32px;
 }
 
-.controls button:hover {
-    background: rgba(216,255,133,0.1);
-    border-color: rgba(216,255,133,0.5);
-}
-
-/* ── ACCENT TAG ── */
-.accent-tag {
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-primary);
-    margin-bottom: 14px;
-}
-
-/* ── URGENCY TILES ── */
-.urgency-tile {
-    background: rgba(216,255,133,0.04);
-    border: 1px solid rgba(216,255,133,0.12);
-    border-left: 4px solid var(--color-primary);
-    border-radius: 8px;
-    padding: 18px 20px;
+.team-core-cards {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 0;
+    margin-top: 22px;
+    border-top: 1px solid rgba(26,46,40,0.13);
 }
 
-.urgency-tile h4 {
+.team-core-card {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 132px minmax(0, 1fr);
+    gap: 18px;
+    border: 0;
+    border-bottom: 1px solid rgba(26,46,40,0.12);
+    border-radius: 0;
+    background: transparent;
+    padding: 15px 0;
+}
+
+.team-core-card span {
+    padding-top: 3px;
+}
+
+.team-core-card h3 {
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+.team-core-card p {
+    font-size: 13px;
+}
+
+.team-scale-panel {
+    display: flex;
+    min-height: 0;
+}
+
+.bench-card {
+    width: 100%;
+    justify-content: space-between;
+    background: rgba(26,46,40,0.06);
+    padding: 32px;
+}
+
+.bench-card h3 {
+    font-size: 43px;
+    max-width: 560px;
+}
+
+.bench-intro {
     font-size: 15px;
-    font-weight: 600;
-    color: var(--color-white);
-    margin: 0;
-}
-
-.urgency-tile p {
-    font-size: 13px;
-    color: var(--color-text-muted);
     line-height: 1.5;
-    margin: 0;
+    color: #4a5a52;
+    margin-top: 12px;
+    max-width: 560px;
 }
 
-.urgency-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-top: 20px;
-    width: 100%;
+.bench-list {
+    margin-top: 24px;
 }
 
-body.grid-view .urgency-tile h4 { font-size: 7px; }
-body.grid-view .urgency-tile p  { font-size: 6px; }
-body.grid-view .urgency-grid    { gap: 6px; margin-top: 8px; }
+.bench-item {
+    grid-template-columns: 190px minmax(0, 1fr);
+}
 
-/* ── Unified Closing Slide ── */
-#slide-whynow {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+.commercial-layout {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 34px;
 }
-.closing-unified {
-    display: flex;
-    flex-direction: column;
-    gap: 36px;
-    max-width: 900px;
-    width: 100%;
+
+.commercial-copy {
+    gap: 20px;
 }
-.closing-unified__header h2 {
-    font-family: var(--font-display);
-    font-size: 52px;
-    font-weight: 400;
-    line-height: 1.1;
+
+.commercial-copy .lead {
+    font-size: 20px;
+    max-width: 650px;
 }
-.closing-unified__grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-}
-.cu-tile {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-    background: rgba(216,255,133,0.04);
-    border: 1px solid rgba(216,255,133,0.12);
-    border-radius: 12px;
+
+.commercial-thesis {
+    border-radius: 14px;
+    border: 1px solid rgba(26,46,40,0.13);
+    border-left: 6px solid var(--color-bg);
+    background: rgba(26,46,40,0.065);
     padding: 20px 22px;
 }
-.cu-tile__icon {
-    font-size: 20px;
-    color: var(--color-primary);
-    margin-top: 2px;
-    flex-shrink: 0;
-    width: 28px;
-    text-align: center;
+
+.commercial-stack {
+    gap: 12px;
 }
-.cu-tile h4 {
+
+.commercial-row {
+    border-radius: 14px;
+    border: 1px solid rgba(26,46,40,0.13);
+    background: rgba(26,46,40,0.055);
+    padding: 18px 20px;
+}
+
+.commercial-row .marker {
+    background: var(--color-bg);
+    color: var(--color-primary) !important;
+    border-color: var(--color-bg);
+    font-weight: 800;
+    font-size: 15px;
+}
+
+.commercial-row h3 {
+    font-size: 19px;
+    margin-bottom: 5px;
+}
+
+.commercial-row p {
     font-size: 14px;
-    font-weight: 600;
+    line-height: 1.48;
+}
+
+.ai-positioning-note {
+    border-left: 5px solid var(--color-primary);
+    border-radius: 14px;
+    border: 1px solid rgba(216,255,133,0.16);
+    background: rgba(216,255,133,0.055);
+    padding: 18px 20px;
+    margin-top: 4px;
+    max-width: 680px;
+}
+
+.ai-positioning-note span {
+    color: var(--color-primary);
+}
+
+.ai-positioning-note h3 {
+    font-family: var(--font-title);
+    font-size: 31px;
+    line-height: 1.05;
+    font-weight: 400;
     color: var(--color-white);
-    margin: 0 0 5px;
-    letter-spacing: 0.01em;
 }
-.cu-tile p {
-    font-size: 13px;
-    color: var(--color-text-muted);
-    line-height: 1.55;
-    margin: 0;
-}
-.closing-unified__footer {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+
+@media (max-width: 920px) {
+    #slide-risk,
+    #slide-momentum,
+    #slide-conceptual-gap,
+    #slide-core-team,
+    #slide-commercial-plan { padding: 34px 38px; }
+
+    #slide-risk .two-column,
+    .momentum-layout,
+    .concept-layout,
+    .commercial-layout,
+    .team-system-layout { grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); gap: 16px; align-items: center; }
+
+    #slide-risk .content-area,
+    #slide-momentum .content-area,
+    #slide-conceptual-gap .content-area,
+    #slide-core-team .content-area,
+    #slide-commercial-plan .content-area { height: auto; }
+
+    #slide-risk .slide-title,
+    #slide-momentum .slide-title,
+    #slide-conceptual-gap .slide-title,
+    #slide-core-team .slide-title,
+    #slide-commercial-plan .slide-title { font-size: 34px; margin-bottom: 10px; padding-left: 14px; border-left-width: 6px; }
+
+    #slide-risk .accent-tag,
+    #slide-momentum .accent-tag,
+    #slide-conceptual-gap .accent-tag,
+    #slide-core-team .accent-tag,
+    #slide-commercial-plan .accent-tag { font-size: 9px; margin-bottom: 8px; }
+
+    .risk-copy,
+    .momentum-copy,
+    .concept-copy,
+    .commercial-copy { gap: 10px; }
+
+    .risk-copy .lead,
+    .momentum-copy .lead,
+    .concept-copy .lead,
+    .commercial-copy .lead { font-size: 13px; line-height: 1.35; }
+
+    .risk-highlight,
+    .concept-statement,
+    .commercial-thesis { padding: 12px 14px; border-left-width: 4px; }
+
+    .risk-highlight span,
+    .commercial-thesis span { font-size: 8px; margin-bottom: 5px; }
+
+    .risk-highlight h3,
+    .concept-statement h3,
+    .commercial-thesis h3 { font-size: 23px; margin-bottom: 4px; }
+
+    .risk-highlight p,
+    .concept-statement p,
+    .commercial-thesis p { font-size: 10.5px; line-height: 1.35; }
+
+    .risk-panel { min-height: 0; padding: 16px; gap: 10px; }
+    .risk-panel .visual-panel__headline { font-size: 30px; line-height: 0.98; }
+    .risk-metric-stack { gap: 8px; }
+    .risk-metric { grid-template-columns: 40px minmax(0, 1fr); gap: 9px; padding: 10px 12px; border-left-width: 4px; }
+    .risk-metric strong { width: 34px; height: 34px; font-size: 19px; }
+    .risk-metric h3 { font-size: 13px; margin-bottom: 2px; }
+    .risk-metric p { font-size: 9.5px; line-height: 1.28; }
+
+    .momentum-points { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+    .momentum-point { min-height: 0; padding: 10px; }
+    .momentum-point span { font-size: 8px; margin-bottom: 5px; }
+    .momentum-point p { font-size: 9px; line-height: 1.28; }
+    .momentum-proof .priority-callout { padding: 14px; }
+    .momentum-proof .priority-callout h3 { font-size: 23px; }
+    .momentum-proof .priority-callout p,
+    .momentum-proof .signal-row p { font-size: 10px; line-height: 1.32; }
+    .momentum-proof .signal-row h3 { font-size: 13px; }
+
+    .matrix--concept { gap: 8px; }
+    .matrix--concept .matrix-item { min-height: 112px; padding: 12px; }
+    .matrix-item h3 { font-size: 20px; }
+    .matrix-item p { font-size: 9.5px; line-height: 1.28; }
+    .matrix-caption { font-size: 10px; padding-top: 10px; margin-top: 10px; }
+
+    .team-command-panel,
+    .bench-card { padding: 18px; border-radius: 16px; }
+    .team-command-panel .lead { font-size: 11px; line-height: 1.34; }
+    .team-core-cards { margin-top: 12px; }
+    .team-core-card { grid-template-columns: 88px minmax(0, 1fr); gap: 8px; padding: 9px 0; }
+    .team-core-card span { font-size: 8px; }
+    .team-core-card h3 { font-size: 15px; }
+    .team-core-card p { font-size: 9px; line-height: 1.28; }
+    .bench-card h3 { font-size: 28px; }
+    .bench-intro { font-size: 10.5px; line-height: 1.34; margin-top: 8px; }
+    .bench-list { margin-top: 12px; }
+    .bench-item { grid-template-columns: 108px minmax(0, 1fr); gap: 9px; padding: 8px 0; }
+    .bench-item h4 { font-size: 11px; }
+    .bench-item p { font-size: 9.5px; line-height: 1.28; }
+
+    .commercial-row { grid-template-columns: 34px minmax(0, 1fr); padding: 12px 14px; }
+    .commercial-row .marker { width: 30px; height: 30px; font-size: 13px; }
+    .commercial-row h3 { font-size: 14px; }
+    .commercial-row p { font-size: 10px; line-height: 1.32; }
+
+    #slide-ai-emotion { padding: 34px 38px; }
+    .ai-confessional-layout { grid-template-columns: minmax(0, 0.96fr) minmax(0, 1.04fr); gap: 16px; align-items: center; }
+    .ai-confessional-layout .content-area { height: auto; gap: 12px; }
+    #slide-ai-emotion .slide-title { font-size: 32px; margin-bottom: 10px; padding-left: 14px; border-left-width: 6px; }
+    #slide-ai-emotion .accent-tag { font-size: 9px; margin-bottom: 8px; }
+    #slide-ai-emotion .lead { font-size: 12.5px; line-height: 1.34; }
+    .ai-positioning-note { padding: 12px 14px; margin-top: 0; }
+    .ai-positioning-note span { font-size: 8px; margin-bottom: 5px; }
+    .ai-positioning-note h3 { font-size: 20px; line-height: 1.04; }
+    #slide-ai-emotion .signal-list { gap: 6px; }
+    #slide-ai-emotion .signal-row { grid-template-columns: 30px minmax(0, 1fr); gap: 9px; padding: 7px 0; }
+    #slide-ai-emotion .signal-row .marker { width: 30px; height: 30px; font-size: 10px; }
+    #slide-ai-emotion .signal-row h3 { font-size: 13px; margin-bottom: 2px; }
+    #slide-ai-emotion .signal-row p { font-size: 9.5px; line-height: 1.28; }
+    .ai-confessional-media { grid-template-columns: 1fr; grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 10px; min-height: 0; height: 100%; }
+    .ai-media-card { border-radius: 14px; }
+    .ai-media-card__label { left: 10px; bottom: 10px; min-height: 24px; font-size: 8px; padding: 0 9px; }
 }
 
     </style>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K68S7LCJ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <div class="slides-wrapper">
-
-    <!-- ═══════════════════════════════════════════
-         SLIDE 1 — TITLE
-         ═══════════════════════════════════════════ -->
     <div class="slide-container active" id="slide-title">
         <div class="title-layout">
-            <p class="accent-tag"><i class="fa fa-file-lines"></i> &nbsp;proposal</p>
-            <h1>proposal</h1>
-            <p class="subtitle">Same format and design as recap, ready for the new content</p>
+            <p class="accent-tag"><i class="fa fa-compass"></i> Experiential strategy</p>
+            <h1>Immersive proposal</h1>
+            <p class="subtitle">A plan to protect momentum, formalize ownership, and turn immersive capability into an enterprise growth channel.</p>
             <hr>
-            <p class="byline"><strong>Route live at /proposal/</strong> &nbsp;·&nbsp; Draft shell active &nbsp;·&nbsp; Content pending</p>
+            <p class="byline">Creative Technology leadership &middot; Enterprise experiential development &middot; R&amp;D to commercial scale</p>
         </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════
-         SLIDE 2 — ABOUT MANUEL
-         ═══════════════════════════════════════════ -->
-    <div class="slide-container slide--light" id="slide-about">
-        <div class="two-column" style="gap:60px;">
-            <div class="content-area" style="justify-content:center;gap:0;">
-                <p class="accent-tag" style="color:#2a7a4f;opacity:0.85;"><i class="fa fa-diagram-project"></i> &nbsp;Proposal Structure</p>
-                <h2 style="font-family:var(--font-title);font-size:40px;font-weight:400;color:var(--color-text-dark);line-height:1.1;margin-bottom:18px;">Deck scaffold<br><em style="font-family:var(--font-display);font-style:italic;color:#2a7a4f;">ready to swap</em></h2>
-
-                <ul style="list-style:none;padding:0;margin:0 0 22px 0;display:flex;flex-direction:column;gap:11px;">
-                    <li style="display:flex;gap:12px;align-items:flex-start;font-size:14px;line-height:1.6;color:#3a4a42;">
-                        <span style="color:#2a7a4f;font-size:16px;line-height:1.4;flex-shrink:0;">&#8594;</span>
-                        <span><strong style="color:var(--color-text-dark);">New route exposed from /proposal/</strong> so you can review this deck separately from the recap.</span>
-                    </li>
-                    <li style="display:flex;gap:12px;align-items:flex-start;font-size:14px;line-height:1.6;color:#3a4a42;">
-                        <span style="color:#2a7a4f;font-size:16px;line-height:1.4;flex-shrink:0;">&#8594;</span>
-                        <span>Same visual system, slide transitions, indicator, and interaction model as the recap deck.</span>
-                    </li>
-                    <li style="display:flex;gap:12px;align-items:flex-start;font-size:14px;line-height:1.6;color:#3a4a42;">
-                        <span style="color:#2a7a4f;font-size:16px;line-height:1.4;flex-shrink:0;">&#8594;</span>
-                        <span>From here we can replace each section one by one with the new proposal content you send, without touching the recap page.</span>
-                    </li>
-                </ul>
-
-                <p style="font-size:11px;font-weight:700;letter-spacing:0.1em;color:#2a7a4f;text-transform:uppercase;margin-bottom:12px;">Already wired</p>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-                    <div style="font-size:12px;color:#3a4a42;background:rgba(26,46,40,0.05);border:1px solid rgba(26,46,40,0.1);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;">
-                        <i class="fa fa-cube" style="color:#2a7a4f;width:14px;text-align:center;"></i> Title slide
-                    </div>
-                    <div style="font-size:12px;color:#3a4a42;background:rgba(26,46,40,0.05);border:1px solid rgba(26,46,40,0.1);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;">
-                        <i class="fa fa-mobile-screen" style="color:#2a7a4f;width:14px;text-align:center;"></i> Two-column slides
-                    </div>
-                    <div style="font-size:12px;color:#3a4a42;background:rgba(26,46,40,0.05);border:1px solid rgba(26,46,40,0.1);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;">
-                        <i class="fa fa-gamepad" style="color:#2a7a4f;width:14px;text-align:center;"></i> Section dividers
-                    </div>
-                    <div style="font-size:12px;color:#3a4a42;background:rgba(26,46,40,0.05);border:1px solid rgba(26,46,40,0.1);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;">
-                        <i class="fa fa-vr-cardboard" style="color:#2a7a4f;width:14px;text-align:center;"></i> Media slides
-                    </div>
-                    <div style="font-size:12px;color:#3a4a42;background:rgba(26,46,40,0.05);border:1px solid rgba(26,46,40,0.1);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;">
-                        <i class="fa fa-lightbulb" style="color:#2a7a4f;width:14px;text-align:center;"></i> Summary slide
-                    </div>
-                    <div style="font-size:12px;color:#3a4a42;background:rgba(26,46,40,0.05);border:1px solid rgba(26,46,40,0.1);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;">
-                        <i class="fa fa-chart-bar" style="color:#2a7a4f;width:14px;text-align:center;"></i> Closing slide
-                    </div>
+    <div class="slide-container slide--light" id="slide-risk">
+        <div class="two-column two-column--even">
+            <div class="content-area risk-copy">
+                <p class="accent-tag"><i class="fa fa-triangle-exclamation"></i> Critical diagnosis</p>
+                <h2 class="slide-title">The Risk of Inaction</h2>
+                <p class="lead">Immersive work is gaining demand and internal attention while traditional 3D demand has softened. <strong>The opportunity is real, but the current model is not yet turning that demand into strategy, briefs, or revenue.</strong></p>
+                <div class="risk-highlight">
+                    <span>Important shift</span>
+                    <h3>Demand is not the problem. Conversion is.</h3>
+                    <p>The gap is between the interest already forming around immersive work and the operating model needed to turn it into client opportunities.</p>
                 </div>
             </div>
-            <div class="content-area" style="justify-content:center;align-items:stretch;">
-                <div style="width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;gap:18px;background:linear-gradient(135deg, rgba(42,122,79,0.12), rgba(216,255,133,0.24));border:1px solid rgba(42,122,79,0.14);border-radius:20px;padding:32px;">
-                    <p style="font-size:11px;font-weight:700;letter-spacing:0.1em;color:#2a7a4f;text-transform:uppercase;">Working mode</p>
-                    <h3 style="font-family:var(--font-title);font-size:42px;font-weight:400;color:var(--color-text-dark);line-height:1.05;">Send me the new copy,<br><em style="font-family:var(--font-display);font-style:italic;color:#2a7a4f;">and I replace the deck.</em></h3>
-                    <p style="font-size:14px;line-height:1.7;color:#3a4a42;max-width:420px;">We can keep the same number of slides as the recap or cut it down. The route and the design system are now isolated, so the next passes can focus only on content.</p>
+            <div class="visual-panel risk-panel">
+                <div class="visual-panel__label">Current trajectory</div>
+                <div class="visual-panel__headline">The operating model is lagging behind demand.</div>
+                <div class="risk-metric-stack">
+                    <div class="risk-metric"><strong>01</strong><div><h3>Enterprise interest is rising.</h3><p>Client conversations are already moving toward immersive, experiential, and AI-enabled activations.</p></div></div>
+                    <div class="risk-metric"><strong>02</strong><div><h3>Internal energy needs structure.</h3><p>The interest is real, but it still lacks a clear model for strategy, packaging, and repeatable delivery.</p></div></div>
+                    <div class="risk-metric"><strong>03</strong><div><h3>The team is still reactive.</h3><p>Without a defined operating model, the work depends on inbound requests instead of shaping demand proactively.</p></div></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════
-         SLIDE 3 — REEL
-         ═══════════════════════════════════════════ -->
-    <div class="slide-container" id="slide-reel">
-        <div class="reel-grid">
-            <!-- Left text panel -->
-            <div class="reel-left">
-                <p class="accent-tag"><i class="fa fa-film"></i> &nbsp;Reel</p>
-                <h2>15 years.<br><em>In motion.</em></h2>
-                <p class="reel-cities">Tokyo &mdash; Hong Kong &mdash; Berlin &mdash; United States</p>
-                <ul style="list-style:none;padding:0;margin-top:28px;display:flex;flex-direction:column;gap:14px;">
-                    <li style="display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.6;color:rgba(255,255,255,0.6);">
-                        <span style="color:var(--color-primary);flex-shrink:0;">&#8594;</span>
-                        <span>Coordinated large-scale immersive shows in <strong style="color:rgba(255,255,255,0.85);">Tokyo, Hong Kong, Berlin</strong> and across the US — from concept to execution</span>
-                    </li>
-                    <li style="display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.6;color:rgba(255,255,255,0.6);">
-                        <span style="color:var(--color-primary);flex-shrink:0;">&#8594;</span>
-                        <span>Speaker and educator on immersive tech, creative coding, and interactive design</span>
-                    </li>
-                    <li style="display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.6;color:rgba(255,255,255,0.6);">
-                        <span style="color:var(--color-primary);flex-shrink:0;">&#8594;</span>
-                        <span>@ <strong style="color:rgba(255,255,255,0.85);">Superside</strong> since November 2024 — building the experiential tech practice</span>
-                    </li>
-                </ul>
+    <div class="slide-container" id="slide-momentum">
+        <div class="two-column momentum-layout">
+            <div class="content-area momentum-copy">
+                <p class="accent-tag"><i class="fa fa-bolt"></i> Momentum gap</p>
+                <h2 class="slide-title">Lost Momentum</h2>
+                <p class="lead">When creatives see what we can build, motivation spikes. That energy needs to become a system: clear ownership, sales confidence, and a repeatable path from internal excitement to enterprise briefs.</p>
+                <div class="momentum-points">
+                    <div class="momentum-point"><span>Energy</span><p>Creative curiosity is already present across the organization.</p></div>
+                    <div class="momentum-point"><span>Model</span><p>The missing piece is how that energy becomes a commercial motion.</p></div>
+                    <div class="momentum-point"><span>Briefs</span><p>The goal is to convert interest into scoped, strategic opportunities.</p></div>
+                </div>
             </div>
-            <!-- Right video panel -->
-            <div class="reel-right">
-                <!-- Gradient overlay blending left edge into dark panel -->
-                <div class="reel-overlay"></div>
-                <video autoplay loop muted playsinline>
-                    <source src="reelshort.mp4" type="video/mp4">
-                </video>
+            <div class="signal-list momentum-proof">
+                <div class="priority-callout">
+                    <span class="priority-callout__label">Critical operating gap</span>
+                    <h3>No working model has been created recently.</h3>
+                    <p>The last two months have not produced a clear operating strategy for how immersive work should be pitched, scoped, and delivered.</p>
+                </div>
+                <div class="signal-row">
+                    <div class="marker">2</div>
+                    <div><h3>The posture needs to become proactive.</h3><p>Instead of waiting for requests, the practice should show what Superside can uniquely offer before the brief is narrowed.</p></div>
+                </div>
+                <div class="signal-row">
+                    <div class="marker">3</div>
+                    <div><h3>The internal hype should become a pipeline.</h3><p>Curiosity needs leadership, packaging, and repeatable pathways into enterprise opportunities.</p></div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════
-         SLIDE 4 — THE JOURNEY (Timeline)
-         ═══════════════════════════════════════════ -->
-    <div class="slide-container" id="slide-journey">
-        <h2 class="slide-title">The Journey</h2>
-        <p style="margin-bottom: 0; font-size:16px;">How we got from creative experiments to enterprise-scale immersive experiences.</p>
-        <div class="timeline-flow">
-            <div class="timeline-node">
-                <span class="node-year">Nov 2024 — Start</span>
-                <h4>Creative Technologist<br>&amp; AR Developer</h4>
-                <p>Joined Superside. First projects in AR filters, interactive prototypes, and emerging-format content for enterprise brands.</p>
-            </div>
-            <div class="timeline-connector"><i class="fa fa-arrow-right"></i></div>
-            <div class="timeline-node">
-                <span class="node-year">Dec 2024 — Scale</span>
-                <h4>No onboarding.<br>Straight to work.</h4>
-                <p>Brought a development capacity that didn't exist before. Led AR-first projects using AI — and taught the team entirely new ways of working, expanding what Superside could technically offer.</p>
-            </div>
-            <div class="timeline-connector"><i class="fa fa-arrow-right"></i></div>
-            <div class="timeline-node timeline-node--active">
-                <span class="node-year">2025 — Breakthrough</span>
-                <h4>Reddit Magic Mirror<br>2025 &amp; Beyond</h4>
-                <p>Delivered the headline experiential project of the year. Established a repeatable playbook for high-visibility enterprise event tech.</p>
-            </div>
-            <div class="timeline-connector"><i class="fa fa-arrow-right"></i></div>
-            <div class="timeline-node timeline-node--active">
-                <span class="node-year">2026 — Now</span>
-                <h4>Cross-Studio<br>Experiential Practice</h4>
-                <p>$300K+ active pipeline. Multiple blue-chip clients. A clear case for a dedicated Experiential Tech team spanning all Studios.</p>
+    <div class="slide-container slide--deep" id="slide-deprioritization">
+        <div class="content-area">
+            <p class="accent-tag"><i class="fa fa-arrow-trend-down"></i> Positioning risk</p>
+            <h2 class="slide-title">Signals of Deprioritization</h2>
+            <p class="lead">The area is being pulled away from the center of the offer at the exact moment it should become more visible.</p>
+            <div class="spotlight-layout">
+                <div class="priority-callout">
+                    <span class="priority-callout__label">Offer visibility risk</span>
+                    <h3>Language has shifted.</h3>
+                    <p>The name "immersive" was removed from the briefs channel, weakening the signal that this is a distinct offer.</p>
+                </div>
+                <div class="signal-list">
+                    <div class="signal-row"><div class="marker"><i class="fa fa-comments"></i></div><div><h3>Perspective is missing.</h3><p>Technical and creative input from the people closest to this work has not been consistently used in strategic decisions.</p></div></div>
+                    <div class="signal-row"><div class="marker"><i class="fa fa-bullhorn"></i></div><div><h3>No promotion engine exists.</h3><p>There is no active internal campaign, sales enablement path, or visible push to grow the space.</p></div></div>
+                </div>
             </div>
         </div>
-        <p class="journey-byline">"From one engineer with a creative idea to a practice generating real enterprise revenue."</p>
     </div>
 
-    <!-- ═══════════════════════════════════════════
-         SLIDE 4 — PHILOSOPHY / SECTION DIVIDER
-         ═══════════════════════════════════════════ -->
-    <div class="slide-container" id="slide-philosophy">
+    <div class="slide-container slide--light" id="slide-conceptual-gap">
+        <div class="two-column two-column--even concept-layout">
+            <div class="content-area concept-copy">
+                <p class="accent-tag"><i class="fa fa-lightbulb"></i> Conceptual leadership</p>
+                <h2 class="slide-title">Experiential Is Not a 3D Subcategory</h2>
+                <p class="lead">An immersive experience can be conceptual, physical, theatrical, emotional, spatial, AI-driven, or low-tech. Forcing every opportunity into the traditional 3D pipeline makes the offer smaller than the client problem.</p>
+                <div class="concept-statement">
+                    <h3>Start with the idea, then choose the medium.</h3>
+                    <p>The area needs leadership that can define the experience first and only then decide whether the answer is spatial, digital, physical, generative, or intentionally low-tech.</p>
+                </div>
+            </div>
+            <div class="concept-frame">
+                <div class="matrix matrix--concept">
+                    <div class="matrix-item"><span>Spatial</span><h3>Physical environments</h3><p>Places people can enter, move through, and remember.</p></div>
+                    <div class="matrix-item"><span>Participatory</span><h3>Interactive rituals</h3><p>Moments where the audience becomes part of the system.</p></div>
+                    <div class="matrix-item"><span>Adaptive</span><h3>Generative systems</h3><p>Experiences that respond, personalize, and evolve in real time.</p></div>
+                    <div class="matrix-item"><span>Narrative</span><h3>Emotional storytelling</h3><p>Technology used to create presence, not just spectacle.</p></div>
+                </div>
+                <p class="matrix-caption">The key is not the format. The key is choosing the right medium after the concept is defined.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-container" id="slide-sales-gap">
+        <div class="two-column">
+            <div class="content-area">
+                <p class="accent-tag"><i class="fa fa-chart-line"></i> Sales enablement</p>
+                <h2 class="slide-title">The Enterprise Sales Gap</h2>
+                <p class="lead">Current credentials material heavily prioritizes 3D output. It does not explain how we approach conceptual design as a sellable enterprise service.</p>
+            </div>
+            <div class="visual-panel">
+                <div class="visual-panel__label">What enterprise needs to see</div>
+                <div class="visual-panel__headline">Not only what we render. How we think, prototype, and move people.</div>
+                <div class="signal-list">
+                    <div class="signal-row"><div class="marker"><i class="fa fa-cube"></i></div><div><h3>3D delivery is not enough.</h3><p>Traditional production cannot expand the business on its own.</p></div></div>
+                    <div class="signal-row"><div class="marker"><i class="fa fa-wand-magic-sparkles"></i></div><div><h3>Conceptual design must become an offer.</h3><p>Enterprise clients need confidence that we can invent, not just execute.</p></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="slide-container slide--accent" id="slide-solution">
         <div class="section-title-layout">
-            <p class="label-tag"><i class="fa fa-bolt"></i> &nbsp;What Drives Us</p>
+            <p class="accent-tag"><i class="fa fa-people-group"></i> The solution</p>
             <hr>
-            <h2>We build the <em>unexpected.</em><br>New. Different. Unanticipated.</h2>
-            <p>Our edge isn't just technical — it's the willingness to attempt things that shouldn't be possible and deliver them live.</p>
-            <div style="display:flex; gap:32px; margin-top:40px; text-align:center; justify-content:center;">
-                <div style="display:flex;flex-direction:column;align-items:center;gap:8px;min-width:140px;">
-                    <i class="fa fa-star" style="font-size:28px;color:var(--color-primary);"></i>
-                    <span style="font-size:13px;font-weight:600;color:var(--color-white);letter-spacing:0.05em;">Events-First</span>
-                    <span style="font-size:12px;color:var(--color-text-muted);">Live moments create the strongest impressions</span>
-                </div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:8px;min-width:140px;">
-                    <i class="fa fa-handshake" style="font-size:28px;color:var(--color-primary);"></i>
-                    <span style="font-size:13px;font-weight:600;color:var(--color-white);letter-spacing:0.05em;">Enterprise Trust</span>
-                    <span style="font-size:12px;color:var(--color-text-muted);">Deep relationships that go beyond deliverables</span>
-                </div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:8px;min-width:140px;">
-                    <i class="fa fa-person-rays" style="font-size:28px;color:var(--color-primary);"></i>
-                    <span style="font-size:13px;font-weight:600;color:var(--color-white);letter-spacing:0.05em;">Human Edge</span>
-                    <span style="font-size:12px;color:var(--color-text-muted);">There are still no robots at a trade show booth</span>
-                </div>
+            <h2>Experiential / Immersive <em>Development</em></h2>
+            <p>A small autonomous multidisciplinary wing: an internal pioneering agency for enterprise clients, built to scale without disrupting the operational rhythm of 3D.</p>
+            <div class="tiled-content tiled-content--four" style="max-width:1040px;">
+                <div class="tile"><div class="icon"><i class="fa fa-building"></i></div><h3>Internal agency</h3><p>One place for concept, technology, prototyping, and event logic.</p></div>
+                <div class="tile"><div class="icon"><i class="fa fa-handshake"></i></div><h3>Enterprise first</h3><p>Designed for complex clients, regulated contexts, and high-stakes moments.</p></div>
+                <div class="tile"><div class="icon"><i class="fa fa-seedling"></i></div><h3>Small and scalable</h3><p>Core leadership with flexible specialists when projects require them.</p></div>
+                <div class="tile"><div class="icon"><i class="fa fa-magnet"></i></div><h3>Talent magnet</h3><p>A focused home for people who want to build what does not exist yet.</p></div>
             </div>
         </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════
-         SLIDE 5 — AI-POWERED WORKFLOWS
-         ═══════════════════════════════════════════ -->
-    <div class="slide-container slide--light" id="slide-ai">
-        <h2 class="slide-title">AI-Powered Workflows</h2>
-        <p>Every project runs on a fully AI-enabled pipeline — from first concept to client delivery. Speed and quality aren't a tradeoff anymore.</p>
-        <div class="tiled-content">
-            <div class="tile tile-media">
-                <video class="hover-vid" src="ai.mp4" muted loop playsinline></video>
-                <div class="icon"><i class="fa fa-code"></i></div>
-                <h3>AI-Assisted Coding</h3>
-                <p>From rapid prototyping to debugging complex interactive scenes — compressing weeks into days.</p>
-            </div>
-            <div class="tile tile-media">
-                <img class="hover-img" src="aqui.png" alt="3D Asset Generation preview">
-                <div class="icon"><i class="fa fa-cube"></i></div>
-                <h3>3D Asset Generation</h3>
-                <p>AI-generated 3D models and textures at a fraction of traditional production cost.</p>
-            </div>
-            <div class="tile tile-media">
-                <video class="hover-vid" src="viz.mp4" muted loop playsinline></video>
-                <div class="icon"><i class="fa fa-chart-bar"></i></div>
-                <h3>Data Viz &amp; Insights</h3>
-                <p>Raw event data into interactive visualizations — live dashboards, AR overlays, and more.</p>
-            </div>
-            <div class="tile tile-media">
-                <video class="hover-vid" src="mcpfigma.mp4" muted loop playsinline></video>
-                <div class="icon"><i class="fa fa-plug"></i></div>
-                <h3>MCP Connections</h3>
-                <p>AI connected directly into <strong>Figma, Blender, Unity</strong> — seamless cross-tool workflows.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════
-         SLIDE 6 — WORKFLOW FLOWCHART
-         ═══════════════════════════════════════════ -->
-    <div class="slide-container" id="slide-workflow">
-        <h2 class="slide-title">Our Workflow</h2>
-        <p class="slide-subtitle">How we take projects from brief to delivery — two paths, one team.</p>
-        <div class="workflow-container" id="workflow-root"></div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════
-         SLIDE 7 — PROJECT: VAsteroids
-         ═══════════════════════════════════════════ -->
-    <div class="slide-container" id="slide-vasteroids">
-        <div class="two-column">
-            <div class="content-area">
-                <p class="accent-tag"><i class="fa fa-gamepad-modern"></i> &nbsp;Project</p>
-                <h2 class="slide-title" style="border-left-width:0;padding-left:0;font-size:44px;">VAsteroids</h2>
-                <span class="budget-badge">$33,000 – $36,000</span>
-                <br><br>
-                <ul style="margin-top:8px;">
-                    <li>Born from the energy generated by <strong>Connectria</strong>, a retro-game activation that stopped the floor.</li>
-                    <li>VAST renewed their contract and are excited to continue developing the game project further.</li>
-                    <li>Proved that bold, creative proposals from our team are a direct lever for <strong>elevating the client relationship.</strong></li>
-                    <li>When we bring something unexpected and exciting, clients don't just stay — they invest more.</li>
-                </ul>
-            </div>
-            <div>
-                <video class="vasteroids-video" autoplay loop muted playsinline>
-                    <source src="vasteroids.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-        <!-- Floating comment card — animates in on slide load -->
-        <div id="vasteroids-comment">
-            <img src="image%20copy.png" alt="Client comment">
-        </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════
-         SLIDE 8 — PROJECT: Reddit
-         ═══════════════════════════════════════════ -->
-    <div class="slide-container" id="slide-reddit">
-        <div class="two-column">
-            <div class="content-area">
-                <p class="accent-tag"><i class="fa fa-circle-r"></i> &nbsp;Project</p>
-                <h2 class="slide-title" style="border-left-width:0;padding-left:0;font-size:44px;">Reddit</h2>
-                <span class="budget-badge">$76,000 – $90,000</span>
-                <br><br>
-                <ul style="margin-top:8px;">
-                    <li><strong>Magic Mirror 2025</strong> was a clear success and became the launchpad for the next phase of the relationship.</li>
-                    <li>For <strong>2026</strong>, Reddit has already confirmed <strong>two events: OMR and Cannes</strong>, with additional opportunities expected throughout the year.</li>
-                    <li>We proposed a <strong>modular system</strong> so the experience can scale up, add new features, and adapt to each event's size and goals.</li>
-                    <li>This is evolving into a <strong>year-round partnership</strong> with strong creative upside and repeat business potential.</li>
-                </ul>
-            </div>
-            <div>
-                <video class="project-video" autoplay loop muted playsinline>
-                    <source src="redditmiami.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-        <div id="reddit-comment">
-            <img src="image%20copy%202.png" alt="Reddit client comment">
-        </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════
-         SLIDE 9 — PROJECT: Albertsons AMC
-         ═══════════════════════════════════════════ -->
-    <div class="slide-container" id="slide-albertsons">
-        <div class="two-column">
-            <div class="content-area">
-                <p class="accent-tag"><i class="fa fa-store"></i> &nbsp;Project</p>
-                <h2 class="slide-title" style="border-left-width:0;padding-left:0;font-size:44px;">Albertsons AMC</h2>
-                <span class="budget-badge">$121,875 – $159,250</span>
-                <br><br>
-                <ul style="margin-top:8px;">
-                    <li>A direct consequence of Reddit's success — this client noticed and came to us.</li>
-                    <li>Scope: <strong>full booth design and concept</strong> + multiple immersive experiences throughout the space.</li>
-                    <li>Unique challenge: guiding a client <em>new to immersive</em> — translating ambition into executable activations.</li>
-                    <li>High probability of <strong>recurring event work</strong> across their retail and media calendar.</li>
-                </ul>
-            </div>
-            <div>
-                <img class="project-img" src="albertsons.png" alt="Albertsons AMC Booth">
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════
-         SLIDE 10 — PROJECT: Wurth VR
-         ═══════════════════════════════════════════ -->
-    <div class="slide-container" id="slide-wurth">
-        <div class="two-column">
-            <div class="content-area">
-                <p class="accent-tag"><i class="fa fa-vr-cardboard"></i> &nbsp;Project</p>
-                <h2 class="slide-title" style="border-left-width:0;padding-left:0;font-size:44px;">Wurth VR</h2>
-                <span class="budget-badge">$71,950 – $78,610</span>
-                <br><br>
-                <ul style="margin-top:8px;">
-                    <li>A <strong>VR experience</strong> designed for scalability across multiple trade shows and events.</li>
-                    <li>Built to run without on-site specialist support — once deployed, it travels.</li>
-                    <li>Demonstrates our ability to deliver <strong>standalone immersive products</strong>, not just one-off activations.</li>
-                    <li>Opens the door to hardware-as-a-service models for future engagements.</li>
-                </ul>
-            </div>
-            <div>
-                <img class="project-img" src="image.png" alt="Wurth VR">
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════
-         SLIDE 11 — PIPELINE RECAP
-         ═══════════════════════════════════════════ -->
-    <div class="slide-container" id="slide-pipeline">
-        <div class="pipeline-hero">
-            <p class="stat-label"><i class="fa fa-chart-line"></i> &nbsp;Active Q1 Experiential Pipeline</p>
-            <h2 class="stat-hero"><em>$302K</em> – $363K</h2>
-            <p class="stat-sub">Delivering through early May 2026</p>
-            <div class="pipeline-rows">
-                <div class="pipeline-row">
-                    <span class="proj-name">Reddit Experience</span>
-                    <span class="proj-range">$76,000 – $90,000</span>
+    <div class="slide-container slide--light" id="slide-core-team">
+        <div class="team-system-layout">
+            <div class="team-command-panel">
+                <div>
+                    <p class="accent-tag"><i class="fa fa-users"></i> Team operating model</p>
+                    <h2 class="slide-title">A focused core, not another production lane.</h2>
+                    <p class="lead">A small leadership core protects concept, ownership, and speed. Specialists join when the client problem calls for them, instead of turning the area into a fixed headcount model.</p>
                 </div>
-                <div class="pipeline-row">
-                    <span class="proj-name">Albertsons AMC Booth</span>
-                    <span class="proj-range">$121,875 – $159,250</span>
-                </div>
-                <div class="pipeline-row">
-                    <span class="proj-name">Wurth VR</span>
-                    <span class="proj-range">$71,950 – $78,610</span>
-                </div>
-                <div class="pipeline-row">
-                    <span class="proj-name">VAST (VAsteroids)</span>
-                    <span class="proj-range">$33,000 – $36,000</span>
+                <div class="team-core-cards">
+                    <div class="team-core-card"><span>Producer</span><div><h3>Carolina Piedrahita</h3><p>Network, ownership, and AI / generative workflow curiosity.</p></div></div>
+                    <div class="team-core-card"><span>Creative technologist</span><div><h3>Javier Velazquez</h3><p>Engineering structure for turning ambitious concepts into systems.</p></div></div>
+                    <div class="team-core-card"><span>Open capability</span><div><h3>Additional profile</h3><p>Motion, UX, spatial design, or fast-turn content as the commercial focus sharpens.</p></div></div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════
-         SLIDE 12 — THE TEAM
-         ═══════════════════════════════════════════ -->
-    <div class="slide-container" id="slide-team">
-        <div class="two-column">
-            <div class="content-area">
-                <p class="accent-tag"><i class="fa fa-people-group"></i> &nbsp;Our Core Specialists</p>
-                <h2 class="slide-title" style="margin-bottom:10px;">The Team</h2>
-                <p style="margin-bottom:20px;">Five specialists with deep experience in experiential tech. Currently scattered across studios. The capability exists — it just needs a center.</p>
-                <div class="team-grid">
-                    <div class="team-name"><div class="dot"></div> Federico Perini <span class="role">3D Artist</span></div>
-                    <div class="team-name"><div class="dot"></div> Victor Alonso <span class="role">UX / 3D Artist</span></div>
-                    <div class="team-name"><div class="dot"></div> Javier Velazquez <span class="role">Creative Technologist</span></div>
-                    <div class="team-name"><div class="dot"></div> Carolina Piedrahita <span class="role">Producer</span></div>
-                    <div class="team-name team-name--you"><div class="dot"></div> Manuel Palenque <span class="role" style="color:var(--color-primary);opacity:0.8;">Lead · Proposed</span></div>
-                </div>
-            </div>
-            <div class="content-area">
-                <div style="background:rgba(216,255,133,0.04);border:1px solid rgba(216,255,133,0.12);border-radius:16px;padding:32px;height:100%;max-height:420px;display:flex;flex-direction:column;justify-content:center;gap:20px;">
-                    <p style="font-size:15px;line-height:1.7;">Without a central point of coordination, we risk:</p>
-                    <ul style="font-size:15px;">
-                        <li>Capacity bottlenecks at critical delivery moments</li>
-                        <li>Scoping errors on high-risk activations</li>
-                        <li>Client relationship gaps between projects</li>
-                        <li>Missed upsells on follow-on event work</li>
-                    </ul>
-                    <p style="font-size:14px;font-style:italic;font-family:var(--font-display);color:var(--color-text-muted);">"The talent is here. It needs a home."</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════
-         SLIDE 13 — THE VISION
-         ═══════════════════════════════════════════ -->
-    <div class="slide-container" id="slide-vision">
-        <div class="section-title-layout">
-            <p class="label-tag"><i class="fa fa-compass"></i> &nbsp;The Proposal</p>
-            <hr>
-            <h2>A cross-studio<br><em>Experiential Tech</em> team</h2>
-            <p>One team. One point of contact. Plugs into every Studio and delivers with confidence on every high-margin experiential opportunity Superside pursues.</p>
-            <div class="tiled-content" style="max-width:860px;margin-top:40px;">
-                <div class="tile" style="text-align:left;">
-                    <div class="icon"><i class="fa fa-bullhorn"></i></div>
-                    <h3>Technical Sales Lead</h3>
-                    <p>Own the client conversation on experiential proposals — from scoping to close. Speak both creative and engineering fluently.</p>
-                </div>
-                <div class="tile" style="text-align:left;">
-                    <div class="icon"><i class="fa fa-sliders"></i></div>
-                    <h3>Scope &amp; Resource Hub</h3>
-                    <p>Single point for approving technical scopes, allocating specialists, and preventing over-commitment across simultaneous projects.</p>
-                </div>
-                <div class="tile" style="text-align:left;">
-                    <div class="icon"><i class="fa fa-circle-check"></i></div>
-                    <h3>Flawless Execution</h3>
-                    <p>Accountable end-to-end. From concept deck to event floor — no handoff gaps, no execution surprises, no client second-guessing.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════
-         SLIDE 14 — CLOSING: THE PRACTICE IS LIVE
-         ═══════════════════════════════════════════ -->
-    <div class="slide-container" id="slide-whynow">
-        <div class="closing-unified">
-            <div class="closing-unified__header">
-                <p class="accent-tag" style="font-size:13px;margin-bottom:16px;"><i class="fa fa-bullhorn"></i> &nbsp;The Next Step</p>
-                <h2 style="font-family:var(--font-display);font-size:52px;font-weight:400;color:var(--color-white);margin:0 0 16px;">Superside needs to know<br><em style="color:var(--color-primary);">what we can build.</em></h2>
-                <p style="font-size:16px;color:var(--color-text-muted);max-width:720px;line-height:1.6;">The capability is real, the team is here, and the results speak for themselves. The missing piece is visibility — making sure every Studio at Superside knows to bring us in when the opportunity calls for something extraordinary.</p>
-            </div>
-            <div class="closing-unified__grid">
-                <div class="cu-tile">
-                    <div class="cu-tile__icon"><i class="fa fa-sitemap"></i></div>
+            <div class="team-scale-panel">
+                <div class="bench-card">
                     <div>
-                        <h4>One Clear Point of Contact</h4>
-                        <p>Any Studio, any client, any brief with an experiential angle — one person to call who knows exactly what's possible and how to scope it.</p>
+                        <div class="bench-label">Specialist bench</div>
+                        <h3>Scale the right talent around the concept.</h3>
+                        <p class="bench-intro">The bench is activated by project need: R&amp;D, spatial thinking, production depth, or fast prototyping. It supports the core without diluting ownership.</p>
                     </div>
-                </div>
-                <div class="cu-tile">
-                    <div class="cu-tile__icon"><i class="fa fa-wand-magic-sparkles"></i></div>
-                    <div>
-                        <h4>Capabilities Most Studios Don't Know Exist</h4>
-                        <p>Real-time 3D, AI pipelines, interactive event tech, custom games — this is already being delivered. It just isn't visible across the organization yet.</p>
-                    </div>
-                </div>
-                <div class="cu-tile">
-                    <div class="cu-tile__icon"><i class="fa fa-arrow-up-right-dots"></i></div>
-                    <div>
-                        <h4>Every Studio Is a Growth Channel</h4>
-                        <p>The more Studios that know what we offer, the more enterprise clients get exposed to it — and the bigger the pipeline of high-margin experiential work.</p>
-                    </div>
-                </div>
-                <div class="cu-tile">
-                    <div class="cu-tile__icon"><i class="fa fa-circle-nodes"></i></div>
-                    <div>
-                        <h4>Internal Visibility = External Revenue</h4>
-                        <p>Formalizing this role creates a feedback loop: Studios bring leads, we deliver, clients scale — and Superside owns a space no other agency can match.</p>
+                    <div class="bench-list">
+                        <div class="bench-item"><h4>sara.popov</h4><p>R&amp;D-ready profile from the 3D side with VR/startup experience and commitment to experimental work.</p></div>
+                        <div class="bench-item"><h4>melanie.quintero</h4><p>Physical-space thinking and concept development beyond screen-based output.</p></div>
+                        <div class="bench-item"><h4>Specialized 3D support</h4><p>Federico Perini, Michaela Coetze, and Tornike Bardaveli support when production depth is needed.</p></div>
                     </div>
                 </div>
             </div>
-            <div class="closing-unified__footer">
+        </div>
+    </div>
+
+    <div class="slide-container slide--deep" id="slide-role">
+        <div class="two-column two-column--even">
+            <div class="content-area">
+                <p class="accent-tag"><i class="fa fa-user-tie"></i> Proposed leadership</p>
+                <h2 class="slide-title">Manuel Palenque</h2>
+                <p class="lead">Proposed Head of Creative Technology for the Experiential / Immersive Development wing. The role needs someone who can direct concept, technology, client communication, and hands-on development without separating strategy from execution.</p>
+            </div>
+            <div class="ask-panel">
+                <p class="accent-tag" style="margin-bottom:0;"><i class="fa fa-layer-group"></i> Role definition</p>
+                <h3>Head of Creative Technology</h3>
+                <p>Holistic experiential projects already require cross-functional leadership across concept, technology, production, and communication. The role gives that work the authority and clarity it already requires.</p>
+                <div class="tiled-content tiled-content--two" style="margin-top:0;">
+                    <div class="tile"><div class="icon"><i class="fa fa-sitemap"></i></div><h3>Cross-functional alignment</h3><p>Clear ownership for how resources from other areas should contribute.</p></div>
+                    <div class="tile"><div class="icon"><i class="fa fa-code"></i></div><h3>Hands-on strategy</h3><p>Business design and team management without losing proximity to the creative and technical work.</p></div>
+                </div>
+                <p class="reference-note" style="margin-top:4px;">Formal authority removes unnecessary friction and makes the structure legible across teams, scopes, and client conversations.</p>
             </div>
         </div>
     </div>
 
-</div><!-- /slides-wrapper -->
+    <div class="slide-container slide--light" id="slide-commercial-plan">
+        <div class="two-column commercial-layout">
+            <div class="content-area commercial-copy">
+                <p class="accent-tag"><i class="fa fa-rocket"></i> Flight plan</p>
+                <h2 class="slide-title">Commercial Strategy</h2>
+                <p class="lead">The area should be involved earlier and more offensively in the proposals Superside brings to clients, helping define what we can solve before the work is reduced to a preset menu of formats.</p>
+                <div class="commercial-thesis">
+                    <span>From menu to diagnosis</span>
+                    <h3>Lead with the client problem, then design the experience.</h3>
+                    <p>Instead of waiting for a client to request AR, 3D, or an event asset, the practice helps uncover the business, audience, or physical-space problem and shapes the right experiential answer around it.</p>
+                </div>
+            </div>
+            <div class="signal-list commercial-stack">
+                <div class="signal-row commercial-row"><div class="marker">1</div><div><h3>Offensive proposal shaping</h3><p>Join sales and strategy earlier to identify where immersive thinking can expand the opportunity before the brief is locked.</p></div></div>
+                <div class="signal-row commercial-row"><div class="marker">2</div><div><h3>Problem-first scoping</h3><p>Work in more depth on what the client needs to solve, then choose the right mix of spatial, digital, AI, physical, or content systems.</p></div></div>
+                <div class="signal-row commercial-row"><div class="marker">3</div><div><h3>Enterprise proof and readiness</h3><p>Prepare demos, references, and RFP logic that make creative technology feel like a strategic growth offer, not a production add-on.</p></div></div>
+            </div>
+        </div>
+    </div>
 
-<!-- ── TILE LIGHTBOX OVERLAY ── -->
-<div id="tile-lightbox">
-    <div id="tile-lightbox-inner"></div>
+    <div class="slide-container" id="slide-ai-emotion">
+        <div class="ai-confessional-layout">
+            <div class="content-area">
+                <p class="accent-tag"><i class="fa fa-brain"></i> AI narrative</p>
+                <h2 class="slide-title">AI in service of human connection</h2>
+                <p class="lead">Most agencies already say human creativity matters in the age of AI. That message is true, but it is no longer distinctive. A stronger position is using AI to create presence, vulnerability, and emotional resonance in the physical world.</p>
+                <div class="ai-positioning-note"><span>Sharper position</span><h3>The differentiator is not saying humans matter. It is making technology feel human.</h3></div>
+                <div class="signal-list">
+                    <div class="signal-row"><div class="marker"><i class="fa fa-church"></i></div><div><h3>The AI Confessional, Venice</h3><p>A generative AI system placed inside a physical confessional, designed around intimacy, presence, and emotional response.</p></div></div>
+                    <div class="signal-row"><div class="marker"><i class="fa fa-heart"></i></div><div><h3>The technology disappears into the experience.</h3><p>The value comes from applying technology to create a memorable human moment. That is the caliber of work enterprise clients remember.</p></div></div>
+                </div>
+            </div>
+            <div class="ai-confessional-media">
+                <div class="ai-media-card">
+                    <img src="aiconfession.png" alt="AI Confessional still image">
+                    <span class="ai-media-card__label">Still</span>
+                </div>
+                <div class="ai-media-card">
+                    <video autoplay loop muted playsinline>
+                        <source src="aiconfession.mp4" type="video/mp4">
+                        <source src="aiconfession.mov" type="video/quicktime">
+                    </video>
+                    <span class="ai-media-card__label">Loop</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-container slide--accent" id="slide-rd-logistics">
+        <div class="rd-layout">
+            <div class="rd-copy">
+                <p class="accent-tag"><i class="fa fa-globe"></i> Assets and validation</p>
+                <h2 class="slide-title">R&amp;D Assets, Global Logistics, and Internal Validation</h2>
+                <p class="lead">Experiential development needs physical prototyping, deployment know-how, and internal trust. The foundation already exists.</p>
+                <div class="rd-proof-list">
+                    <div class="rd-proof-item"><div class="marker"><i class="fa fa-flask"></i></div><div><h3>Media Lab Argentina</h3><p>A cost-efficient physical R&amp;D environment in Buenos Aires for demos, testing, and prototypes before client presentation.</p></div></div>
+                    <div class="rd-proof-item"><div class="marker"><i class="fa fa-plane"></i></div><div><h3>Global deployment experience</h3><p>Proven ability to develop physical technology projects in Argentina and deploy logistics anywhere in the world.</p></div></div>
+                    <div class="rd-proof-item"><div class="marker"><i class="fa fa-location-dot"></i></div><div><h3>Operational proof</h3><p>Google Pixel global activations and large-scale technical deployments for Fuerza Bruta in Japan.</p></div></div>
+                </div>
+                <div class="ask-panel" style="margin-top:24px;padding:24px;gap:14px;">
+                    <h3>The ask</h3>
+                    <p>Formalize the Experiential / Immersive Development wing and the Head of Creative Technology role so Superside can turn this capability into an enterprise growth engine.</p>
+                </div>
+            </div>
+            <div class="medialab-collage" aria-label="Media Lab Argentina image collage">
+                <div class="medialab-frame medialab-frame--hero"><img src="medialab1.jpeg" alt="Media Lab Argentina workshop with projection surfaces"><span>Physical R&amp;D space</span></div>
+                <div class="medialab-frame"><img src="medialab2.jpeg" alt="Media Lab prototype screen and robotic rig"><span>Prototype testing</span></div>
+                <div class="medialab-frame medialab-frame--wide"><img src="medialab4.png" alt="Media Lab installation tests and projection session"><span>Installation tests</span></div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- ── INDICATOR & CONTROLS ── -->
-<div class="slide-indicator" id="slideIndicator">1 / 14</div>
+<div id="flowchartSidebar" hidden></div>
+<div id="sidebarOverlay" hidden></div>
+<div class="slide-indicator" id="slideIndicator">1 / 12</div>
 
-<!-- ── SCRIPTS ── -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Observer.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js"></script>
 <script src="animations.js"></script>
 <script src="gsap-animations.js"></script>
-<script>
-    // Hover video play/pause for all .tile-media elements
-    document.querySelectorAll('.tile-media').forEach(function(el) {
-        var vid = el.querySelector('.hover-vid');
-        if (!vid) return;
-        el.addEventListener('mouseenter', function() { vid.currentTime = 0; vid.play(); });
-        el.addEventListener('mouseleave', function() { vid.pause(); vid.currentTime = 0; });
-    });
-
-    // Tile-media lightbox
-    (function() {
-        var lb     = document.getElementById('tile-lightbox');
-        var lbIn   = document.getElementById('tile-lightbox-inner');
-        var lbVid  = null;
-
-        function openLightbox(src, isVideo) {
-            lbIn.innerHTML = '';
-            lbVid = null;
-            if (isVideo) {
-                var v = document.createElement('video');
-                v.src = src;
-                v.autoplay = true;
-                v.loop = true;
-                v.muted = true;
-                v.setAttribute('playsinline', '');
-                lbIn.appendChild(v);
-                lbVid = v;
-                v.play();
-            } else {
-                var img = document.createElement('img');
-                img.src = src;
-                lbIn.appendChild(img);
-            }
-            lb.classList.add('open');
-        }
-
-        function closeLightbox() {
-            lb.classList.remove('open');
-            setTimeout(function() {
-                if (lbVid) { lbVid.pause(); }
-                lbIn.innerHTML = '';
-                lbVid = null;
-            }, 380);
-        }
-
-        // Click backdrop to close
-        lb.addEventListener('click', function(e) {
-            if (e.target === lb) closeLightbox();
-        });
-
-        // ESC to close
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeLightbox();
-        });
-
-        // Wire up click on the whole tile to open lightbox
-        document.querySelectorAll('.tile-media').forEach(function(tile) {
-            tile.style.cursor = 'pointer';
-            tile.addEventListener('click', function(e) {
-                var vid = tile.querySelector('.hover-vid');
-                var img = tile.querySelector('.hover-img');
-                if (vid) {
-                    openLightbox(vid.getAttribute('src'), true);
-                } else if (img) {
-                    openLightbox(img.getAttribute('src'), false);
-                }
-            });
-        });
-    })();
-
-    // Floating comment popups — animate in when slide becomes active
-    (function () {
-        function initSlidePopup(slideId, popupId, delay) {
-            const slide = document.getElementById(slideId);
-            const popup = document.getElementById(popupId);
-            if (!slide || !popup) return;
-
-            let wasActive = false;
-            let animTimer = null;
-
-            new MutationObserver(function () {
-                const isActive = slide.classList.contains('active');
-                if (isActive === wasActive) return; // no real change
-                wasActive = isActive;
-
-                if (isActive) {
-                    clearTimeout(animTimer);
-                    if (window.gsap) {
-                        gsap.killTweensOf(popup);
-                        gsap.set(popup, { opacity: 0, y: 22 });
-                        animTimer = setTimeout(function () {
-                            gsap.to(popup, { opacity: 1, y: 0, duration: 0.6, ease: 'back.out(1.3)' });
-                        }, delay || 450);
-                    }
-                } else {
-                    clearTimeout(animTimer);
-                    if (window.gsap) gsap.set(popup, { opacity: 0, y: 22 });
-                }
-            }).observe(slide, { attributes: true, attributeFilter: ['class'] });
-        }
-
-        function initFloatingCommentPopups() {
-            initSlidePopup('slide-vasteroids', 'vasteroids-comment', 450);
-            initSlidePopup('slide-reddit', 'reddit-comment', 450);
-        }
-
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initFloatingCommentPopups);
-        } else {
-            initFloatingCommentPopups();
-        }
-    })();
-</script>
-
-<!-- React + ReactFlow (UMD) for workflow slide -->
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/reactflow@11.11.4/dist/umd/index.js"></script>
-<script src="workflow-flow.js"></script>
-
 </body>
 </html>
