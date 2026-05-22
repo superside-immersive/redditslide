@@ -2299,60 +2299,6 @@ p, li,
     border-radius: 0;
 }
 
-.mobile-slide-nav {
-    position: fixed;
-    left: 50%;
-    bottom: 20px;
-    transform: translateX(-50%);
-    display: none;
-    align-items: center;
-    gap: 10px;
-    z-index: 1100;
-}
-
-.mobile-tap-zone {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    width: 50vw;
-    z-index: 900;
-    display: none;
-    border: 0;
-    margin: 0;
-    padding: 0;
-    background: transparent;
-    appearance: none;
-}
-
-.mobile-tap-zone--left {
-    left: 0;
-}
-
-.mobile-tap-zone--right {
-    right: 0;
-}
-
-.mobile-slide-nav__btn {
-    min-width: 132px;
-    height: 42px;
-    border: 1px solid rgba(255,255,255,0.18);
-    background: rgba(10,10,10,0.94);
-    color: rgba(242,242,242,0.88);
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    cursor: pointer;
-}
-
-.mobile-slide-nav__btn:active {
-    background: rgba(255,255,255,0.12);
-}
-
 body.grid-view .slide-container {
     border-radius: 0;
     background: #0a0a0a;
@@ -2738,33 +2684,6 @@ body.grid-view .slide-container::after {
     }
     .title-layout h1 { line-height: 1.05; }
 
-    .slide-container { padding: 24px 16px; }
-    #slide-title .title-layout { padding: 24px 14px; }
-    #slide-title .cover-text-panel { max-width: 100%; padding: 18px 16px 16px; gap: 6px; }
-    #slide-title .accent-tag { font-size: 9px; letter-spacing: 0.18em; margin-bottom: 4px; }
-    #slide-title .title-layout h1 { font-size: clamp(2.15rem, 10.6vw, 2.75rem); margin-bottom: 4px; line-height: 1.06; }
-    #slide-title .title-layout .subtitle { font-size: 12px; letter-spacing: 0.1em; line-height: 1.3; margin-bottom: 6px; max-width: 100%; }
-    #slide-title .title-layout .byline { width: min(100%, 300px); margin-top: 8px; padding: 7px 0 5px; font-size: 9px; letter-spacing: 0.14em; }
-
-    .mobile-slide-nav {
-        display: flex;
-        width: calc(100vw - 24px);
-        max-width: 360px;
-    }
-    .mobile-tap-zone {
-        display: block;
-    }
-    .mobile-slide-nav__btn {
-        flex: 1 1 0;
-        min-width: 0;
-    }
-    .slide-indicator {
-        bottom: 74px;
-        font-size: 9px;
-        padding: 7px 10px;
-        letter-spacing: 0.15em;
-    }
-
     #slide-momentum .section-title-layout {
         justify-content: flex-start;
         gap: 7px;
@@ -3009,19 +2928,7 @@ body.grid-view .slide-container::after {
 
 <div id="flowchartSidebar" hidden></div>
 <div id="sidebarOverlay" hidden></div>
-<button type="button" class="mobile-tap-zone mobile-tap-zone--left" aria-label="Previous slide area" onclick="prevSlide()"></button>
-<button type="button" class="mobile-tap-zone mobile-tap-zone--right" aria-label="Next slide area" onclick="nextSlide()"></button>
 <div class="slide-indicator" id="slideIndicator">1 / 12</div>
-<div class="mobile-slide-nav" id="mobileSlideNav" aria-label="Slide navigation">
-    <button type="button" class="mobile-slide-nav__btn" id="mobilePrevBtn" aria-label="Previous slide" onclick="prevSlide()">
-        <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
-        <span>Previous</span>
-    </button>
-    <button type="button" class="mobile-slide-nav__btn" id="mobileNextBtn" aria-label="Next slide" onclick="nextSlide()">
-        <span>Next</span>
-        <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
-    </button>
-</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
