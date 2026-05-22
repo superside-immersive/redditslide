@@ -2306,7 +2306,7 @@ p, li,
     transform: translateX(-50%);
     display: none;
     align-items: center;
-    gap: 10px;
+    gap: 6px;
     z-index: 1100;
 }
 
@@ -2333,19 +2333,21 @@ p, li,
 }
 
 .mobile-slide-nav__btn {
-    min-width: 132px;
-    height: 42px;
+    width: 26px;
+    min-width: 26px;
+    height: 26px;
+    padding: 0;
     border: 1px solid rgba(255,255,255,0.18);
     background: rgba(10,10,10,0.94);
     color: rgba(242,242,242,0.88);
     font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    font-size: 9px;
+    letter-spacing: 0;
+    text-transform: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 0;
     cursor: pointer;
 }
 
@@ -2748,17 +2750,20 @@ body.grid-view .slide-container::after {
 
     .mobile-slide-nav {
         display: flex;
-        width: calc(100vw - 24px);
-        max-width: 360px;
+        width: auto;
+        max-width: none;
     }
     .mobile-tap-zone {
         display: block;
     }
     .mobile-slide-nav__btn {
-        flex: 1 1 0;
-        min-width: 0;
+        flex: 0 0 auto;
     }
     .slide-indicator {
+        top: auto;
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
         bottom: 74px;
         font-size: 9px;
         padding: 7px 10px;
@@ -3015,10 +3020,8 @@ body.grid-view .slide-container::after {
 <div class="mobile-slide-nav" id="mobileSlideNav" aria-label="Slide navigation">
     <button type="button" class="mobile-slide-nav__btn" id="mobilePrevBtn" aria-label="Previous slide" onclick="prevSlide()">
         <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
-        <span>Previous</span>
     </button>
     <button type="button" class="mobile-slide-nav__btn" id="mobileNextBtn" aria-label="Next slide" onclick="nextSlide()">
-        <span>Next</span>
         <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
     </button>
 </div>
