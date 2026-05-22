@@ -10,30 +10,40 @@
     })(window,document,'script','dataLayer','GTM-K68S7LCJ');</script>
     <!-- End Google Tag Manager -->
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1VPXPES8NY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-1VPXPES8NY');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="../">
-    <title>Immersive proposal</title>
+    <title>Ironside | The Breathing Space</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
 :root {
-    --color-primary: #d8ff85;
-    --color-primary-dark: #b8e05a;
-    --color-bg: #1a2e28;
-    --color-bg-dark: #0f1f1a;
-    --color-bg-light: #f7f9f2;
-    --color-white: #f7f9f2;
-    --color-text: #f7f9f2;
-    --color-text-dark: #1a2e28;
-    --color-text-muted: #8a9a92;
-    --color-line: rgba(216,255,133,0.16);
-    --color-line-dark: rgba(26,46,40,0.14);
-    --font-main: 'Inter Tight', sans-serif;
-    --font-display: 'Playfair Display', serif;
-    --font-title: 'Instrument Serif', serif;
+    --color-primary: #f4f4f4;
+    --color-primary-dark: #d8d8d8;
+    --color-bg: #0a0a0a;
+    --color-bg-dark: #050505;
+    --color-bg-light: #0a0a0a;
+    --color-white: #f2f2f2;
+    --color-text: rgba(242,242,242,0.92);
+    --color-text-dark: #f2f2f2;
+    --color-text-muted: rgba(242,242,242,0.54);
+    --color-line: rgba(255,255,255,0.10);
+    --color-line-dark: rgba(255,255,255,0.10);
+    --font-main: 'Space Grotesk', sans-serif;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-title: 'Space Grotesk', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -160,6 +170,39 @@ strong { color: inherit; font-weight: 650; }
     text-align: center;
     padding: 70px;
     background-color: var(--color-bg-dark);
+}
+
+.title-layout::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(7, 11, 16, 0.38);
+    z-index: 1;
+}
+
+.title-background-stage {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.title-background-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-position: center 48%;
+    object-fit: cover;
+    transform: none;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.title-layout > :not(.title-background-stage) {
+    position: relative;
+    z-index: 2;
 }
 
 .title-layout h1 {
@@ -450,6 +493,93 @@ strong { color: inherit; font-weight: 650; }
     font-weight: 400;
     color: inherit;
     max-width: 440px;
+}
+
+.visual-panel__media {
+    position: relative;
+    min-height: 0;
+    flex: 1;
+    border-radius: 14px;
+    overflow: hidden;
+    background: rgba(0,0,0,0.24);
+}
+
+.visual-panel__media video,
+.visual-panel__media img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.visual-panel__caption {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--color-text-muted);
+}
+
+.solution-reference {
+    width: 100%;
+    max-width: 1040px;
+    margin-top: 34px;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid rgba(216,255,133,0.16);
+    background: rgba(216,255,133,0.04);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.24);
+}
+
+.solution-reference img {
+    width: 100%;
+    height: min(40vh, 320px);
+    display: block;
+    object-fit: contain;
+    background: rgba(5,5,5,0.92);
+}
+
+.section-title-layout--sequence {
+    justify-content: flex-start;
+    gap: 10px;
+    padding-top: 36px;
+    padding-bottom: 26px;
+}
+
+.section-title-layout--sequence hr {
+    margin: 10px auto 8px;
+}
+
+.section-title-layout--sequence h2 {
+    max-width: 940px;
+    font-size: clamp(2.7rem, 4.7vw, 4.35rem);
+}
+
+.section-title-layout--sequence p {
+    max-width: 780px;
+    font-size: clamp(0.98rem, 1.2vw, 1.08rem);
+    line-height: 1.35;
+}
+
+.section-title-layout--sequence .solution-reference {
+    flex: 0 0 auto;
+    width: min(78vw, 760px);
+    max-width: 100%;
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+}
+
+.section-title-layout--sequence .solution-reference img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: min(38vh, 340px);
+    background: transparent;
 }
 
 .metric-stack {
@@ -891,15 +1021,70 @@ strong { color: inherit; font-weight: 650; }
     grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
     gap: 30px;
     align-items: stretch;
-    width: 100%;
-    height: 100%;
 }
 
-.rd-copy {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-width: 0;
+#slide-ai-emotion .ai-confessional-layout {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 16px;
+}
+
+#slide-ai-emotion .placeholder-gallery {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-areas:
+        "inhale inhale exhale"
+        "led led mobile";
+    gap: 6px;
+}
+
+#slide-ai-emotion .placeholder-card {
+    border-style: solid;
+    border-color: rgba(216,255,133,0.12);
+    background: rgba(216,255,133,0.03);
+}
+
+#slide-ai-emotion .placeholder-card--media {
+    padding: 6px 8px;
+    gap: 3px;
+}
+
+#slide-ai-emotion .placeholder-card--inhale { grid-area: inhale; }
+#slide-ai-emotion .placeholder-card--exhale { grid-area: exhale; }
+#slide-ai-emotion .placeholder-card--led { grid-area: led; }
+#slide-ai-emotion .placeholder-card--mobile { grid-area: mobile; }
+
+#slide-ai-emotion .placeholder-card__eyebrow {
+    font-size: 7px;
+    gap: 5px;
+}
+
+#slide-ai-emotion .placeholder-card__title {
+    font-size: clamp(0.92rem, 1.18vw, 1.22rem);
+}
+
+#slide-ai-emotion .placeholder-card__media {
+    gap: 3px;
+}
+
+#slide-ai-emotion .placeholder-card--inhale .placeholder-card__media--duo {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: minmax(0, 1fr);
+}
+
+#slide-ai-emotion .placeholder-card__frame {
+    border: 0;
+    background: rgba(255,255,255,0.015);
+    padding: 0;
+    border-radius: 6px;
+}
+
+#slide-ai-emotion .placeholder-card__image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 6px;
+    background: rgba(0,0,0,0.18);
 }
 
 .rd-proof-list {
@@ -1176,10 +1361,11 @@ body.grid-view .priority-callout p { font-size: 8px; }
 .commercial-thesis h3 {
     font-family: var(--font-title);
     font-size: 34px;
-    font-weight: 400;
-    line-height: 1.04;
-    color: var(--color-bg);
-    margin-bottom: 8px;
+}
+
+#slide-ai-emotion .ai-confessional-layout {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 20px;
 }
 
 .risk-highlight p,
@@ -1487,6 +1673,647 @@ body.grid-view .priority-callout p { font-size: 8px; }
     color: var(--color-white);
 }
 
+.placeholder-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.placeholder-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: minmax(0, 1fr);
+    gap: 12px;
+    height: 100%;
+    align-content: stretch;
+}
+
+.placeholder-card {
+    min-height: 220px;
+    border-radius: 18px;
+    border: 1px dashed rgba(216,255,133,0.26);
+    background: rgba(216,255,133,0.045);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.slide--light .placeholder-card {
+    border-color: rgba(26,46,40,0.22);
+    background: rgba(26,46,40,0.05);
+}
+
+.placeholder-card--compact {
+    min-height: 164px;
+}
+
+.placeholder-card--media {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: 8px;
+    padding: 16px;
+    min-height: 0;
+}
+
+.placeholder-card--media.placeholder-card--compact {
+    min-height: 0;
+}
+
+.placeholder-card--media .placeholder-card__title {
+    font-size: 22px;
+}
+
+.placeholder-card__media {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: minmax(0, 1fr);
+    gap: 10px;
+}
+
+.placeholder-card__media--duo {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.placeholder-card__frame {
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 14px;
+    border: 1px solid rgba(216,255,133,0.12);
+    background: rgba(255,255,255,0.03);
+    padding: 6px;
+}
+
+.slide--light .placeholder-card__frame {
+    border-color: rgba(26,46,40,0.12);
+    background: rgba(26,46,40,0.04);
+}
+
+#slide-ai-emotion .placeholder-card__image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+}
+
+.placeholder-card__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+}
+
+.slide--light .placeholder-card__eyebrow {
+    color: var(--color-bg);
+}
+
+.placeholder-card__title {
+    font-family: var(--font-title);
+    font-size: 34px;
+    line-height: 1;
+    font-weight: 400;
+    color: inherit;
+}
+
+.placeholder-card p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+}
+
+.slide--light .placeholder-card p {
+    color: #4a5a52;
+}
+
+/* Dossier-inspired visual system */
+body {
+    font-family: var(--font-main);
+    background: #0a0a0a;
+    color: var(--color-text);
+}
+
+.ambient-grid,
+.ambient-noise {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.ambient-grid {
+    background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(circle at center, black 20%, transparent 80%);
+    opacity: 0.4;
+}
+
+.ambient-noise {
+    opacity: 0.03;
+    background-image: radial-gradient(rgba(255,255,255,0.4) 0.6px, transparent 0.6px);
+    background-size: 20px 20px;
+}
+
+.slide-container,
+.slide--light,
+.slide--accent,
+.slide--deep,
+.title-layout,
+.section-title-layout {
+    background: #0a0a0a;
+    color: var(--color-text);
+}
+
+.slide-container {
+    padding: 40px 64px 56px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.slide-container > *,
+.title-layout,
+.section-title-layout,
+.two-column,
+.content-area {
+    position: relative;
+    z-index: 1;
+}
+
+h1, h2, h3, h4, strong,
+.slide--light h1,
+.slide--light h2,
+.slide--light h3,
+.slide--light h4,
+.slide--light strong {
+    color: var(--color-white);
+}
+
+p, li,
+.slide--light p,
+.slide--light li,
+.muted,
+.slide--light .muted,
+.reference-note,
+.matrix-caption,
+.placeholder-card p,
+.slide--light .placeholder-card p,
+.risk-metric p,
+.team-command-panel .lead,
+.team-core-card p,
+.bench-item p,
+.commercial-row p {
+    color: var(--color-text-muted) !important;
+}
+
+.accent-tag,
+.priority-callout__label,
+.visual-panel__label,
+.placeholder-card__eyebrow,
+.matrix-item span,
+.commercial-thesis span,
+.risk-highlight span,
+.ai-positioning-note span {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(242,242,242,0.35) !important;
+}
+
+.slide-title,
+.title-layout h1,
+.section-title-layout h2,
+.visual-panel__headline,
+.priority-callout h3,
+.ask-panel h3,
+.placeholder-card__title,
+.matrix-item h3,
+.commercial-thesis h3,
+.concept-statement h3,
+.risk-highlight h3,
+.ai-positioning-note h3 {
+    font-family: var(--font-title);
+    font-weight: 700;
+    line-height: 0.94;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+    color: var(--color-white);
+}
+
+.title-layout,
+.section-title-layout {
+    padding: 56px 64px;
+    overflow: hidden;
+}
+
+.title-layout h1 {
+    font-size: clamp(3.6rem, 7vw, 6.6rem);
+    max-width: 760px;
+    margin-bottom: 12px;
+}
+
+.section-title-layout h2 {
+    font-size: clamp(3.2rem, 6vw, 5.3rem);
+    max-width: 980px;
+}
+
+.title-layout .subtitle {
+    max-width: 760px;
+    margin-bottom: 16px;
+    font-size: 18px;
+    line-height: 1.28;
+    color: rgba(242,242,242,0.78);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-family: var(--font-main);
+}
+
+.title-layout .byline {
+    width: min(620px, 72vw);
+    margin-top: 18px;
+    padding: 12px 0 10px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(242,242,242,0.46);
+}
+
+.title-layout hr,
+.section-title-layout hr {
+    border-top: 1px solid rgba(255,255,255,0.12);
+    width: 78px;
+}
+
+.cover-text-panel {
+    position: relative;
+    max-width: 760px;
+    padding: 24px 30px 22px;
+    border: 1px solid rgba(255,255,255,0.07);
+    background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.015) 52%, rgba(255,255,255,0.0) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+}
+
+.slide-title {
+    font-size: clamp(2.3rem, 4vw, 3.6rem);
+    border-left: 3px solid rgba(255,255,255,0.14);
+    padding-left: 16px;
+    margin-bottom: 20px;
+}
+
+.slide--light .slide-title {
+    border-left-color: rgba(255,255,255,0.14);
+    color: var(--color-white);
+}
+
+.section-title-layout p,
+.lead {
+    color: rgba(242,242,242,0.72);
+    font-size: 19px;
+    line-height: 1.6;
+}
+
+.two-column {
+    grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
+    gap: 48px;
+    align-items: start;
+    height: auto;
+}
+
+.content-area {
+    gap: 20px;
+}
+
+#slide-ai-emotion {
+    padding: 34px 44px 44px;
+}
+
+#slide-ai-emotion .content-area {
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+#slide-ai-emotion .slide-title {
+    font-size: clamp(2rem, 3vw, 2.85rem);
+    margin-bottom: 12px;
+    padding-left: 16px;
+    border-left-width: 5px;
+}
+
+#slide-ai-emotion .lead {
+    max-width: 42ch;
+    font-size: 14px;
+    line-height: 1.42;
+}
+
+#slide-ai-emotion .signal-list {
+    gap: 0;
+}
+
+#slide-ai-emotion .signal-row {
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 10px;
+    padding: 10px 0;
+}
+
+#slide-ai-emotion .signal-row .marker {
+    width: 34px;
+    height: 34px;
+    font-size: 11px;
+}
+
+#slide-ai-emotion .signal-row h3 {
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+#slide-ai-emotion .signal-row p,
+#slide-ai-emotion .placeholder-card p {
+    font-size: 11px;
+    line-height: 1.32;
+}
+
+.ai-confessional-layout {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 20px;
+}
+
+.tiled-content {
+    gap: 22px;
+}
+
+.tile,
+.visual-panel,
+.priority-callout,
+.metric,
+.matrix-item,
+.ask-panel,
+.placeholder-card,
+.commercial-thesis,
+.concept-statement,
+.risk-highlight,
+.ai-positioning-note,
+.commercial-row,
+.medialab-frame {
+    border-radius: 0;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.025);
+    box-shadow: none;
+}
+
+.slide--light .tile,
+.slide--light .visual-panel,
+.slide--light .priority-callout,
+.slide--light .metric,
+.slide--light .matrix-item,
+.slide--light .ask-panel,
+.slide--light .placeholder-card,
+.slide--light .commercial-thesis,
+.slide--light .concept-statement,
+.slide--light .risk-highlight,
+.slide--light .ai-positioning-note,
+.slide--light .commercial-row,
+.slide--light .medialab-frame {
+    border-color: rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.025);
+}
+
+.tile {
+    min-height: 0;
+    padding: 20px 22px;
+}
+
+.tile .icon {
+    display: none;
+}
+
+.tile h3 {
+    font-size: 20px;
+    line-height: 1.05;
+    text-transform: uppercase;
+    letter-spacing: -0.03em;
+    color: var(--color-white);
+}
+
+.tile p {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--color-text-muted);
+}
+
+.signal-list {
+    gap: 0;
+    margin-top: 24px;
+}
+
+.signal-row {
+    grid-template-columns: 48px 1fr;
+    gap: 0 16px;
+    padding: 20px 0;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    border-bottom: none;
+}
+
+.signal-row:last-child {
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.slide--light .signal-row {
+    border-top-color: rgba(255,255,255,0.07);
+    border-bottom-color: rgba(255,255,255,0.07);
+}
+
+.signal-row .marker,
+.slide--light .signal-row .marker {
+    width: auto;
+    height: auto;
+    border: none;
+    border-radius: 0;
+    color: rgba(255,255,255,0.22);
+    font-size: 13px;
+    font-family: var(--font-mono);
+    justify-content: flex-start;
+}
+
+.signal-row h3,
+.risk-metric h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: var(--color-white);
+}
+
+.signal-row p,
+.risk-metric p {
+    font-size: 15px;
+    line-height: 1.55;
+}
+
+.priority-callout,
+.commercial-thesis,
+.concept-statement,
+.risk-highlight,
+.ai-positioning-note {
+    padding: 24px 26px;
+    border-left: 3px solid rgba(255,255,255,0.18);
+    gap: 12px;
+}
+
+.priority-callout h3,
+.visual-panel__headline,
+.ask-panel h3,
+.placeholder-card__title {
+    font-size: clamp(2rem, 3vw, 3rem);
+}
+
+.priority-callout p {
+    font-size: 18px;
+    line-height: 1.45;
+    color: rgba(242,242,242,0.72);
+}
+
+.visual-panel {
+    min-height: 420px;
+    padding: 30px;
+}
+
+.visual-panel__label,
+.slide--light .visual-panel__label {
+    color: rgba(242,242,242,0.35);
+}
+
+.metric-stack {
+    gap: 10px;
+}
+
+.metric {
+    padding: 18px;
+}
+
+.metric strong,
+.slide--light .metric strong,
+.risk-metric strong {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    line-height: 1;
+    font-weight: 500;
+    color: rgba(242,242,242,0.82);
+    margin-bottom: 8px;
+}
+
+.matrix {
+    gap: 12px;
+}
+
+.matrix-item {
+    min-height: 144px;
+    padding: 20px;
+}
+
+.matrix-item h3 {
+    font-size: 24px;
+    line-height: 1;
+}
+
+.matrix-item span,
+.slide--light .matrix-item span {
+    color: rgba(242,242,242,0.35);
+}
+
+.placeholder-card {
+    min-height: 220px;
+    border-style: solid;
+}
+
+.placeholder-card__eyebrow,
+.slide--light .placeholder-card__eyebrow {
+    color: rgba(242,242,242,0.35);
+}
+
+.ask-panel {
+    gap: 18px;
+    padding: 28px 30px;
+}
+
+.commercial-row {
+    grid-template-columns: 48px 1fr;
+    gap: 0 16px;
+    padding: 20px 22px;
+}
+
+.commercial-row .marker {
+    width: auto;
+    height: auto;
+    font-family: var(--font-mono);
+    font-size: 13px;
+}
+
+.medialab-frame span {
+    border-radius: 0;
+    color: rgba(242,242,242,0.82);
+    background: rgba(10,10,10,0.9);
+    border: 1px solid rgba(255,255,255,0.12);
+    font-family: var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.slide-indicator {
+    bottom: 24px;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: none;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(242,242,242,0.54);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    padding: 8px 14px;
+    border-radius: 0;
+}
+
+body.grid-view .slide-container {
+    border-radius: 0;
+    background: #0a0a0a;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+body.grid-view .slide-container:hover {
+    box-shadow: 0 10px 30px rgba(255,255,255,0.08);
+    outline: 1px solid rgba(255,255,255,0.24);
+}
+
+body.grid-view .slide-container::after {
+    background: transparent;
+    color: rgba(242,242,242,0.62);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 0;
+}
+
 @media (max-width: 920px) {
     #slide-risk,
     #slide-momentum,
@@ -1587,23 +2414,225 @@ body.grid-view .priority-callout p { font-size: 8px; }
     .commercial-row h3 { font-size: 14px; }
     .commercial-row p { font-size: 10px; line-height: 1.32; }
 
-    #slide-ai-emotion { padding: 34px 38px; }
-    .ai-confessional-layout { grid-template-columns: minmax(0, 0.96fr) minmax(0, 1.04fr); gap: 16px; align-items: center; }
-    .ai-confessional-layout .content-area { height: auto; gap: 12px; }
-    #slide-ai-emotion .slide-title { font-size: 32px; margin-bottom: 10px; padding-left: 14px; border-left-width: 6px; }
-    #slide-ai-emotion .accent-tag { font-size: 9px; margin-bottom: 8px; }
-    #slide-ai-emotion .lead { font-size: 12.5px; line-height: 1.34; }
+    #slide-deprioritization { padding: 22px 24px 28px; }
+    #slide-deprioritization .two-column--even { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); gap: 8px; align-items: stretch; height: 100%; }
+    #slide-deprioritization .content-area { justify-content: flex-start; gap: 7px; min-height: 0; height: auto; }
+    #slide-deprioritization .accent-tag { font-size: 7px; margin-bottom: 0; }
+    #slide-deprioritization .slide-title { font-size: 25px; line-height: 1.14; margin-bottom: 0; padding-left: 10px; border-left-width: 4px; }
+    #slide-deprioritization .lead { max-width: none; font-size: 9.6px; line-height: 1.28; }
+    #slide-deprioritization .matrix--concept { gap: 5px; margin-top: 0; }
+    #slide-deprioritization .matrix--concept .matrix-item { min-height: 0; padding: 7px; justify-content: flex-start; gap: 3px; }
+    #slide-deprioritization .matrix-item span { font-size: 6.5px; letter-spacing: 0.08em; }
+    #slide-deprioritization .matrix-item h3 { font-size: 11.5px; line-height: 1.16; }
+    #slide-deprioritization .matrix-item p { font-size: 7.8px; line-height: 1.2; margin-top: 0; }
+    #slide-deprioritization .matrix-caption { max-width: none; font-size: 8px; line-height: 1.22; padding-top: 5px; margin-top: 2px; }
+    #slide-deprioritization .visual-panel { min-height: 0; height: 100%; padding: 8px; gap: 5px; border-radius: 8px; }
+    #slide-deprioritization .visual-panel__label { font-size: 6.5px; letter-spacing: 0.1em; }
+    #slide-deprioritization .visual-panel__headline { max-width: none; font-size: 15.5px; line-height: 1.16; }
+    #slide-deprioritization .visual-panel__media { min-height: 0; flex: 1 1 auto; border-radius: 6px; }
+    #slide-deprioritization .visual-panel__caption { font-size: 8px; line-height: 1.18; }
+
+    #slide-ai-emotion { padding: 22px 22px 22px; }
+    #slide-ai-emotion .ai-confessional-layout { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); gap: 8px; align-items: stretch; height: 100%; }
+    #slide-ai-emotion .content-area { height: auto; gap: 8px; min-height: 0; }
+    #slide-ai-emotion .slide-title { font-size: 27px; line-height: 1.14; margin-bottom: 8px; padding-left: 12px; border-left-width: 5px; }
+    #slide-ai-emotion .accent-tag { font-size: 8px; margin-bottom: 6px; }
+    #slide-ai-emotion .lead { font-size: 11px; line-height: 1.24; }
     .ai-positioning-note { padding: 12px 14px; margin-top: 0; }
     .ai-positioning-note span { font-size: 8px; margin-bottom: 5px; }
     .ai-positioning-note h3 { font-size: 20px; line-height: 1.04; }
-    #slide-ai-emotion .signal-list { gap: 6px; }
-    #slide-ai-emotion .signal-row { grid-template-columns: 30px minmax(0, 1fr); gap: 9px; padding: 7px 0; }
-    #slide-ai-emotion .signal-row .marker { width: 30px; height: 30px; font-size: 10px; }
-    #slide-ai-emotion .signal-row h3 { font-size: 13px; margin-bottom: 2px; }
-    #slide-ai-emotion .signal-row p { font-size: 9.5px; line-height: 1.28; }
+    #slide-ai-emotion .signal-list { gap: 4px; }
+    #slide-ai-emotion .signal-row { grid-template-columns: 26px minmax(0, 1fr); gap: 7px; padding: 4px 0; }
+    #slide-ai-emotion .signal-row .marker { width: 28px; height: 28px; font-size: 9px; }
+    #slide-ai-emotion .signal-row h3 { font-size: 12px; margin-bottom: 1px; }
+    #slide-ai-emotion .signal-row p { font-size: 8.5px; line-height: 1.18; }
     .ai-confessional-media { grid-template-columns: 1fr; grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 10px; min-height: 0; height: 100%; }
     .ai-media-card { border-radius: 14px; }
     .ai-media-card__label { left: 10px; bottom: 10px; min-height: 24px; font-size: 8px; padding: 0 9px; }
+    #slide-ai-emotion .placeholder-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: none; grid-auto-rows: minmax(0, 1fr); gap: 5px; height: 100%; align-content: stretch; }
+    #slide-ai-emotion .placeholder-card--inhale,
+    #slide-ai-emotion .placeholder-card--exhale,
+    #slide-ai-emotion .placeholder-card--led,
+    #slide-ai-emotion .placeholder-card--mobile { grid-area: auto; }
+    #slide-ai-emotion .placeholder-card { min-height: 0; height: 100%; padding: 5px; border-radius: 8px; gap: 3px; }
+    #slide-ai-emotion .placeholder-card--media.placeholder-card--compact { min-height: 0; }
+    #slide-ai-emotion .placeholder-card--media .placeholder-card__title { font-size: 13.5px; line-height: 1.16; }
+    #slide-ai-emotion .placeholder-card__media { gap: 3px; min-height: 0; }
+    #slide-ai-emotion .placeholder-card__media--duo { grid-template-columns: 1fr; grid-template-rows: repeat(2, minmax(0, 1fr)); }
+    #slide-ai-emotion .placeholder-card__frame { padding: 0; border-radius: 6px; }
+    #slide-ai-emotion .placeholder-card__title { font-size: 13.5px; line-height: 1.16; }
+    #slide-ai-emotion .placeholder-card p { font-size: 8px; line-height: 1.18; }
+}
+
+@media (max-height: 820px) and (min-width: 921px) {
+    #slide-ai-emotion { padding: 26px 32px 30px; }
+    #slide-ai-emotion .ai-confessional-layout { grid-template-columns: minmax(0, 0.76fr) minmax(0, 1.24fr); gap: 16px; }
+    #slide-ai-emotion .content-area { gap: 10px; }
+    #slide-ai-emotion .slide-title { margin-bottom: 10px; }
+    #slide-ai-emotion .lead { font-size: 13px; line-height: 1.32; max-width: 38ch; }
+    #slide-ai-emotion .signal-row { padding: 7px 0; }
+    #slide-ai-emotion .signal-row h3 { font-size: 13px; }
+    #slide-ai-emotion .signal-row p { font-size: 10px; line-height: 1.24; }
+    #slide-ai-emotion .placeholder-gallery { gap: 8px; }
+    #slide-ai-emotion .placeholder-card--media { padding: 10px 12px; gap: 5px; }
+    #slide-ai-emotion .placeholder-card__eyebrow { font-size: 7px; }
+    #slide-ai-emotion .placeholder-card__title { font-size: 15px; }
+    #slide-ai-emotion .placeholder-card p { font-size: 9px; line-height: 1.18; }
+}
+
+@media (max-height: 760px) and (min-width: 921px) {
+    #slide-ai-emotion { padding: 22px 28px 24px; }
+    #slide-ai-emotion .ai-confessional-layout { grid-template-columns: minmax(0, 0.74fr) minmax(0, 1.26fr); gap: 14px; }
+    #slide-ai-emotion .content-area { gap: 8px; }
+    #slide-ai-emotion .slide-title { font-size: clamp(1.85rem, 2.6vw, 2.4rem); margin-bottom: 8px; }
+    #slide-ai-emotion .lead { font-size: 12px; line-height: 1.24; }
+    #slide-ai-emotion .signal-row { grid-template-columns: 30px minmax(0, 1fr); gap: 8px; padding: 5px 0; }
+    #slide-ai-emotion .signal-row .marker { width: 30px; height: 30px; font-size: 10px; }
+    #slide-ai-emotion .signal-row h3 { font-size: 12px; }
+    #slide-ai-emotion .signal-row p { font-size: 9px; line-height: 1.16; }
+    #slide-ai-emotion .placeholder-gallery { gap: 6px; }
+    #slide-ai-emotion .placeholder-card--media { padding: 9px 10px; gap: 4px; }
+    #slide-ai-emotion .placeholder-card__title { font-size: 14px; }
+    #slide-ai-emotion .placeholder-card__eyebrow { font-size: 6.5px; gap: 4px; }
+    #slide-ai-emotion .placeholder-card p { font-size: 8px; line-height: 1.12; }
+    #slide-ai-emotion .placeholder-card__media { gap: 4px; }
+}
+
+@media (max-width: 480px) {
+    #slide-ai-emotion { padding: 20px 18px 24px; }
+    #slide-ai-emotion .ai-confessional-layout { gap: 8px; }
+    #slide-ai-emotion .placeholder-gallery { gap: 6px; }
+    #slide-ai-emotion .placeholder-card { padding: 8px; }
+    #slide-ai-emotion .placeholder-card--media .placeholder-card__title { font-size: 13px; }
+    #slide-ai-emotion .placeholder-card__frame { padding: 4px; }
+    #slide-ai-emotion .placeholder-card p { font-size: 7.4px; }
+}
+
+@media (max-width: 920px) {
+    .slide-indicator {
+        top: 12px;
+        right: 12px;
+        bottom: auto;
+        left: auto;
+        transform: none;
+        padding: 6px 10px;
+        font-size: 8px;
+        letter-spacing: 0.14em;
+    }
+}
+
+/* Inhale / Exhale image pair (slide-momentum) */
+.breath-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    width: 100%;
+    max-width: 1120px;
+    margin: 36px auto 0;
+}
+.breath-card {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    background: #0a0a0a;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 4px;
+    overflow: hidden;
+    text-align: left;
+}
+.breath-card__media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #000;
+}
+.breath-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(0.15) contrast(1.02);
+}
+.breath-card__phase {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(6px);
+    padding: 6px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+.breath-card figcaption {
+    padding: 22px 24px 26px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.breath-card figcaption h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 0 0 8px;
+    color: #fff;
+}
+.breath-card figcaption p {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.72);
+    margin: 0;
+}
+@media (max-width: 900px) {
+    .slide-title,
+    .title-layout h1,
+    .section-title-layout h2,
+    .visual-panel__headline,
+    .placeholder-card__title,
+    .matrix-item h3 {
+        line-height: 1.14;
+        letter-spacing: 0;
+    }
+    .title-layout h1 { line-height: 1.26; }
+
+    #slide-momentum .section-title-layout {
+        justify-content: flex-start;
+        gap: 7px;
+        padding: 22px 22px 24px;
+        overflow: hidden;
+    }
+    #slide-momentum .accent-tag { font-size: 8px; line-height: 1.35; margin-bottom: 0; }
+    #slide-momentum .section-title-layout hr { width: 54px; margin: 4px auto 2px; }
+    #slide-momentum .section-title-layout h2 { max-width: 100%; font-size: clamp(1.55rem, 6.6vw, 2rem); line-height: 1.14; }
+    #slide-momentum .section-title-layout > p:not(.accent-tag) { max-width: 100%; font-size: 10px; line-height: 1.28; }
+    .breath-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 5px; max-width: 100%; }
+    .breath-card__media { aspect-ratio: 4 / 3; }
+    .breath-card figcaption { padding: 8px 8px 9px; }
+    .breath-card figcaption h3 { font-size: 15px; line-height: 1.12; letter-spacing: 0; margin-bottom: 4px; }
+    .breath-card figcaption p { font-size: 9px; line-height: 1.25; }
+    .visual-panel__caption { font-size: 11px; }
+    .solution-reference { margin-top: 24px; border-radius: 14px; }
+    .solution-reference img { height: min(30vh, 220px); }
+    .section-title-layout--sequence {
+        gap: 10px;
+        padding-top: 28px;
+        padding-bottom: 24px;
+    }
+    .section-title-layout--sequence h2 { font-size: clamp(2.05rem, 6.6vw, 2.8rem); line-height: 1.14; }
+    .section-title-layout--sequence p { max-width: 100%; font-size: 0.92rem; line-height: 1.34; }
+    .section-title-layout--sequence .solution-reference {
+        width: min(82vw, 460px);
+        margin-top: 8px;
+    }
+    .section-title-layout--sequence .solution-reference img {
+        width: 100%;
+        height: auto;
+        max-height: min(34vh, 250px);
+    }
 }
 
     </style>
@@ -1614,268 +2643,148 @@ body.grid-view .priority-callout p { font-size: 8px; }
 <!-- End Google Tag Manager (noscript) -->
 
 <div class="slides-wrapper">
+    <div class="ambient-grid"></div>
+    <div class="ambient-noise"></div>
     <div class="slide-container active" id="slide-title">
         <div class="title-layout">
-            <p class="accent-tag"><i class="fa fa-compass"></i> Experiential strategy</p>
-            <h1>Immersive proposal</h1>
-            <p class="subtitle">A plan to protect momentum, formalize ownership, and turn immersive capability into an enterprise growth channel.</p>
+            <div class="title-background-stage" aria-hidden="true">
+                <video class="title-background-video" autoplay muted loop playsinline>
+                    <source src="../content/intro.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="cover-text-panel">
+                <p class="accent-tag"><i class="fa fa-wind"></i> Ironside immersive presentation</p>
+                <h1>Ironside</h1>
+                <p class="subtitle">An Immersive Experience of a Breathing Space</p>
+                <p class="byline">A room that inhales light and exhales transformation.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-container slide--accent" id="slide-momentum">
+        <div class="section-title-layout">
+            <p class="accent-tag"><i class="fa fa-wave-square"></i> Experience logic</p>
             <hr>
-            <p class="byline">Creative Technology leadership &middot; Enterprise experiential development &middot; R&amp;D to commercial scale</p>
-        </div>
-    </div>
-
-    <div class="slide-container slide--light" id="slide-risk">
-        <div class="two-column two-column--even">
-            <div class="content-area risk-copy">
-                <p class="accent-tag"><i class="fa fa-triangle-exclamation"></i> Critical diagnosis</p>
-                <h2 class="slide-title">The Risk of Inaction</h2>
-                <p class="lead">Immersive work is gaining demand and internal attention while traditional 3D demand has softened. <strong>The opportunity is real, but the current model is not yet turning that demand into strategy, briefs, or revenue.</strong></p>
-                <div class="risk-highlight">
-                    <span>Important shift</span>
-                    <h3>Demand is not the problem. Conversion is.</h3>
-                    <p>The gap is between the interest already forming around immersive work and the operating model needed to turn it into client opportunities.</p>
-                </div>
-            </div>
-            <div class="visual-panel risk-panel">
-                <div class="visual-panel__label">Current trajectory</div>
-                <div class="visual-panel__headline">The operating model is lagging behind demand.</div>
-                <div class="risk-metric-stack">
-                    <div class="risk-metric"><strong>01</strong><div><h3>Enterprise interest is rising.</h3><p>Client conversations are already moving toward immersive, experiential, and AI-enabled activations.</p></div></div>
-                    <div class="risk-metric"><strong>02</strong><div><h3>Internal energy needs structure.</h3><p>The interest is real, but it still lacks a clear model for strategy, packaging, and repeatable delivery.</p></div></div>
-                    <div class="risk-metric"><strong>03</strong><div><h3>The team is still reactive.</h3><p>Without a defined operating model, the work depends on inbound requests instead of shaping demand proactively.</p></div></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="slide-container" id="slide-momentum">
-        <div class="two-column momentum-layout">
-            <div class="content-area momentum-copy">
-                <p class="accent-tag"><i class="fa fa-bolt"></i> Momentum gap</p>
-                <h2 class="slide-title">Lost Momentum</h2>
-                <p class="lead">When creatives see what we can build, motivation spikes. That energy needs to become a system: clear ownership, sales confidence, and a repeatable path from internal excitement to enterprise briefs.</p>
-                <div class="momentum-points">
-                    <div class="momentum-point"><span>Energy</span><p>Creative curiosity is already present across the organization.</p></div>
-                    <div class="momentum-point"><span>Model</span><p>The missing piece is how that energy becomes a commercial motion.</p></div>
-                    <div class="momentum-point"><span>Briefs</span><p>The goal is to convert interest into scoped, strategic opportunities.</p></div>
-                </div>
-            </div>
-            <div class="signal-list momentum-proof">
-                <div class="priority-callout">
-                    <span class="priority-callout__label">Critical operating gap</span>
-                    <h3>No working model has been created recently.</h3>
-                    <p>The last two months have not produced a clear operating strategy for how immersive work should be pitched, scoped, and delivered.</p>
-                </div>
-                <div class="signal-row">
-                    <div class="marker">2</div>
-                    <div><h3>The posture needs to become proactive.</h3><p>Instead of waiting for requests, the practice should show what Superside can uniquely offer before the brief is narrowed.</p></div>
-                </div>
-                <div class="signal-row">
-                    <div class="marker">3</div>
-                    <div><h3>The internal hype should become a pipeline.</h3><p>Curiosity needs leadership, packaging, and repeatable pathways into enterprise opportunities.</p></div>
-                </div>
+            <h2><em>Inhale</em> builds tension. <em>Exhale</em> releases energy.</h2>
+            <p>The whole installation is structured around a loop in which light descends from above to attract energy, then the room exhales that accumulated charge as a full environmental transformation.</p>
+            <div class="breath-grid">
+                <figure class="breath-card breath-card--inhale">
+                    <div class="breath-card__media">
+                        <img src="content/inhale.webp" alt="Inhale: light descending through ceiling apertures into a hazy room" />
+                    </div>
+                    <figcaption>
+                        <h3>Inhale</h3>
+                        <p>Light enters from ceiling light wells, haze catches the beams, and the room fills with a Turrell-like field of suspended energy.</p>
+                    </figcaption>
+                </figure>
+                <figure class="breath-card breath-card--exhale">
+                    <div class="breath-card__media">
+                        <img src="content/exhale.webp" alt="Exhale: the room releasing energy as projection, LED imagery and reactive sound" />
+                    </div>
+                    <figcaption>
+                        <h3>Exhale</h3>
+                        <p>The space releases that stored energy outward, transforming into projection, LED imagery, and reactive sound.</p>
+                    </figcaption>
+                </figure>
             </div>
         </div>
     </div>
 
     <div class="slide-container slide--deep" id="slide-deprioritization">
-        <div class="content-area">
-            <p class="accent-tag"><i class="fa fa-arrow-trend-down"></i> Positioning risk</p>
-            <h2 class="slide-title">Signals of Deprioritization</h2>
-            <p class="lead">The area is being pulled away from the center of the offer at the exact moment it should become more visible.</p>
-            <div class="spotlight-layout">
-                <div class="priority-callout">
-                    <span class="priority-callout__label">Offer visibility risk</span>
-                    <h3>Language has shifted.</h3>
-                    <p>The name "immersive" was removed from the briefs channel, weakening the signal that this is a distinct offer.</p>
-                </div>
-                <div class="signal-list">
-                    <div class="signal-row"><div class="marker"><i class="fa fa-comments"></i></div><div><h3>Perspective is missing.</h3><p>Technical and creative input from the people closest to this work has not been consistently used in strategic decisions.</p></div></div>
-                    <div class="signal-row"><div class="marker"><i class="fa fa-bullhorn"></i></div><div><h3>No promotion engine exists.</h3><p>There is no active internal campaign, sales enablement path, or visible push to grow the space.</p></div></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="slide-container slide--light" id="slide-conceptual-gap">
-        <div class="two-column two-column--even concept-layout">
-            <div class="content-area concept-copy">
-                <p class="accent-tag"><i class="fa fa-lightbulb"></i> Conceptual leadership</p>
-                <h2 class="slide-title">Experiential Is Not a 3D Subcategory</h2>
-                <p class="lead">An immersive experience can be conceptual, physical, theatrical, emotional, spatial, AI-driven, or low-tech. Forcing every opportunity into the traditional 3D pipeline makes the offer smaller than the client problem.</p>
-                <div class="concept-statement">
-                    <h3>Start with the idea, then choose the medium.</h3>
-                    <p>The area needs leadership that can define the experience first and only then decide whether the answer is spatial, digital, physical, generative, or intentionally low-tech.</p>
-                </div>
-            </div>
-            <div class="concept-frame">
-                <div class="matrix matrix--concept">
-                    <div class="matrix-item"><span>Spatial</span><h3>Physical environments</h3><p>Places people can enter, move through, and remember.</p></div>
-                    <div class="matrix-item"><span>Participatory</span><h3>Interactive rituals</h3><p>Moments where the audience becomes part of the system.</p></div>
-                    <div class="matrix-item"><span>Adaptive</span><h3>Generative systems</h3><p>Experiences that respond, personalize, and evolve in real time.</p></div>
-                    <div class="matrix-item"><span>Narrative</span><h3>Emotional storytelling</h3><p>Technology used to create presence, not just spectacle.</p></div>
-                </div>
-                <p class="matrix-caption">The key is not the format. The key is choosing the right medium after the concept is defined.</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="slide-container" id="slide-sales-gap">
-        <div class="two-column">
-            <div class="content-area">
-                <p class="accent-tag"><i class="fa fa-chart-line"></i> Sales enablement</p>
-                <h2 class="slide-title">The Enterprise Sales Gap</h2>
-                <p class="lead">Current credentials material heavily prioritizes 3D output. It does not explain how we approach conceptual design as a sellable enterprise service.</p>
-            </div>
-            <div class="visual-panel">
-                <div class="visual-panel__label">What enterprise needs to see</div>
-                <div class="visual-panel__headline">Not only what we render. How we think, prototype, and move people.</div>
-                <div class="signal-list">
-                    <div class="signal-row"><div class="marker"><i class="fa fa-cube"></i></div><div><h3>3D delivery is not enough.</h3><p>Traditional production cannot expand the business on its own.</p></div></div>
-                    <div class="signal-row"><div class="marker"><i class="fa fa-wand-magic-sparkles"></i></div><div><h3>Conceptual design must become an offer.</h3><p>Enterprise clients need confidence that we can invent, not just execute.</p></div></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="slide-container slide--accent" id="slide-solution">
-        <div class="section-title-layout">
-            <p class="accent-tag"><i class="fa fa-people-group"></i> The solution</p>
-            <hr>
-            <h2>Experiential / Immersive <em>Development</em></h2>
-            <p>A small autonomous multidisciplinary wing: an internal pioneering agency for enterprise clients, built to scale without disrupting the operational rhythm of 3D.</p>
-            <div class="tiled-content tiled-content--four" style="max-width:1040px;">
-                <div class="tile"><div class="icon"><i class="fa fa-building"></i></div><h3>Internal agency</h3><p>One place for concept, technology, prototyping, and event logic.</p></div>
-                <div class="tile"><div class="icon"><i class="fa fa-handshake"></i></div><h3>Enterprise first</h3><p>Designed for complex clients, regulated contexts, and high-stakes moments.</p></div>
-                <div class="tile"><div class="icon"><i class="fa fa-seedling"></i></div><h3>Small and scalable</h3><p>Core leadership with flexible specialists when projects require them.</p></div>
-                <div class="tile"><div class="icon"><i class="fa fa-magnet"></i></div><h3>Talent magnet</h3><p>A focused home for people who want to build what does not exist yet.</p></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="slide-container slide--light" id="slide-core-team">
-        <div class="team-system-layout">
-            <div class="team-command-panel">
-                <div>
-                    <p class="accent-tag"><i class="fa fa-users"></i> Team operating model</p>
-                    <h2 class="slide-title">A focused core, not another production lane.</h2>
-                    <p class="lead">A small leadership core protects concept, ownership, and speed. Specialists join when the client problem calls for them, instead of turning the area into a fixed headcount model.</p>
-                </div>
-                <div class="team-core-cards">
-                    <div class="team-core-card"><span>Producer</span><div><h3>Carolina Piedrahita</h3><p>Network, ownership, and AI / generative workflow curiosity.</p></div></div>
-                    <div class="team-core-card"><span>Creative technologist</span><div><h3>Javier Velazquez</h3><p>Engineering structure for turning ambitious concepts into systems.</p></div></div>
-                    <div class="team-core-card"><span>Needed seat</span><div><h3>UX / Motion designer</h3><p>A dedicated profile for interaction flow, motion behavior, and experience clarity so the team can shape ideas with more precision from the start.</p></div></div>
-                </div>
-            </div>
-            <div class="team-scale-panel">
-                <div class="bench-card">
-                    <div>
-                        <div class="bench-label">Specialist bench</div>
-                        <h3>Scale the right talent around the concept.</h3>
-                        <p class="bench-intro">The bench is activated by project need: R&amp;D, spatial thinking, production depth, or fast prototyping. It supports the core without diluting ownership.</p>
-                    </div>
-                    <div class="bench-list">
-                        <div class="bench-item"><h4>sara.popov</h4><p>R&amp;D-ready profile from the 3D side with VR/startup experience and commitment to experimental work.</p></div>
-                        <div class="bench-item"><h4>melanie.quintero</h4><p>Physical-space thinking and concept development beyond screen-based output.</p></div>
-                        <div class="bench-item"><h4>Specialized 3D support</h4><p>Federico Perini, Michaela Coetze, and Tornike Bardaveli support when production depth is needed.</p></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="slide-container slide--deep" id="slide-role">
         <div class="two-column two-column--even">
             <div class="content-area">
-                <p class="accent-tag"><i class="fa fa-user-tie"></i> Proposed leadership</p>
-                <h2 class="slide-title">Manuel Palenque</h2>
-                <p class="lead">Proposed Head of Creative Technology for the Experiential / Immersive Development wing. The role needs someone who can direct concept, technology, client communication, and hands-on development without separating strategy from execution.</p>
-            </div>
-            <div class="ask-panel">
-                <p class="accent-tag" style="margin-bottom:0;"><i class="fa fa-layer-group"></i> Role definition</p>
-                <h3>Head of Creative Technology</h3>
-                <p>Holistic experiential projects already require cross-functional leadership across concept, technology, production, and communication. The role gives that work the authority and clarity it already requires.</p>
-                <div class="tiled-content tiled-content--two" style="margin-top:0;">
-                    <div class="tile"><div class="icon"><i class="fa fa-sitemap"></i></div><h3>Cross-functional alignment</h3><p>Clear ownership for how resources from other areas should contribute.</p></div>
-                    <div class="tile"><div class="icon"><i class="fa fa-code"></i></div><h3>Hands-on strategy</h3><p>Business design and team management without losing proximity to the creative and technical work.</p></div>
+                <p class="accent-tag"><i class="fa fa-cube"></i> The space & how it works</p>
+                <h2 class="slide-title">A Holistic Immersive System</h2>
+                <p class="lead">Wall projections, lighting, a central LED screen, and sound work together as one synchronized system. Visitors join in by moving in front of the LED screen and by sending creative ideas from their phones into the projections.</p>
+                <div class="matrix matrix--concept">
+                    <div class="matrix-item"><span>Projection</span><h3>Walls become a living canvas</h3><p>Large-scale projections surround the room and hold the evolving atmosphere.</p></div>
+                    <div class="matrix-item"><span>Lighting</span><h3>Light shapes the space</h3><p>Lighting fills the room with depth, mood, and rhythm in sync with the visuals.</p></div>
+                    <div class="matrix-item"><span>LED screen</span><h3>Central interactive content</h3><p>The central LED screen carries the main content and responds to people moving in front of it.</p></div>
+                    <div class="matrix-item"><span>Sound</span><h3>Reactive audio environment</h3><p>Spatial sound moves with the visuals and reacts to what people contribute.</p></div>
                 </div>
-                <p class="reference-note" style="margin-top:4px;">Formal authority removes unnecessary friction and makes the structure legible across teams, scopes, and client conversations.</p>
+                <p class="matrix-caption">Everything is synchronized so the room behaves as one holistic immersive system shaped by collective creative expression.</p>
+            </div>
+            <div class="visual-panel">
+                <div class="visual-panel__label">Interactive system</div>
+                <div class="visual-panel__headline">Interactive system behavior in motion.</div>
+                <div class="visual-panel__media">
+                    <video autoplay muted loop playsinline>
+                        <source src="content/INTERACTIVE.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <p class="visual-panel__caption">Audience movement and mobile input feed the installation in real time, shaping the LED and projection response together.</p>
             </div>
         </div>
     </div>
 
-    <div class="slide-container slide--light" id="slide-commercial-plan">
-        <div class="two-column commercial-layout">
-            <div class="content-area commercial-copy">
-                <p class="accent-tag"><i class="fa fa-rocket"></i> Flight plan</p>
-                <h2 class="slide-title">Commercial Strategy</h2>
-                <p class="lead">The area should be involved earlier and more offensively in the proposals Superside brings to clients, helping define what we can solve before the work is reduced to a preset menu of formats.</p>
-                <div class="commercial-thesis">
-                    <span>From menu to diagnosis</span>
-                    <h3>Lead with the client problem, then design the experience.</h3>
-                    <p>Instead of waiting for a client to request AR, 3D, or an event asset, the practice helps uncover the business, audience, or physical-space problem and shapes the right experiential answer around it.</p>
-                </div>
-            </div>
-            <div class="signal-list commercial-stack">
-                <div class="signal-row commercial-row"><div class="marker">1</div><div><h3>Offensive proposal shaping</h3><p>Join sales and strategy earlier to identify where immersive thinking can expand the opportunity before the brief is locked.</p></div></div>
-                <div class="signal-row commercial-row"><div class="marker">2</div><div><h3>Problem-first scoping</h3><p>Work in more depth on what the client needs to solve, then choose the right mix of spatial, digital, AI, physical, or content systems.</p></div></div>
-                <div class="signal-row commercial-row"><div class="marker">3</div><div><h3>Enterprise proof and readiness</h3><p>Prepare demos, references, and RFP logic that make creative technology feel like a strategic growth offer, not a production add-on.</p></div></div>
-            </div>
+    <div class="slide-container slide--accent" id="slide-solution">
+        <div class="section-title-layout section-title-layout--sequence">
+            <p class="accent-tag"><i class="fa fa-arrows-rotate"></i> Experience sequence</p>
+            <hr>
+            <h2>The Cycle Translates Into <em>Space</em>, <em>Media</em>, and <em>Response</em></h2>
+            <p>The experience stays alive throughout the day: each new visitor influences the projections, the LED visuals, and the soundscape, while live music adds another reactive layer to the room. The result is a space that keeps shifting over time, so no two visits feel exactly the same.</p>
+            <figure class="solution-reference">
+                <img src="content/ref4.webp" alt="Experience sequence showing the room transformation over time" />
+            </figure>
         </div>
     </div>
+
 
     <div class="slide-container" id="slide-ai-emotion">
         <div class="ai-confessional-layout">
             <div class="content-area">
-                <p class="accent-tag"><i class="fa fa-brain"></i> AI narrative</p>
-                <h2 class="slide-title">AI in service of human connection</h2>
-                <p class="lead">Most agencies already say human creativity matters in the age of AI. That message is true, but it is no longer distinctive. A stronger position is using AI to create presence, vulnerability, and emotional resonance in the physical world.</p>
-                <div class="ai-positioning-note"><span>Sharper position</span><h3>The differentiator is not saying humans matter. It is making technology feel human.</h3></div>
+                <p class="accent-tag"><i class="fa fa-images"></i> Visual direction</p>
+                <h2 class="slide-title">Moodboard for the Breathing Cycle</h2>
+                <p class="lead">The experience moves through four connected visual layers: inhale atmosphere, exhale projection, LED content, and the mobile interaction that lets visitors shape the room.</p>
                 <div class="signal-list">
-                    <div class="signal-row"><div class="marker"><i class="fa fa-church"></i></div><div><h3>The AI Confessional, Venice</h3><p>A generative AI system placed inside a physical confessional, designed around intimacy, presence, and emotional response.</p></div></div>
-                    <div class="signal-row"><div class="marker"><i class="fa fa-heart"></i></div><div><h3>The technology disappears into the experience.</h3><p>The value comes from applying technology to create a memorable human moment. That is the caliber of work enterprise clients remember.</p></div></div>
+                    <div class="signal-row"><div class="marker"><i class="fa fa-wind"></i></div><div><h3>Inhale mood</h3><p>Volumetric light, fog density, and spatial suspension.</p></div></div>
+                    <div class="signal-row"><div class="marker"><i class="fa fa-burst"></i></div><div><h3>Exhale mood</h3><p>Projection texture, figurative LED content, and kinetic intensity.</p></div></div>
                 </div>
             </div>
-            <div class="ai-confessional-media">
-                <div class="ai-media-card">
-                    <img src="aiconfession.png" alt="AI Confessional still image">
-                    <span class="ai-media-card__label">Still</span>
+            <div class="placeholder-gallery">
+                <div class="placeholder-card placeholder-card--compact placeholder-card--media placeholder-card--inhale">
+                    <h3 class="placeholder-card__title">Inhale moodboard</h3>
+                    <div class="placeholder-card__media placeholder-card__media--duo">
+                        <div class="placeholder-card__frame">
+                            <img class="placeholder-card__image" src="content/IHALE2.png" alt="Inhale scene with volumetric light beams and haze" />
+                        </div>
+                        <div class="placeholder-card__frame">
+                            <img class="placeholder-card__image" src="content/inhale3.png" alt="Inhale scene with atmospheric suspended light in a dark room" />
+                        </div>
+                    </div>
+                    <p>Atmosphere for the expansion phase.</p>
                 </div>
-                <div class="ai-media-card">
-                    <video autoplay loop muted playsinline>
-                        <source src="aiconfession.mp4" type="video/mp4">
-                        <source src="aiconfession.mov" type="video/quicktime">
-                    </video>
-                    <span class="ai-media-card__label">Loop</span>
+                <div class="placeholder-card placeholder-card--compact placeholder-card--media placeholder-card--exhale">
+                    <h3 class="placeholder-card__title">Exhale moodboard</h3>
+                    <div class="placeholder-card__media">
+                        <div class="placeholder-card__frame">
+                            <img class="placeholder-card__image" src="content/videocontent2.png" alt="Exhale scene with projected digital energy and kinetic release" />
+                        </div>
+                    </div>
+                    <p>Projection and digital release language.</p>
+                </div>
+                <div class="placeholder-card placeholder-card--compact placeholder-card--media placeholder-card--led">
+                    <h3 class="placeholder-card__title">LED content look</h3>
+                    <div class="placeholder-card__media">
+                        <div class="placeholder-card__frame">
+                            <img class="placeholder-card__image" src="content/videocontent1.webp" alt="LED content with figurative high-definition digital art" />
+                        </div>
+                    </div>
+                    <p>High-definition figurative art direction.</p>
+                </div>
+                <div class="placeholder-card placeholder-card--compact placeholder-card--media placeholder-card--mobile">
+                    <h3 class="placeholder-card__title">Mobile interaction view</h3>
+                    <div class="placeholder-card__media">
+                        <div class="placeholder-card__frame">
+                            <img class="placeholder-card__image" src="content/mobile.png" alt="Mobile interaction interface for audience participation" />
+                        </div>
+                    </div>
+                    <p>Audience participation interface.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="slide-container slide--accent" id="slide-rd-logistics">
-        <div class="rd-layout">
-            <div class="rd-copy">
-                <p class="accent-tag"><i class="fa fa-globe"></i> Assets and validation</p>
-                <h2 class="slide-title">R&amp;D Assets, Global Logistics, and Internal Validation</h2>
-                <p class="lead">Experiential development needs physical prototyping, deployment know-how, and internal trust. The foundation already exists.</p>
-                <div class="rd-proof-list">
-                    <div class="rd-proof-item"><div class="marker"><i class="fa fa-flask"></i></div><div><h3>Media Lab Argentina</h3><p>A cost-efficient physical R&amp;D environment in Buenos Aires for demos, testing, and prototypes before client presentation.</p></div></div>
-                    <div class="rd-proof-item"><div class="marker"><i class="fa fa-plane"></i></div><div><h3>Global deployment experience</h3><p>Proven ability to develop physical technology projects in Argentina and deploy logistics anywhere in the world.</p></div></div>
-                    <div class="rd-proof-item"><div class="marker"><i class="fa fa-location-dot"></i></div><div><h3>Operational proof</h3><p>Google Pixel global activations and large-scale technical deployments for Fuerza Bruta in Japan.</p></div></div>
-                </div>
-                <div class="ask-panel" style="margin-top:24px;padding:24px;gap:14px;">
-                    <h3>The ask</h3>
-                    <p>Formalize the Experiential / Immersive Development wing and the Head of Creative Technology role so Superside can turn this capability into an enterprise growth engine.</p>
-                </div>
-            </div>
-            <div class="medialab-collage" aria-label="Media Lab Argentina image collage">
-                <div class="medialab-frame medialab-frame--hero"><img src="medialab1.jpeg" alt="Media Lab Argentina workshop with projection surfaces"><span>Physical R&amp;D space</span></div>
-                <div class="medialab-frame"><img src="medialab2.jpeg" alt="Media Lab prototype screen and robotic rig"><span>Prototype testing</span></div>
-                <div class="medialab-frame medialab-frame--wide"><img src="medialab4.png" alt="Media Lab installation tests and projection session"><span>Installation tests</span></div>
-            </div>
-        </div>
-    </div>
 </div>
 
 <div id="flowchartSidebar" hidden></div>
