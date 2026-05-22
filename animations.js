@@ -141,10 +141,12 @@ window.addEventListener('keydown', (event) => {
     let touchStartY = 0;
     let touchStartTime = 0;
     let trackingTouch = false;
+    let suppressClickUntil = 0;
 
     const SWIPE_THRESHOLD = 50;      // min horizontal px
     const VERTICAL_LIMIT = 80;       // max vertical drift
     const MAX_DURATION = 800;        // ms
+    const TAP_MOVE_LIMIT = 12;       // max movement to still count as tap
 
     function isInteractiveTarget(target) {
         if (!target || !(target instanceof Element)) return false;
@@ -154,6 +156,14 @@ window.addEventListener('keydown', (event) => {
             '#sidebar-flowchart-root, .flowchart-sidebar, ' +
             '.title-snoo-embed, .scan-slideshow, .react-flow'
         );
+    }
+
+    function navigateByScreenHalf(clientX) {
+        if (clientX < window.innerWidth / 2) {
+            prevSlide();
+        } else {
+            nextSlide();
+        }
     }
 
     window.addEventListener('touchstart', (e) => {
@@ -176,9 +186,40 @@ window.addEventListener('keydown', (event) => {
         const dt = Date.now() - touchStartTime;
         if (dt > MAX_DURATION) return;
         if (Math.abs(dy) > VERTICAL_LIMIT) return;
-        if (Math.abs(dx) < SWIPE_THRESHOLD) return;
-        if (dx < 0) nextSlide(); else prevSlide();
+        if (Math.abs(dx) >= SWIPE_THRESHOLD) {
+            if (dx < 0) nextSlide(); else prevSlide();
+            suppressClickUntil = Date.now() + 450;
+            return;
+        }
+
+        // Tap on left/right half also navigates on touch devices.
+        if (Math.abs(dx) <= TAP_MOVE_LIMIT && Math.abs(dy) <= TAP_MOVE_LIMIT) {
+            navigateByScreenHalf(t.clientX);
+            suppressClickUntil = Date.now() + 450;
+        }
     }, { passive: true });
+
+    window.addEventListener('pointerup', (e) => {
+        if (Date.now() < suppressClickUntil) return;
+        if (window.innerWidth > 900) return;
+        if (isGridView || isSidebarOpen) return;
+        if (isInteractiveTarget(e.target)) return;
+        if (typeof e.clientX !== 'number') return;
+
+        navigateByScreenHalf(e.clientX);
+        suppressClickUntil = Date.now() + 250;
+    });
+
+    // Fallback so taps on left/right half navigate even when touch events are not exposed.
+    window.addEventListener('click', (e) => {
+        if (Date.now() < suppressClickUntil) return;
+        if (window.innerWidth > 900) return;
+        if (isGridView || isSidebarOpen) return;
+        if (isInteractiveTarget(e.target)) return;
+        if (typeof e.clientX !== 'number') return;
+
+        navigateByScreenHalf(e.clientX);
+    });
 
     // Inject on-screen prev/next buttons (mobile-friendly fallback)
     window.addEventListener('DOMContentLoaded', () => {
@@ -196,6 +237,25 @@ window.addEventListener('keydown', (event) => {
             </button>
         `;
         controls.parentNode.insertBefore(wrap, controls);
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const prevBtn = document.getElementById('mobilePrevBtn');
+        const nextBtn = document.getElementById('mobileNextBtn');
+        if (prevBtn) {
+            prevBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                prevSlide();
+            });
+        }
+        if (nextBtn) {
+            nextBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                nextSlide();
+            });
+        }
     });
 })();
 
